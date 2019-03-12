@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 
 import Roll from './components/Roll';
 import AdvantagePicker from './components/AdvantagePicker.js';
@@ -56,7 +56,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} >
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text> Bonus to hit: </Text>
           <TextInput
@@ -99,7 +99,11 @@ export default class App extends React.Component {
         </View>
         <AdvantagePicker callback={this.myCallBack}/>
         <Roll onRoll ={this.rollDice}/>
-        <Text> {this.state.outText} </Text>
+        <View style= {{ height: 400, width: 350}}>
+          <ScrollView>
+            <Text> {this.state.outText} </Text>
+          </ScrollView>
+        </View>
       </View>
     );
   }
@@ -111,5 +115,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    height: 800,
   },
 });
