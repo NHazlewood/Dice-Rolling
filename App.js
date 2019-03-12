@@ -19,7 +19,7 @@ export default class App extends React.Component {
   rollDice = () => {
     const toHit = Math.ceil(Math.random() * 20);
     var damageDice = [];
-    var damage = this.state.damageBonus;
+    var damage = this.state.damageBonus * 1;
     const toRoll = this.state.numberOfDice;
     for(i=0;i< toRoll; ++i){
       const rand = Math.ceil(Math.random() * this.state.damageDice);
@@ -27,7 +27,7 @@ export default class App extends React.Component {
       damage += rand;
     }
 
-    const toHitTotal = toHit + this.state.toHitBonus;
+    const toHitTotal = toHit + (this.state.toHitBonus * 1);
     const newText = "To Hit: " + toHitTotal + " ( " + toHit + " + " + this.state.toHitBonus + " )" + "\n" +
       "Damage: "+ damage + " ( " + damageDice + " + " + this.state.damageBonus + " )";   
     
@@ -39,11 +39,11 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
+        <Text> Bonus to hit: </Text><TextInput
           style={{height: 40}}
           placeholder="Bonus to hit"
           onChangeText={(toHitBonus) => this.setState({toHitBonus})}
-        /> 
+        />
         <TextInput
           style={{height: 40}}
           placeholder="Bonus to damage"
