@@ -17,23 +17,27 @@ export default class App extends React.Component {
   }
 
   rollDice = () => {
-    const toHit = Math.ceil(Math.random() * 20);
-    var damageDice = [];
-    var damage = this.state.damageBonus * 1;
-    const toRoll = this.state.numberOfDice;
-    for(i=0;i< toRoll; ++i){
-      const rand = Math.ceil(Math.random() * this.state.damageDice);
-      damageDice.push(rand);
-      damage += rand;
-    }
+    
+    var newText = '';
+    for(i=0;i<this.state.numberOfAttacks;++i){
+    
+      const toHit = Math.ceil(Math.random() * 20);
+      var damageDice = [];
+      var damage = this.state.damageBonus * 1;
+      const toRoll = this.state.numberOfDice;
+      for(j=0;j< toRoll; ++j){
+        const rand = Math.ceil(Math.random() * this.state.damageDice);
+        damageDice.push(rand);
+        damage += rand;
+      }
 
-    const toHitTotal = toHit + (this.state.toHitBonus * 1);
-    const newText = "To Hit: " + toHitTotal + " ( " + toHit + " + " + this.state.toHitBonus + " )" + "\n" +
-      "Damage: "+ damage + " ( " + damageDice + " + " + this.state.damageBonus + " )";   
+      const toHitTotal = toHit + (this.state.toHitBonus * 1);
+      newText += "\nAttack "+ i +"\n    To Hit: " + toHitTotal + " ( " + toHit + " + " + this.state.toHitBonus + " )" + "\n" +
+        "    Damage: "+ damage + " ( " + damageDice + " + " + this.state.damageBonus + " )\n";
+    
+    }
     
     this.setState({outText: newText})
-    console.log (this.state.outText);
-
   }
 
   render() {
