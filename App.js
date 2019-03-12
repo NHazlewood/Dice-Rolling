@@ -39,31 +39,46 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text> Bonus to hit: </Text><TextInput
-          style={{height: 40}}
-          placeholder="Bonus to hit"
-          onChangeText={(toHitBonus) => this.setState({toHitBonus})}
-        />
-        <TextInput
-          style={{height: 40}}
-          placeholder="Bonus to damage"
-          onChangeText={(damageBonus) => this.setState({damageBonus})}
-        />  
-        <TextInput
-          style={{height: 40}}
-          placeholder="Damage dice"
-          onChangeText={(damageDice) => this.setState({damageDice})}
-        /> 
-         <TextInput
-          style={{height: 40}}
-          placeholder="Number of dice"
-          onChangeText={(numberOfDice) => this.setState({numberOfDice})}
-        />
-        <TextInput
-          style={{height: 40}}
-          placeholder="Number of attacks"
-          onChangeText={(numberOfAttacks) => this.setState({numberOfAttacks})}
-        />      
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text> Bonus to hit: </Text>
+          <TextInput
+            style={{height: 40}}
+            placeholder=" "
+            onChangeText={(toHitBonus) => this.setState({toHitBonus})}
+          />
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text> Bonus to damage: </Text>
+          <TextInput
+            style={{height: 40}}
+            placeholder=" "
+            onChangeText={(damageBonus) => this.setState({damageBonus})}
+          />
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text> Damage dice: </Text>
+          <TextInput
+            style={{height: 40}}
+            placeholder=" "
+            onChangeText={(damageDice) => this.setState({damageDice})}
+          />
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text> Number of dice: </Text>
+          <TextInput
+            style={{height: 40}}
+            placeholder=" "
+            onChangeText={(numberOfDice) => this.setState({numberOfDice})}
+          />
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text> Number of attacks: </Text>
+          <TextInput
+            style={{height: 40}}
+            placeholder=" "
+            onChangeText={(numberOfAttacks) => this.setState({numberOfAttacks})}
+          />
+        </View>  
         <Roll onRoll ={this.rollDice}/>
         <Text> {this.state.outText} </Text>
       </View>
