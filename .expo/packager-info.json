@@ -2,9 +2,9 @@
   "webpackServerPort": null,
   "expoServerNgrokUrl": "https://a2-ach.anonymous.dice-rolling.exp.direct",
   "packagerNgrokUrl": "https://packager.a2-ach.anonymous.dice-rolling.exp.direct",
-  "ngrokPid": 748,
+  "ngrokPid": 6036,
   "packagerPort": 19001,
-  "packagerPid": 12908,
+  "packagerPid": 4936,
   "devToolsPort": 19002,
   "expoServerPort": 19000
 }

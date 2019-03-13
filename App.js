@@ -30,18 +30,48 @@ export default class App extends React.Component {
             damageDice.push(rand);
             damage += rand;
           }
-          if(this.state.adjustment == 'None'){
-            const toHitTotal = toHit1 + (this.state.toHitBonus * 1);
-            newText += "\nAttack "+ i +"\n    To Hit: " + toHitTotal + " ( " + toHit1;
+          newText += "\nAttack "+ i;
+          if(this.state.adjustment == 'Disadvantage'){
+            newText += ", Disadvantage"
+              if(toHit1 == 20 && toHit2 == 20)
+              {
+                damage = damage * 2 - this.state.damageBonus * 1
+                newText += ": Crit!";
+              }
+              else if(toHit1 == 1 || toHit2 == 1)
+              {
+                newText += ": Fumble!";
+              }
+              const toHitTotal = Math.min(toHit1, toHit2) + (this.state.toHitBonus * 1);
+              newText += "\n    To Hit: " + toHitTotal + " ( " + Math.min(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2+ ") ";
           }
           else{
             if(this.state.adjustment == 'Advantage'){
+              newText += ", Advantage"
+              if(toHit1 == 20 || toHit2 == 20)
+              {
+                damage = damage * 2 - this.state.damageBonus * 1
+                newText += ": Crit!";
+              }
+              else if(toHit1 == 1 && toHit2 == 1)
+              {
+                newText += ": Fumble!";
+              }
               const toHitTotal = Math.max(toHit1, toHit2) + (this.state.toHitBonus * 1);
-              newText += "\nAttack "+ i +"\n    To Hit: " + toHitTotal + " ( " + Math.max(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2 + ") "
+              newText += "\n    To Hit: " + toHitTotal + " ( " + Math.max(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2 + ") "
             }
             else{
-              const toHitTotal = Math.min(toHit1, toHit2) + (this.state.toHitBonus * 1);
-              newText += "\nAttack "+ i +"\n    To Hit: " + toHitTotal + " ( " + Math.min(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2+ ") ";
+              if(toHit1 == 20)
+            {
+              damage = damage * 2 - this.state.damageBonus * 1
+              newText += ": Crit!";
+            }
+            else if(toHit1 == 1)
+            {
+              newText += ": Fumble!";
+            }
+            const toHitTotal = toHit1 + (this.state.toHitBonus * 1);
+            newText += "\n    To Hit: " + toHitTotal + " ( " + toHit1;
             } 
           }
           newText += " + " + this.state.toHitBonus + " )" + "\n" +
@@ -60,7 +90,6 @@ export default class App extends React.Component {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text> Bonus to hit: </Text>
           <TextInput
-            style={{height: 40}}
             placeholder="___"
             onChangeText={(toHitBonus) => this.setState({toHitBonus})}
           />
@@ -68,7 +97,6 @@ export default class App extends React.Component {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text> Bonus to damage: </Text>
           <TextInput
-            style={{height: 40}}
             placeholder="___"
             onChangeText={(damageBonus) => this.setState({damageBonus})}
           />
@@ -76,7 +104,6 @@ export default class App extends React.Component {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text> Damage dice: </Text>
           <TextInput
-            style={{height: 40}}
             placeholder="___"
             onChangeText={(damageDice) => this.setState({damageDice})}
           />
@@ -84,7 +111,6 @@ export default class App extends React.Component {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text> Number of dice: </Text>
           <TextInput
-            style={{height: 40}}
             placeholder="___"
             onChangeText={(numberOfDice) => this.setState({numberOfDice})}
           />
@@ -92,7 +118,6 @@ export default class App extends React.Component {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text> Number of attacks: </Text>
           <TextInput
-            style={{height: 40}}
             placeholder="___"
             onChangeText={(numberOfAttacks) => this.setState({numberOfAttacks})}
           />
@@ -115,6 +140,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 800,
+    height: 900,
+  },
+  TextInput: {
+    height: 40,
   },
 });

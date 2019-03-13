@@ -4,7 +4,7 @@ import { View, Text, Picker, StyleSheet } from 'react-native'
 class AdvantagePicker extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {adjustment :'None'}
+        this.state = {adjustment : "None"}
     }
 
    updateAdjustment = (adjustment) => {
