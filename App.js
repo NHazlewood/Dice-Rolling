@@ -19,64 +19,67 @@ export default class App extends React.Component {
 
   rollDice = () => {
     var newText = ''; 
-      for(i=0;i<this.state.numberOfAttacks;++i){
-        const toHit1 = Math.ceil(Math.random() * 20);
-        const toHit2 = Math.ceil(Math.random() * 20);
-          var damageDice = [];
-          var damage = this.state.damageBonus * 1;
-          const toRoll = this.state.numberOfDice;
-          for(j=0;j< toRoll; ++j){
-            const rand = Math.ceil(Math.random() * this.state.damageDice);
-            damageDice.push(rand);
-            damage += rand;
-          }
-          newText += "\nAttack "+ i;
-          if(this.state.adjustment == 'Disadvantage'){
-            newText += ", Disadvantage"
-              if(toHit1 == 20 && toHit2 == 20)
-              {
-                damage = damage * 2 - this.state.damageBonus * 1
-                newText += ": Crit!";
-              }
-              else if(toHit1 == 1 || toHit2 == 1)
-              {
-                newText += ": Fumble!";
-              }
-              const toHitTotal = Math.min(toHit1, toHit2) + (this.state.toHitBonus * 1);
-              newText += "\n    To Hit: " + toHitTotal + " ( " + Math.min(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2+ ") ";
-          }
-          else{
-            if(this.state.adjustment == 'Advantage'){
-              newText += ", Advantage"
-              if(toHit1 == 20 || toHit2 == 20)
-              {
-                damage = damage * 2 - this.state.damageBonus * 1
-                newText += ": Crit!";
-              }
-              else if(toHit1 == 1 && toHit2 == 1)
-              {
-                newText += ": Fumble!";
-              }
-              const toHitTotal = Math.max(toHit1, toHit2) + (this.state.toHitBonus * 1);
-              newText += "\n    To Hit: " + toHitTotal + " ( " + Math.max(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2 + ") "
-            }
-            else{
-              if(toHit1 == 20)
-            {
-              damage = damage * 2 - this.state.damageBonus * 1
-              newText += ": Crit!";
-            }
-            else if(toHit1 == 1)
-            {
-              newText += ": Fumble!";
-            }
-            const toHitTotal = toHit1 + (this.state.toHitBonus * 1);
-            newText += "\n    To Hit: " + toHitTotal + " ( " + toHit1;
-            } 
-          }
-          newText += " + " + this.state.toHitBonus + " )" + "\n" +
-            "    Damage: "+ damage + " ( " + damageDice + " + " + this.state.damageBonus + " )\n";
+    for(i=0;i<this.state.numberOfAttacks;++i){
+      const toHit1 = Math.ceil(Math.random() * 20);
+      const toHit2 = Math.ceil(Math.random() * 20);
+      var damageDice = [];
+      var damage = this.state.damageBonus * 1;
+      const toRoll = this.state.numberOfDice;
+      for(j=0;j< toRoll; ++j){
+        const rand = Math.ceil(Math.random() * this.state.damageDice);
+        damageDice.push(rand);
+        damage += rand;
       }
+      newText += "\nAttack "+ i;
+      //Disadvantage
+      if(this.state.adjustment == 'Disadvantage'){
+        newText += ", Disadvantage";
+        if(toHit1 == 20 && toHit2 == 20)
+        {
+          damage = damage * 2 - this.state.damageBonus * 1
+          newText += ": Crit!";
+        }
+        else if(toHit1 == 1 || toHit2 == 1)
+        {
+          newText += ": Fumble!";
+        }
+        const toHitTotal = Math.min(toHit1, toHit2) + (this.state.toHitBonus * 1);
+        newText += "\n    To Hit: " + toHitTotal + " ( " + Math.min(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2+ ") ";
+      }
+      else{
+        //Advantage
+        if(this.state.adjustment == 'Advantage'){
+          newText += ", Advantage";
+          if(toHit1 == 20 || toHit2 == 20)
+          {
+            damage = damage * 2 - this.state.damageBonus * 1
+            newText += ": Crit!";
+          }
+          else if(toHit1 == 1 && toHit2 == 1)
+          {
+            newText += ": Fumble!";
+          }
+          const toHitTotal = Math.max(toHit1, toHit2) + (this.state.toHitBonus * 1);
+          newText += "\n    To Hit: " + toHitTotal + " ( " + Math.max(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2 + ") "
+        }
+        //None
+        else{
+          if(toHit1 == 20)
+          {
+            damage = damage * 2 - this.state.damageBonus * 1
+            newText += ": Crit!";
+          }
+          else if(toHit1 == 1)
+          {
+            newText += ": Fumble!";
+          }
+          const toHitTotal = toHit1 + (this.state.toHitBonus * 1);
+          newText += "\n    To Hit: " + toHitTotal + " ( " + toHit1;
+        } 
+      }
+      newText += " + " + this.state.toHitBonus + " )" + "\n" +
+        "    Damage: "+ damage + " ( " + damageDice + " + " + this.state.damageBonus + " )\n";
+    }
     this.setState({outText: newText})
   }
 
