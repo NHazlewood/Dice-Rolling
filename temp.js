@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
+
 
 export default class temp extends React.Component {
 
@@ -9,7 +9,6 @@ export default class temp extends React.Component {
   };
 
   render() {
-    const {navigate} = this.props.navigation;
     return (
       <View style={styles.container} >
         <Text>TEMP PAGE</Text>

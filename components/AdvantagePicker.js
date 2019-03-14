@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Picker, StyleSheet } from 'react-native'
+import { View, Text, Picker} from 'react-native'
 
 class AdvantagePicker extends React.Component {
     constructor(props) {
