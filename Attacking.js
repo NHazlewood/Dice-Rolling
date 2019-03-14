@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
+import {createStackNavigator, createBottomTabNavigator, createAppContainer} from 'react-navigation';
 
 import AdvantagePicker from './components/AdvantagePicker.js';
 import Roll from './components/Roll.js';
+import temp from './temp.js';
 
 export default class Attacking extends React.Component {
 
@@ -96,7 +97,6 @@ export default class Attacking extends React.Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-      <Button title="Temp" onPress = {() => navigate('temp')}/>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text> Bonus to hit: </Text>
           <TextInput
