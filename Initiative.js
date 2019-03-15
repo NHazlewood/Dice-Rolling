@@ -39,13 +39,15 @@ export default class Initiative extends React.Component {
         />
         <Button title= "Add" onPress={() => this.addNew(this)}/>
         </View>
-        <ScrollView style={{ height: 800, width: 350}}>
-        {this.state.initiativeOrder.map((item, key)=>(
-         <Text key={key}> {item[0]} {item[1]} </Text>)
-         // This was for trying out new features
-         // <Text key={key} style={[(item[0]*1) > 5 ? {backgroundColor: 'red'} : {backgroundColor: 'blue'}]}> {item[0]} {item[1]} </Text>)
-         )}
-        </ScrollView>
+        <View style={{ height: 500, width: 350}}>
+          <ScrollView>
+            {this.state.initiativeOrder.map((item, key)=>(
+            <Text key={key}> {item[0]} {item[1]} </Text>)
+            // This was for trying out new features
+            // <Text key={key} style={[(item[0]*1) > 5 ? {backgroundColor: 'red'} : {backgroundColor: 'blue'}]}> {item[0]} {item[1]} </Text>)
+            )}
+          </ScrollView>
+        </View>
       </View>
     );
   }

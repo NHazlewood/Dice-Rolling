@@ -18,12 +18,13 @@ export default class Attacking extends React.Component {
     this.state = {numberOfDice: 0};
     this.state = {numberOfAttacks: 0}
     this.state = {adjustment: 'None'}
-    this.state = {outText : ''};
+    this.state = {outText : []};
   }
 
-  rollDice = () => {
-    var newText = ''; 
+  rollDice = () => {      
+    var temp = []
     for(i=0;i<this.state.numberOfAttacks;++i){
+      var newText = [];
       const toHit1 = Math.ceil(Math.random() * 20);
       const toHit2 = Math.ceil(Math.random() * 20);
       var damageDice = [];
@@ -34,6 +35,81 @@ export default class Attacking extends React.Component {
         damageDice.push(rand);
         damage += rand;
       }
+      //saving attack #
+      newText.push((i+1))
+      //handling to hit outcomes
+      // 1. check for crits and fumbles
+      // 2. calcualte and save hit totals
+      // 3. save toHit dice and toHit bonus
+      if(this.state.adjustment == 'Disadvantage'){
+        if(toHit1 == 20 && toHit2 == 20){
+          newText.push("Crit!")
+        }
+        else {
+          if(toHit1 == 1 || toHit2 == 1){
+            newText.push("Fumble!")
+          }
+          else {
+            newText.push("")
+          }
+        }
+        newText.push(Math.min(toHit1,toHit2) + this.state.toHitBonus*1)
+        newText.push([toHit1,toHit2])
+        newText.push(this.state.toHitBonus)
+      }
+      else { // Advantage or None
+        if(this.state.adjustment == 'Advantage'){
+          if(toHit1 == 20 || toHit2 == 20){
+            newText.push("Crit!")
+          }
+          else {
+            if(toHit1 == 1 && toHit2 == 1){
+              newText.push("Fumble!")
+            }
+            else {
+              newText.push("")
+            }
+          }
+          newText.push(Math.max(toHit1,toHit2) + this.state.toHitBonus*1)
+          newText.push([toHit1,toHit2])
+          newText.push(this.state.toHitBonus)
+        }
+        else{ // None
+          if(toHit1 == 20){
+            newText.push("Crit!")
+          }
+          else {
+            if(toHit1 == 1){
+              newText.push("Fumble!")
+            }
+            else {
+              newText.push("")
+            }
+          }
+          newText.push(toHit1 + this.state.toHitBonus*1)
+          newText.push(toHit1)
+          newText.push(this.state.toHitBonus)
+        }
+      }
+      //handling damage dice
+      if(newText[1] == "Crit!"){ damage = damage *2 - this.state.damageBonus*1}
+      newText.push(damage)
+      newText.push(damageDice)
+      newText.push(this.state.damageBonus)
+      //console.log("Attack #: "+ newText[0] + " special: " + newText[1] + " to hit total: " + newText[2] + " to hit dice(s): " + newText[3] + " to hit bonus: " + newText[4] +
+      //" damage total: " + newText[5] + " damage dice(s): " + newText[6] + " damage bonus: " + newText[7])
+      temp.push(newText)
+    }
+    this.setState({outText : temp})
+    /*
+    for(var i= 0; i < this.state.numberOfAttacks; ++i){
+      console.log("Attack #: "+ this.state.outText[i][0] + " special: " + this.state.outText[i][1] + " to hit total: " + this.state.outText[i][2] + 
+      " to hit dice(s): " + this.state.outText[i][3] + " to hit bonus: " + this.state.outText[i][4] + " damage total: " + this.state.outText[i][5] + 
+      " damage dice(s): " + this.state.outText[i][6] + " damage bonus: " + this.state.outText[i][7])
+    }
+    */
+  }
+      /*
       newText += "\nAttack "+ i;
       //Disadvantage
       if(this.state.adjustment == 'Disadvantage'){
@@ -79,7 +155,7 @@ export default class Attacking extends React.Component {
         "    Damage: "+ damage + " ( " + damageDice + " + " + this.state.damageBonus + " )\n";
     }
     this.setState({outText: newText})
-  }
+    */
 
   myCallBack = (newAdjustment) => {
     this.setState({adjustment: newAdjustment})
@@ -126,9 +202,13 @@ export default class Attacking extends React.Component {
         <AdvantagePicker callback={this.myCallBack}/>
         <Roll onRoll ={this.rollDice}/>
         <View style= {{ height: 400, width: 350}}>
-          <ScrollView>
-            <Text> {this.state.outText} </Text>
-          </ScrollView>
+        <ScrollView>
+            {this.state.outText.map((item, key)=>(
+            <Text key={key}> Attack #: {item[0]} special: {item[1]} to hit total: {item[2]} 
+             to hit dice(s): {item[3]} to hit bonus: {item[4]} damage total: {item[5]} 
+             damage dice(s): {item[6]} damage bonus: {item[7]} </Text>)
+            )}
+          </ScrollView>          
         </View>
       </View>
     );
