@@ -205,8 +205,8 @@ export default class Attacking extends React.Component {
         <ScrollView>
             {this.state.outText.map((item, key)=>(
             <Text key={key}> Attack #: {item[0]} special: {item[1]} to hit total: {item[2]} 
-             to hit dice(s): {item[3]} to hit bonus: {item[4]} damage total: {item[5]} 
-             damage dice(s): {item[6]} damage bonus: {item[7]} </Text>)
+              to hit dice(s): {item[3]} to hit bonus: {item[4]} damage total: {item[5]} 
+              damage dice(s): {item[6]} damage bonus: {item[7]} </Text>)
             )}
           </ScrollView>          
         </View>
