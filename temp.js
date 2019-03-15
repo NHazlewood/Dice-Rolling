@@ -11,7 +11,7 @@ export default class temp extends React.Component {
   render() {
     return (
       <View style={styles.container} >
-        <Text>TEMP PAGE</Text>
+        <Text>TEMP PAGE 2</Text>
       </View>
     );
   }

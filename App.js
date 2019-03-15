@@ -1,11 +1,11 @@
 import { createMaterialTopTabNavigator, createAppContainer} from 'react-navigation';
 
 import Attacking from "./Attacking";
-import temp from "./temp";
+import Initiative from "./Initiative";
 
 const TabNavigator = createMaterialTopTabNavigator({
   Attacking: {screen: Attacking},
-  temp: {screen: temp},
+  Initiative: {screen: Initiative},
 },
 {
   tabBarOptions:{
