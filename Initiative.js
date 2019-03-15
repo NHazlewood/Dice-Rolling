@@ -16,9 +16,10 @@ export default class Initiative extends React.Component {
   }
 
   addNew = () =>{
-    const newEntry = this.state.nameToAdd + "   initiative: " + this.state.initiativeToAdd;
+    const newEntry = [this.state.initiativeToAdd, this.state.nameToAdd];
     var orderCopy = this.state.initiativeOrder;
     orderCopy.push(newEntry);
+    orderCopy.sort((a,b) => {return b[0]-a[0]});
     this.setState({initiativeOrder: orderCopy});
   }
 
@@ -40,7 +41,9 @@ export default class Initiative extends React.Component {
         </View>
         <ScrollView style={{ height: 800, width: 350}}>
         {this.state.initiativeOrder.map((item, key)=>(
-         <Text key={key} > { item } </Text>)
+         <Text key={key}> {item[0]} {item[1]} </Text>)
+         // This was for trying out new features
+         // <Text key={key} style={[(item[0]*1) > 5 ? {backgroundColor: 'red'} : {backgroundColor: 'blue'}]}> {item[0]} {item[1]} </Text>)
          )}
         </ScrollView>
       </View>
