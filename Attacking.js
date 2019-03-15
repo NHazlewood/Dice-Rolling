@@ -38,13 +38,11 @@ export default class Attacking extends React.Component {
       //Disadvantage
       if(this.state.adjustment == 'Disadvantage'){
         newText += ", Disadvantage";
-        if(toHit1 == 20 && toHit2 == 20)
-        {
+        if(toHit1 == 20 && toHit2 == 20){
           damage = damage * 2 - this.state.damageBonus * 1
           newText += ": Crit!";
         }
-        else if(toHit1 == 1 || toHit2 == 1)
-        {
+        else if(toHit1 == 1 || toHit2 == 1){
           newText += ": Fumble!";
         }
         const toHitTotal = Math.min(toHit1, toHit2) + (this.state.toHitBonus * 1);
@@ -54,13 +52,11 @@ export default class Attacking extends React.Component {
         //Advantage
         if(this.state.adjustment == 'Advantage'){
           newText += ", Advantage";
-          if(toHit1 == 20 || toHit2 == 20)
-          {
+          if(toHit1 == 20 || toHit2 == 20){
             damage = damage * 2 - this.state.damageBonus * 1
             newText += ": Crit!";
           }
-          else if(toHit1 == 1 && toHit2 == 1)
-          {
+          else if(toHit1 == 1 && toHit2 == 1){
             newText += ": Fumble!";
           }
           const toHitTotal = Math.max(toHit1, toHit2) + (this.state.toHitBonus * 1);
@@ -68,13 +64,11 @@ export default class Attacking extends React.Component {
         }
         //None
         else{
-          if(toHit1 == 20)
-          {
+          if(toHit1 == 20){
             damage = damage * 2 - this.state.damageBonus * 1
             newText += ": Crit!";
           }
-          else if(toHit1 == 1)
-          {
+          else if(toHit1 == 1){
             newText += ": Fumble!";
           }
           const toHitTotal = toHit1 + (this.state.toHitBonus * 1);
