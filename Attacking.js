@@ -204,9 +204,12 @@ export default class Attacking extends React.Component {
         <View style= {{ height: 400, width: 350}}>
         <ScrollView>
             {this.state.outText.map((item, key)=>(
-            <Text key={key}> Attack #: {item[0]} special: {item[1]} to hit total: {item[2]} 
-              to hit dice(s): {item[3]} to hit bonus: {item[4]} damage total: {item[5]} 
+            <Text key={key} style={[(item[1]) == "Crit!" ? styles.Crit : [(item[1]) == "Fumble!" ? styles.Fumble : styles.Normal ]]} > 
+              Attack #: {item[0]} special: {item[1]} to hit total: {item[2]} 
+              to hit dice(s): {item[3]} to hit bonus: {item[4]} damage total: {item[5]}  
               damage dice(s): {item[6]} damage bonus: {item[7]} </Text>)
+              // This was for trying out new features
+              // <Text key={key} style={[(item[0]*1) > 5 ? {backgroundColor: 'red'} : {backgroundColor: 'blue'}]}> {item[0]} {item[1]} </Text>)
             )}
           </ScrollView>          
         </View>
@@ -225,5 +228,20 @@ const styles = StyleSheet.create({
   },
   TextInput: {
     height: 40,
+  },
+  Crit: {
+    borderColor: '#06e83b', //green
+    borderWidth: 2,
+    padding: 5,
+  },
+  Fumble : {
+    borderColor: 'red',
+    borderWidth: 2,
+    padding: 5,
+  },
+  Normal : {
+    borderColor: 'black',
+    borderWidth: 2,
+    padding: 5,
   },
 });
