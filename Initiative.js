@@ -23,9 +23,20 @@ export default class Initiative extends React.Component {
     this.setState({initiativeOrder: orderCopy});
   }
 
+  remove = (entry) =>{
+    var initList = this.state.initiativeOrder
+    for (i =0; i< initList.length;++i){
+      if(initList[i][1] == entry[1] && initList[i][0] == entry[0]){
+        initList.splice(i,1)
+        this.setState({initiativeOrder: initList})
+        return
+      }
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container} >
+      <View style={styles.container}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text> Name: </Text>
         <TextInput
@@ -42,9 +53,7 @@ export default class Initiative extends React.Component {
         <View style={{ height: 500, width: 350}}>
           <ScrollView>
             {this.state.initiativeOrder.map((item, key)=>(
-            <Text key={key}> {item[0]} {item[1]} </Text>)
-            // This was for trying out new features
-            // <Text key={key} style={[(item[0]*1) > 5 ? {backgroundColor: 'red'} : {backgroundColor: 'blue'}]}> {item[0]} {item[1]} </Text>)
+            <View key={key} style={{flexDirection: 'row', alignItems: 'center'}}><Text>{item[0]} {item[1]}</Text><Button title= "Remove" onPress={() => this.remove(item)}/></View>)
             )}
           </ScrollView>
         </View>
