@@ -21,6 +21,8 @@ export default class Initiative extends React.Component {
     orderCopy.push(newEntry);
     orderCopy.sort((a,b) => {return b[0]-a[0]});
     this.setState({initiativeOrder: orderCopy});
+    this.textInput1.clear()
+    this.textInput2.clear()
   }
 
   remove = (entry) =>{
@@ -40,13 +42,15 @@ export default class Initiative extends React.Component {
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text> Name: </Text>
         <TextInput
-            placeholder="___"
-            onChangeText={(nameToAdd) => this.setState({nameToAdd})}
+          ref={input1 => { this.textInput1 = input1 }}
+          placeholder="___"
+          onChangeText={(nameToAdd) => this.setState({nameToAdd})}
         />
         <Text> Initiative: </Text>
         <TextInput
-            placeholder="___"
-            onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
+          ref={input2 => { this.textInput2 = input2 }}
+          placeholder="___"
+          onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
         />
         <Button title= "Add" onPress={() => this.addNew(this)}/>
         </View>
