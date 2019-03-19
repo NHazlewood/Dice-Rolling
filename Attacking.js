@@ -35,127 +35,67 @@ export default class Attacking extends React.Component {
         damageDice.push(rand);
         damage += rand;
       }
-      //saving attack #
-      newText.push((i+1))
-      //handling to hit outcomes
-      // 1. check for crits and fumbles
-      // 2. calcualte and save hit totals
-      // 3. save toHit dice and toHit bonus
+
+      newText.push((i+1)) // newText[0] Attack#
       if(this.state.adjustment == 'Disadvantage'){
         if(toHit1 == 20 && toHit2 == 20){
-          newText.push("Crit!")
+          newText.push("Crit!") // newText[1] crit/fumble
         }
         else {
           if(toHit1 == 1 || toHit2 == 1){
-            newText.push("Fumble!")
+            newText.push("Fumble!") // newText[1] crit/fumble
           }
           else {
-            newText.push("")
+            newText.push("") // newText[1] crit/fumble
           }
         }
-        newText.push(Math.min(toHit1,toHit2) + this.state.toHitBonus*1)
-        newText.push([toHit1,toHit2])
-        newText.push(this.state.toHitBonus)
+        newText.push(Math.min(toHit1,toHit2) + this.state.toHitBonus*1) // newText[2] to hit
+        newText.push([toHit1,toHit2]) // newText[3] hit dice rolls
+        newText.push(this.state.toHitBonus) // newText[4] hit bonus
       }
       else { // Advantage or None
         if(this.state.adjustment == 'Advantage'){
           if(toHit1 == 20 || toHit2 == 20){
-            newText.push("Crit!")
+            newText.push("Crit!") // newText[1] 
           }
           else {
             if(toHit1 == 1 && toHit2 == 1){
-              newText.push("Fumble!")
+              newText.push("Fumble!") // newText[1] 
             }
             else {
-              newText.push("")
+              newText.push("") // newText[1] 
             }
           }
-          newText.push(Math.max(toHit1,toHit2) + this.state.toHitBonus*1)
-          newText.push([toHit1,toHit2])
-          newText.push(this.state.toHitBonus)
+          newText.push(Math.max(toHit1,toHit2) + this.state.toHitBonus*1) // newText[2] 
+          newText.push([toHit1,toHit2]) // newText[3] 
+          newText.push(this.state.toHitBonus) // newText[4] 
         }
         else{ // None
           if(toHit1 == 20){
-            newText.push("Crit!")
+            newText.push("Crit!") // newText[1] 
           }
           else {
             if(toHit1 == 1){
-              newText.push("Fumble!")
+              newText.push("Fumble!") // newText[1] 
             }
             else {
-              newText.push("")
+              newText.push("") // newText[1]
             }
           }
-          newText.push(toHit1 + this.state.toHitBonus*1)
-          newText.push(toHit1)
-          newText.push(this.state.toHitBonus)
+          newText.push(toHit1 + this.state.toHitBonus*1) // newText[2]
+          newText.push(toHit1) // newText[3]
+          newText.push(this.state.toHitBonus) // newText[4]
         }
       }
       //handling damage dice
       if(newText[1] == "Crit!"){ damage = damage *2 - this.state.damageBonus*1}
-      newText.push(damage)
-      newText.push(damageDice)
-      newText.push(this.state.damageBonus)
-      //console.log("Attack #: "+ newText[0] + " special: " + newText[1] + " to hit total: " + newText[2] + " to hit dice(s): " + newText[3] + " to hit bonus: " + newText[4] +
-      //" damage total: " + newText[5] + " damage dice(s): " + newText[6] + " damage bonus: " + newText[7])
+      newText.push(damage) // newText[5] damage
+      newText.push(damageDice) // newText[6] damage dice
+      newText.push(this.state.damageBonus) // newText[7] damagebonus
       temp.push(newText)
     }
     this.setState({outText : temp})
-    /*
-    for(var i= 0; i < this.state.numberOfAttacks; ++i){
-      console.log("Attack #: "+ this.state.outText[i][0] + " special: " + this.state.outText[i][1] + " to hit total: " + this.state.outText[i][2] + 
-      " to hit dice(s): " + this.state.outText[i][3] + " to hit bonus: " + this.state.outText[i][4] + " damage total: " + this.state.outText[i][5] + 
-      " damage dice(s): " + this.state.outText[i][6] + " damage bonus: " + this.state.outText[i][7])
-    }
-    */
   }
-      /*
-      newText += "\nAttack "+ i;
-      //Disadvantage
-      if(this.state.adjustment == 'Disadvantage'){
-        newText += ", Disadvantage";
-        if(toHit1 == 20 && toHit2 == 20){
-          damage = damage * 2 - this.state.damageBonus * 1
-          newText += ": Crit!";
-        }
-        else if(toHit1 == 1 || toHit2 == 1){
-          newText += ": Fumble!";
-        }
-        const toHitTotal = Math.min(toHit1, toHit2) + (this.state.toHitBonus * 1);
-        newText += "\n    To Hit: " + toHitTotal + " ( " + Math.min(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2+ ") ";
-      }
-      else{
-        //Advantage
-        if(this.state.adjustment == 'Advantage'){
-          newText += ", Advantage";
-          if(toHit1 == 20 || toHit2 == 20){
-            damage = damage * 2 - this.state.damageBonus * 1
-            newText += ": Crit!";
-          }
-          else if(toHit1 == 1 && toHit2 == 1){
-            newText += ": Fumble!";
-          }
-          const toHitTotal = Math.max(toHit1, toHit2) + (this.state.toHitBonus * 1);
-          newText += "\n    To Hit: " + toHitTotal + " ( " + Math.max(toHit1, toHit2) + " ( " + toHit1 + ", " + toHit2 + ") "
-        }
-        //None
-        else{
-          if(toHit1 == 20){
-            damage = damage * 2 - this.state.damageBonus * 1
-            newText += ": Crit!";
-          }
-          else if(toHit1 == 1){
-            newText += ": Fumble!";
-          }
-          const toHitTotal = toHit1 + (this.state.toHitBonus * 1);
-          newText += "\n    To Hit: " + toHitTotal + " ( " + toHit1;
-        } 
-      }
-      newText += " + " + this.state.toHitBonus + " )" + "\n" +
-        "    Damage: "+ damage + " ( " + damageDice + " + " + this.state.damageBonus + " )\n";
-    }
-    this.setState({outText: newText})
-    */
 
   myCallBack = (newAdjustment) => {
     this.setState({adjustment: newAdjustment})
@@ -205,11 +145,9 @@ export default class Attacking extends React.Component {
         <ScrollView>
             {this.state.outText.map((item, key)=>(
             <Text key={key} style={[(item[1]) == "Crit!" ? styles.Crit : [(item[1]) == "Fumble!" ? styles.Fumble : styles.Normal ]]} > 
-              Attack #: {item[0]} special: {item[1]} to hit total: {item[2]} 
-              to hit dice(s): {item[3]} to hit bonus: {item[4]} damage total: {item[5]}  
-              damage dice(s): {item[6]} damage bonus: {item[7]} </Text>)
-              // This was for trying out new features
-              // <Text key={key} style={[(item[0]*1) > 5 ? {backgroundColor: 'red'} : {backgroundColor: 'blue'}]}> {item[0]} {item[1]} </Text>)
+              Attack #: {item[0]} {item[1]} 
+              {"\n"}  To Hit {item[2]} ({[!(Array.isArray(item[3])) ? item[3] : item[3].map((item3, key)=>(<Text key={key}>{[(key*1+1 >= item[3].length) ? ", " : ""]}{item3}</Text>))]}) + {item[4]}) 
+              {"\n"}  Damage: {item[5]} ({item[6].map((item6, key)=>(<Text key={key}>{item6}{[(key*1+1 < item[6].length) ? "+" : ""]}</Text>))}){[item[1] == "Crit!" ? "x2" : ""]} + {item[7]}) </Text>)
             )}
           </ScrollView>          
         </View>
