@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Picker} from 'react-native'
+import { StyleSheet, View, Text, Picker} from 'react-native'
 
 class AdvantagePicker extends React.Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class AdvantagePicker extends React.Component {
    render() {
       return (
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text>Adjustment: </Text>        
+            <Text style={styles.Text}>Adjustment: </Text>        
             <Picker  style={{width: 170} } selectedValue = {this.state.adjustment} onValueChange = {this.updateAdjustment}>
                <Picker.Item label = "Advantage" value = "Advantage"/>
                <Picker.Item label = "None" value = "None"/>
@@ -25,4 +25,12 @@ class AdvantagePicker extends React.Component {
       )
    }
 }
+
+const styles = StyleSheet.create({
+   Text: {
+     fontSize: 16,
+     padding: 5,
+   }
+ });
+
 export default AdvantagePicker
