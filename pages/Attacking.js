@@ -8,7 +8,7 @@ import DamageTypes from '../components/DamageTypes.js'; //not currently implment
 export default class Attacking extends React.Component {
 
   static navigationOptions = {
-    title: 'Attacking',
+    title: 'Dice',
   };
 
   constructor(props) {

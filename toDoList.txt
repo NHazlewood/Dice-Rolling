@@ -1,0 +1,4 @@
+-> adjust monster health
+-> input validation and errors
+-> graphic update / make it look pretty or at least not crappy
+-> add database for monsters
