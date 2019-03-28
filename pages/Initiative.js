@@ -10,13 +10,20 @@ export default class Initiative extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {nameToAdd: ''};
-    this.state = {initiativeToAdd: 0};
-    this.state = {initiativeOrder: []};
+    this.state = {nameToAdd: ''}
+    this.state = {initiativeToAdd: 0}
+    this.state = {initiativeOrder: []}
+    this.state = {initiativeKey: 0}
+  }
+
+  componentWillMount(){
+    this.setState({initiativeKey : 0});
+    this.setState({initiativeOrder : []})
   }
 
   addNew = () =>{
-    const newEntry = [this.state.initiativeToAdd, this.state.nameToAdd];
+    const newEntry = [this.state.initiativeToAdd, this.state.nameToAdd,this.state.initiativeKey];
+    this.setState({initiativeKey: (this.state.initiativeKey+1)})
     var orderCopy = this.state.initiativeOrder;
     orderCopy.push(newEntry);
     orderCopy.sort((a,b) => {return b[0]-a[0]});
@@ -28,7 +35,7 @@ export default class Initiative extends React.Component {
   remove = (entry) =>{
     var initList = this.state.initiativeOrder
     for (i =0; i< initList.length;++i){
-      if(initList[i][1] == entry[1] && initList[i][0] == entry[0]){
+      if(initList[i][2] == entry[2]){
         initList.splice(i,1)
         this.setState({initiativeOrder: initList})
         return

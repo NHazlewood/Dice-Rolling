@@ -73,7 +73,6 @@ export default class Monsters extends React.Component {
       if(monsters[i][4] == entry[4]){
         monsters[i][1] -= this.state.damageOrHealing
         this.setState({monserList: monsters})
-        this.textInput6.clear() 
         return
       }
     }
@@ -125,7 +124,6 @@ export default class Monsters extends React.Component {
               <Text>{monster[0]} {monster[1]} / {monster[2]} AC: {monster[3]}</Text>
               <Button color='red' title="Remove" onPress={() => this.removeMonster(monster)}/>
               <TextInput
-                ref={input6 => { this.textInput6 = input6}}
                 placeholder="___"
                 onChangeText={(damageOrHealing) => this.setState({damageOrHealing})}
               />
