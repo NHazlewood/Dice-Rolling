@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
 import PropTypes from 'prop-types';
 
+//Not being used currently will be added when I add the capability to roll different tpyes of dice at once
 
 class DamageTypes extends React.Component {
     constructor(props) {

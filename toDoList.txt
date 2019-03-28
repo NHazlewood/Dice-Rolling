@@ -1,6 +1,5 @@
 Task List
--> (high priority) input validation
--> (high priority) input errors
+-> (high priority) input validation and errors
 -> graphic update / make it look pretty or at least not crappy
     -> add graphics
     -> set spacing properly
@@ -11,6 +10,7 @@ Task List
 -> multiple dice type per attack for attacking.js
 -> track different damage types
 -> make adjust monter health a popup rather than a text input field
+-> negative modifers to damage and to hit
 
 
 Completed Tasks

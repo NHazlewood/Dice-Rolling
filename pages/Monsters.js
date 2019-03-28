@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
 
 
 export default class Monsters extends React.Component {
@@ -10,7 +10,7 @@ export default class Monsters extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {monsterName: 0}
+    this.state = {monsterName: ''}
     this.state = {healthDice: 0}
     this.state = {numberOfDice: 0}
     this.state = {healthBonus: 0}
@@ -22,13 +22,61 @@ export default class Monsters extends React.Component {
   }
 
   componentWillMount(){
+    this.setState({monsterName : ''});
+    this.setState({healthDice: 0});
+    this.setState({numberOfDice : 0});
+    this.setState({healthBonus : 0});
+    this.setState({setHealth : 0});
+    this.setState({monsterAC : 0});
     this.setState({monstersKey : 0});
     this.setState({monsterList : []})
   }
 
+  resetState(){
+    this.setState({monsterName : ''});
+    this.setState({healthDice: 0});
+    this.setState({numberOfDice : 0});
+    this.setState({healthBonus : 0});
+    this.setState({setHealth : 0});
+    this.setState({monsterAC : 0});
+  }
+
+  validateState () {
+    if(this.state.healthBonus == ''){this.setState({healthBonus : 0})}
+    if(this.state.setHealth == ''){this.setState({setHealth : 0})}
+
+    if(this.state.monsterName == ''){
+      Alert.alert('Error','Monster requires a name',[{text:'Close'}])
+      return 0
+    }
+    if(this.state.monsterAC == '' || this.state.monsterAC < 1){
+      Alert.alert('Error','Invalid AC',[{text:'Close'}])
+      return 0
+    }
+    if(this.state.setHealth > 0){
+      this.setState({healthDice: 0});
+      this.setState({numberOfDice : 0});
+      this.setState({healthBonus : 0});
+    }
+    else {
+      if(this.state.healthDice == '' || this.state.healthDice < 1){
+        Alert.alert('Error','Invalid dice type',[{text:'Close'}])
+        return 0
+      }
+      if(this.state.numberOfDice == '' || this.state.numberOfDice < 1){
+        Alert.alert('Error','Invalid number of dice',[{text:'Close'}])
+        return 0
+      }
+    }
+    return 1
+  }
+
   addNewMonster = () =>{
+    if(!this.validateState()){
+      return
+    }
     var newMonster
-    if(this.state.setHealth){
+    if(this.state.setHealth > 0){
       newMonster = [this.state.monsterName, this.state.setHealth, this.state.setHealth, this.state.monsterAC, this.state.monstersKey]
       this.setState({monstersKey : (this.state.monstersKey+1)})
       this.state.setHealth = null
@@ -41,10 +89,11 @@ export default class Monsters extends React.Component {
       newMonster = [this.state.monsterName, healthTotal, healthTotal, this.state.monsterAC, this.state.monstersKey*1]
       this.setState({monstersKey : (this.state.monstersKey*1+1)})
     }
-    var monsters = this.state.monsterList;
-    monsters.push(newMonster);
-    monsters.sort();
-    this.setState({monsterList: monsters});
+    var monsters = this.state.monsterList
+    monsters.push(newMonster)
+    monsters.sort()
+    this.setState({monsterList: monsters})
+    this.resetState()
     this.textInput1.clear()
     this.textInput2.clear()
     this.textInput3.clear()
@@ -80,54 +129,62 @@ export default class Monsters extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.Container}>
         <View style={{flexDirection: 'row'}}>
-          <Text>Monster Name:</Text>
+          <Text style={styles.Text}>Monster Name:</Text>
           <TextInput
             ref={input1 => { this.textInput1 = input1}}
             placeholder="___"
+            maxLength = {24}
             onChangeText={(monsterName) => this.setState({monsterName})}
           />
-          <Text>AC:</Text>
+          <Text style={styles.Text}>AC:</Text>
           <TextInput
             ref={input2 => { this.textInput2 = input2}}
-            placeholder="___"
+            placeholder="__"
+            keyboardType='numeric'
+            maxLength = {2}
             onChangeText={(monsterAC) => this.setState({monsterAC})}
           />
         </View>
         <View style={{flexDirection: 'row'}}>
-          <Text>Health:</Text>
+          <Text style={styles.Text}>Health:</Text>
           <TextInput
             ref={input3 => { this.textInput3 = input3}}
             placeholder="___"
+            keyboardType='numeric'
+            maxLength = {4}
             onChangeText={(setHealth) => this.setState({setHealth})}
           />
-          <Text> OR  Health dice:</Text>
+          <Text style={styles.Text}> OR  Health dice:</Text>
           <TextInput
             ref={input4 => { this.textInput4 = input4}}
-            placeholder="___"
-            onChangeText={(healthDice) => this.setState({healthDice})}
+            placeholder="__"
+            keyboardType='numeric'
+            maxLength = {2}
+            onChangeText={(numberOfDice) => this.setState({numberOfDice})}
           />
-          <Text> D</Text>
+          <Text style={styles.Text}> D</Text>
           <TextInput
             ref={input5 => { this.textInput5 = input5}}
-            placeholder="___"
-            onChangeText={(numberOfDice) => this.setState({numberOfDice})}
+            placeholder="__"
+            keyboardType='numeric'
+            maxLength = {2}
+            onChangeText={(healthDice) => this.setState({healthDice})}
           />
           <Button title= "Add" onPress={() => this.addNewMonster(this)}/>
         </View>
-        <View><Text>Load from Bestiary</Text></View>
         <View style={{height: 600}}>
           <ScrollView>
           {this.state.monsterList.map((monster, key)=>(
             <View key={key} style={{flexDirection : 'row'}}>
-              <Text>{monster[0]} {monster[1]} / {monster[2]} AC: {monster[3]}</Text>
+              <Text style={styles.Text}>{monster[0]} {monster[1]} / {monster[2]} AC: {monster[3]}</Text>
               <Button color='red' title="Remove" onPress={() => this.removeMonster(monster)}/>
               <TextInput
                 placeholder="___"
                 onChangeText={(damageOrHealing) => this.setState({damageOrHealing})}
               />
-              <Button color='blue' title="Adjust Health" onPress={() => this.adjustHealth(monster)}/>
+              <Button title="Adjust Health" onPress={() => this.adjustHealth(monster)}/>
              </View>)
           )}            
           </ScrollView>
@@ -139,14 +196,15 @@ export default class Monsters extends React.Component {
 
 
 const styles = StyleSheet.create({
-  container: {
+  Container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     height: 900,
   },
-  TextInput: {
-    height: 40,
+  Text: {
+    fontSize: 16,
+    padding: 5,
   },
 });

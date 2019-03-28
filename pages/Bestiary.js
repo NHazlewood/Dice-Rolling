@@ -29,7 +29,7 @@ export default class Bestiary extends React.Component {
     return (
       <View style={styles.container}>
         <View><Text>Comming Soon</Text></View>
-        <View><Text>Browse and add monsters for reference and/or for loading into the active monsters tab</Text></View>     
+        <View><Text>Browse and add monsters for reference</Text></View>     
       </View>
     );
   }

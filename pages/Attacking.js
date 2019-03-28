@@ -1,9 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
 
 import AdvantagePicker from '../components/AdvantagePicker.js';
-import Roll from '../components/Roll.js';
-import DamageTypes from '../components/DamageTypes.js'; //not currently implmenting but allows for multple sets of damage dice
 
 export default class Attacking extends React.Component {
 
@@ -22,7 +20,38 @@ export default class Attacking extends React.Component {
     this.state = {outText : []}
   }
 
-  rollDice = () => {      
+  componentWillMount() {
+    this.setState({toHitBonus : 0})
+    this.setState({damageBonus : 0})
+    this.setState({damageDice : 0})
+    this.setState({numberOfDice : 0})
+    this.setState({numberOfAttacks : 0})
+    this.setState({outText : []})
+  }
+
+  validateState () {
+    if(this.state.toHitBonus == ''){this.setState({toHitBonus : 0})}
+    if(this.state.damageBonus == ''){this.setState({damageBonus : 0})}
+
+    if(this.state.damageDice == '' || this.state.damageDice < 1){
+      Alert.alert('Error','Invalid dice type',[{text:'Close'}])
+      return 0
+    }
+    if(this.state.numberOfDice == '' || this.state.numberOfDice < 1){
+      Alert.alert('Error','Invalid number of dice',[{text:'Close'}])
+      return 0
+    }
+    if(this.state.numberOfAttacks == ''|| this.state.numberOfAttacks < 1){
+      Alert.alert('Error','Invalid number of attacks',[{text:'Close'}])
+      return 0
+    }
+    return 1
+  }
+
+  rollDice = () => {
+    if(!this.validateState()){
+      return
+    }
     var temp = []
     for(i=0;i<this.state.numberOfAttacks;++i){
       var newText = [];
@@ -104,11 +133,13 @@ export default class Attacking extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.Container}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.Text}> Bonus to hit: </Text>
           <TextInput
             placeholder="_"
+            keyboardType='numeric'
+            maxLength = {2}
             onChangeText={(toHitBonus) => this.setState({toHitBonus})}
           />
         </View>
@@ -117,6 +148,8 @@ export default class Attacking extends React.Component {
               <Text style={styles.Text}>Damage:  </Text>
               <TextInput
                 placeholder="_"
+                keyboardType='numeric'
+                maxLength = {2}
                 onChangeText={(numberOfDice) => this.setState({numberOfDice})}
               />
             </View>
@@ -124,6 +157,8 @@ export default class Attacking extends React.Component {
               <Text style={styles.Text}>D  </Text>
               <TextInput
                 placeholder="_"
+                keyboardType='numeric'
+                maxLength = {3}
                 onChangeText={(damageDice) => this.setState({damageDice})}
               />
             </View>
@@ -131,6 +166,8 @@ export default class Attacking extends React.Component {
               <Text style={styles.Text}>+  </Text>
               <TextInput
                 placeholder="_"
+                keyboardType='numeric'
+                maxLength = {2}
                 onChangeText={(damageBonus) => this.setState({damageBonus})}
               />
             </View>
@@ -139,11 +176,13 @@ export default class Attacking extends React.Component {
           <Text style={styles.Text}> Number of attacks: </Text>
           <TextInput
             placeholder="_"
+            keyboardType='numeric'
+            maxLength = {2}
             onChangeText={(numberOfAttacks) => this.setState({numberOfAttacks})}
           />
         </View>
         <AdvantagePicker callback={this.adjustmentCallBack}/>
-        <Roll onRoll ={this.rollDice}/>
+        <Button title= "Roll" onPress={() => this.rollDice()}/>
         <View style= {{ height: 500, width: 350}}>
         <ScrollView style={styles.ScrollingRolls}>
             {this.state.outText.map((item, key)=>(
@@ -160,15 +199,12 @@ export default class Attacking extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  Container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     height: 1000,
     fontSize: 16,
-  },
-  TextInput: {
-    height: 40,
   },
   Crit: {
     borderColor: '#06e83b', //green
@@ -198,5 +234,5 @@ const styles = StyleSheet.create({
   Text: {
     fontSize: 16,
     padding: 5,
-  }
+  },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
+import {Alert, StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
 
 
 export default class Initiative extends React.Component {
@@ -17,17 +17,38 @@ export default class Initiative extends React.Component {
   }
 
   componentWillMount(){
-    this.setState({initiativeKey : 0});
+    this.setState({nameToAdd : ''})
+    this.setState({initiativeToAdd: -1})
+    this.setState({initiativeKey : 0})
     this.setState({initiativeOrder : []})
   }
 
+  validateState(){
+    if(this.state.nameToAdd == ''){
+      Alert.alert('Error','New entree requires a name',[{text:'Close'}])
+      return 0
+    }
+    if(this.state.initiativeToAdd == '' || this.state.initiativeToAdd < 0){
+      Alert.alert('Error','Invalid initiative',[{text:'Close'}])
+      return 0
+    }
+    return 1
+  }
+
+  resetState(){
+    this.setState({nameToAdd : ''})
+    this.setState({initiativeToAdd: -1})
+  }
+
   addNew = () =>{
+    if(!this.validateState()){return}
     const newEntry = [this.state.initiativeToAdd, this.state.nameToAdd,this.state.initiativeKey];
     this.setState({initiativeKey: (this.state.initiativeKey+1)})
     var orderCopy = this.state.initiativeOrder;
     orderCopy.push(newEntry);
     orderCopy.sort((a,b) => {return b[0]-a[0]});
     this.setState({initiativeOrder: orderCopy});
+    this.resetState()
     this.textInput1.clear()
     this.textInput2.clear()
   }
@@ -45,17 +66,20 @@ export default class Initiative extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.Container}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text> Name: </Text>
         <TextInput
           ref={input1 => { this.textInput1 = input1 }}
           placeholder="___"
+          maxLength={20}
           onChangeText={(nameToAdd) => this.setState({nameToAdd})}
         />
         <Text> Initiative: </Text>
         <TextInput
           ref={input2 => { this.textInput2 = input2 }}
+          keyboardType='numeric'
+          maxLength = {2}
           placeholder="___"
           onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
         />
@@ -77,15 +101,12 @@ export default class Initiative extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  Container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     height: 900,
-  },
-  TextInput: {
-    height: 40,
   },
   InitiativeItem:{
     height: 60,
