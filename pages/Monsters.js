@@ -18,10 +18,12 @@ export default class Monsters extends React.Component {
     this.state = {monsterAC: 0}
     this.state = {monstersKey: 0}
     this.state = {monsterList: []}
+    this.state = {damageOrHealing: 0}
   }
 
   componentWillMount(){
     this.setState({monstersKey : 0});
+    this.setState({monsterList : []})
   }
 
   addNewMonster = () =>{
@@ -66,7 +68,15 @@ export default class Monsters extends React.Component {
   }
 
   adjustHealth = (entry) => {
-
+    var monsters = this.state.monsterList
+    for (i =0; i< monsters.length;++i){
+      if(monsters[i][4] == entry[4]){
+        monsters[i][1] -= this.state.damageOrHealing
+        this.setState({monserList: monsters})
+        this.textInput6.clear() 
+        return
+      }
+    }
   }
 
   render() {
@@ -114,6 +124,12 @@ export default class Monsters extends React.Component {
             <View key={key} style={{flexDirection : 'row'}}>
               <Text>{monster[0]} {monster[1]} / {monster[2]} AC: {monster[3]}</Text>
               <Button color='red' title="Remove" onPress={() => this.removeMonster(monster)}/>
+              <TextInput
+                ref={input6 => { this.textInput6 = input6}}
+                placeholder="___"
+                onChangeText={(damageOrHealing) => this.setState({damageOrHealing})}
+              />
+              <Button color='blue' title="Adjust Health" onPress={() => this.adjustHealth(monster)}/>
              </View>)
           )}            
           </ScrollView>
