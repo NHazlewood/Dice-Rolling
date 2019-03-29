@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
 
 
 export default class Monsters extends React.Component {
@@ -129,16 +129,16 @@ export default class Monsters extends React.Component {
 
   render() {
     return (
-      <View style={styles.Container}>
+      <View style={styles.container}>
         <View style={{flexDirection: 'row'}}>
-          <Text style={styles.Text}>Monster Name:</Text>
+          <Text style={styles.text}>Monster Name:</Text>
           <TextInput
             ref={input1 => { this.textInput1 = input1}}
             placeholder="___"
             maxLength = {24}
             onChangeText={(monsterName) => this.setState({monsterName})}
           />
-          <Text style={styles.Text}>AC:</Text>
+          <Text style={styles.text}>AC:</Text>
           <TextInput
             ref={input2 => { this.textInput2 = input2}}
             placeholder="__"
@@ -148,7 +148,7 @@ export default class Monsters extends React.Component {
           />
         </View>
         <View style={{flexDirection: 'row'}}>
-          <Text style={styles.Text}>Health:</Text>
+          <Text style={styles.text}>Health:</Text>
           <TextInput
             ref={input3 => { this.textInput3 = input3}}
             placeholder="___"
@@ -156,7 +156,7 @@ export default class Monsters extends React.Component {
             maxLength = {4}
             onChangeText={(setHealth) => this.setState({setHealth})}
           />
-          <Text style={styles.Text}> OR  Health dice:</Text>
+          <Text style={styles.text}> OR  Health dice:</Text>
           <TextInput
             ref={input4 => { this.textInput4 = input4}}
             placeholder="__"
@@ -164,7 +164,7 @@ export default class Monsters extends React.Component {
             maxLength = {2}
             onChangeText={(numberOfDice) => this.setState({numberOfDice})}
           />
-          <Text style={styles.Text}> D</Text>
+          <Text style={styles.text}> D</Text>
           <TextInput
             ref={input5 => { this.textInput5 = input5}}
             placeholder="__"
@@ -172,19 +172,23 @@ export default class Monsters extends React.Component {
             maxLength = {2}
             onChangeText={(healthDice) => this.setState({healthDice})}
           />
-          <Button title= "Add" onPress={() => this.addNewMonster(this)}/>
+          <TouchableHighlight onPress={() => this.addNewMonster(this)}>
+            <Image source={require('../assets/plus.png')}/>
+          </TouchableHighlight>
         </View>
-        <View style={{height: 600}}>
-          <ScrollView>
+        <View style={{ height: 600, width: 350}}>
+          <ScrollView style={styles.scrollList}>
           {this.state.monsterList.map((monster, key)=>(
             <View key={key} style={{flexDirection : 'row'}}>
-              <Text style={styles.Text}>{monster[0]} {monster[1]} / {monster[2]} AC: {monster[3]}</Text>
-              <Button color='red' title="Remove" onPress={() => this.removeMonster(monster)}/>
-              <TextInput
-                placeholder="___"
-                onChangeText={(damageOrHealing) => this.setState({damageOrHealing})}
-              />
-              <Button title="Adjust Health" onPress={() => this.adjustHealth(monster)}/>
+              <Text style={styles.name}>{monster[0]}</Text>
+              <Text style={styles.health}>{monster[1]} / {monster[2]}</Text>
+              <Text style={styles.ac}>AC: {monster[3]}</Text>
+              <TouchableHighlight style={styles.imageButton} onPress={() => this.removeMonster(monster)}>
+                <Image source={require('../assets/minus.png')}/>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.imageButton} onPress={() => this.adjustHealth(monster)}>
+                <Image source={require('../assets/heart.png')}/>
+              </TouchableHighlight>
              </View>)
           )}            
           </ScrollView>
@@ -196,15 +200,51 @@ export default class Monsters extends React.Component {
 
 
 const styles = StyleSheet.create({
-  Container: {
+  container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     height: 900,
   },
-  Text: {
+  text: {
     fontSize: 16,
     padding: 5,
   },
+  name: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
+  },
+  ac: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
+  },
+  health: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
+  },
+  imageButton: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 2,
+    alignItems: 'center',
+  },
+  scrollList : {
+    borderColor: 'black',
+    borderWidth: 5,
+    borderRadius: 3,
+    padding: 5,
+    shadowColor: 'black',
+  },
+  
 });

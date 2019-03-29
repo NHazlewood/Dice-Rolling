@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
+import {Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
 
 
 export default class Initiative extends React.Component {
@@ -66,16 +66,16 @@ export default class Initiative extends React.Component {
 
   render() {
     return (
-      <View style={styles.Container}>
+      <View style={styles.container}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text> Name: </Text>
+        <Text style={styles.text}> Name: </Text>
         <TextInput
           ref={input1 => { this.textInput1 = input1 }}
           placeholder="___"
           maxLength={20}
           onChangeText={(nameToAdd) => this.setState({nameToAdd})}
         />
-        <Text> Initiative: </Text>
+        <Text style={styles.text}> Initiative: </Text>
         <TextInput
           ref={input2 => { this.textInput2 = input2 }}
           keyboardType='numeric'
@@ -83,14 +83,19 @@ export default class Initiative extends React.Component {
           placeholder="___"
           onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
         />
-        <Button title= "Add" onPress={() => this.addNew(this)}/>
+        <TouchableHighlight onPress={() => this.addNew(this)}>
+          <Image source={require('../assets/plus.png')}/>
+        </TouchableHighlight>
         </View>
-        <View style={{ height: 500, width: 350}}>
-          <ScrollView>
+        <View style={{ height: 500, width: 350, }}>
+          <ScrollView style={styles.scrollList}>
             {this.state.initiativeOrder.map((item, key)=>(
-            <View key={key} style={styles.InitiativeItem}>
-              <Text style={styles.LeftSide}>{item[0]} {item[1]}</Text>
-              <Button style={styles.LeftSide} color='red' title="Remove" onPress={() => this.remove(item)}/>
+            <View key={key} style={styles.initiativeItem}>
+              <Text style={styles.initiative}>{item[0]}</Text>
+              <Text style={styles.name}>{item[1]}</Text>
+              <TouchableHighlight style={styles.imageButton} onPress={() => this.remove(item)}>
+                <Image source={require('../assets/minus.png')}/>
+              </TouchableHighlight>
             </View>)
             )}
           </ScrollView>
@@ -101,27 +106,48 @@ export default class Initiative extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  Container: {
+  container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 900,
+    height: 1000,
   },
-  InitiativeItem:{
+  initiativeItem:{
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  LeftSide: {
+  initiative: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
   },
-  RightSide: {
+  name: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
+  },
+  imageButton: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    padding: 2,
+  },
+  text: {
+    fontSize: 16,
+    padding: 5,
+  },
+  scrollList : {
+    borderColor: 'black',
+    borderWidth: 5,
+    borderRadius: 3,
+    padding: 5,
+    shadowColor: 'black',
   },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
 
 import AdvantagePicker from '../components/AdvantagePicker.js';
 
@@ -182,8 +182,10 @@ export default class Attacking extends React.Component {
           />
         </View>
         <AdvantagePicker callback={this.adjustmentCallBack}/>
-        <Button title= "Roll" onPress={() => this.rollDice()}/>
-        <View style= {{ height: 500, width: 350}}>
+        <TouchableHighlight onPress={() => this.rollDice()}>
+            <Image style= {{padding: 5}} source={require('../assets/roll.png')}/>
+        </TouchableHighlight>
+        <View style= {{ height: 450, width: 350}}>
         <ScrollView style={styles.ScrollingRolls}>
             {this.state.outText.map((item, key)=>(
             <Text key={key} style={[(item[1]) == "Crit!" ? styles.Crit : [(item[1]) == "Fumble!" ? styles.Fumble : styles.Normal ]]} > 
