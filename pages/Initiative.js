@@ -67,27 +67,29 @@ export default class Initiative extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={styles.text}> Name: </Text>
-        <TextInput
-          ref={input1 => { this.textInput1 = input1 }}
-          placeholder="___"
-          maxLength={20}
-          onChangeText={(nameToAdd) => this.setState({nameToAdd})}
-        />
-        <Text style={styles.text}> Initiative: </Text>
-        <TextInput
-          ref={input2 => { this.textInput2 = input2 }}
-          keyboardType='numeric'
-          maxLength = {2}
-          placeholder="___"
-          onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
-        />
-        <TouchableHighlight onPress={() => this.addNew(this)}>
-          <Image source={require('../assets/plus.png')}/>
-        </TouchableHighlight>
+        <View style = {styles.container}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.text}> Name: </Text>
+            <TextInput
+              ref={input1 => { this.textInput1 = input1 }}
+              placeholder="___"
+              maxLength={20}
+              onChangeText={(nameToAdd) => this.setState({nameToAdd})}
+            />
+            <Text style={styles.text}> Initiative: </Text>
+            <TextInput
+              ref={input2 => { this.textInput2 = input2 }}
+              keyboardType='numeric'
+              maxLength = {2}
+              placeholder="___"
+              onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
+            />
+            <TouchableHighlight onPress={() => this.addNew(this)}>
+              <Image source={require('../assets/plus.png')}/>
+            </TouchableHighlight>
+          </View>
         </View>
-        <View style={{ height: 500, width: 350, }}>
+        <View style={styles.lower}>
           <ScrollView style={styles.scrollList}>
             {this.state.initiativeOrder.map((item, key)=>(
             <View key={key} style={styles.initiativeItem}>
@@ -126,6 +128,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 2,
   },
+  lower :{
+    flex: 5,
+    flexDirection : 'column-reverse',
+    width: 350,
+  },
   name: {
     flex: 3,
     flexDirection: 'row',
@@ -149,5 +156,11 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 5,
     shadowColor: 'black',
+  },
+  upper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 2,
+    flexDirection : 'column',
   },
 });

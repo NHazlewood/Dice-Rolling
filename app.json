@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Dice Rolling",
-    "slug": "dice-rolling",
+    "name": "D&D Companion",
+    "slug": "dandd-companion",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -24,6 +24,7 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "A work in progress app to be used along Dungeons and Dragons or similar systems."
   }
 }

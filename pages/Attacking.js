@@ -133,19 +133,20 @@ export default class Attacking extends React.Component {
 
   render() {
     return (
-      <View style={styles.Container}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.Text}> Bonus to hit: </Text>
-          <TextInput
-            placeholder="_"
-            keyboardType='numeric'
-            maxLength = {2}
-            onChangeText={(toHitBonus) => this.setState({toHitBonus})}
-          />
-        </View>
+      <View style={styles.container}>
+        <View style = {styles.upper}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.text}>Bonus to hit: </Text>
+            <TextInput
+              placeholder="_"
+              keyboardType='numeric'
+              maxLength = {2}
+              onChangeText={(toHitBonus) => this.setState({toHitBonus})}
+            />
+          </View>
           <View style={{flexDirection: 'row'}}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.Text}>Damage:  </Text>
+              <Text style={styles.text}>Damage:  </Text>
               <TextInput
                 placeholder="_"
                 keyboardType='numeric'
@@ -154,7 +155,7 @@ export default class Attacking extends React.Component {
               />
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Text style={styles.Text}>D  </Text>
+              <Text style={styles.text}>D  </Text>
               <TextInput
                 placeholder="_"
                 keyboardType='numeric'
@@ -163,7 +164,7 @@ export default class Attacking extends React.Component {
               />
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center', color:'white'}}>
-              <Text style={styles.Text}>+  </Text>
+              <Text style={styles.text}>+  </Text>
               <TextInput
                 placeholder="_"
                 keyboardType='numeric'
@@ -172,23 +173,24 @@ export default class Attacking extends React.Component {
               />
             </View>
           </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.Text}> Number of attacks: </Text>
-          <TextInput
-            placeholder="_"
-            keyboardType='numeric'
-            maxLength = {2}
-            onChangeText={(numberOfAttacks) => this.setState({numberOfAttacks})}
-          />
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text style={styles.text}> Number of attacks: </Text>
+            <TextInput
+              placeholder="_"
+              keyboardType='numeric'
+              maxLength = {2}
+              onChangeText={(numberOfAttacks) => this.setState({numberOfAttacks})}
+            />
+          </View>
+          <AdvantagePicker callback={this.adjustmentCallBack}/>
+          <TouchableHighlight onPress={() => this.rollDice()}>
+              <Image style= {{padding: 5}} source={require('../assets/roll.png')}/>
+          </TouchableHighlight>
         </View>
-        <AdvantagePicker callback={this.adjustmentCallBack}/>
-        <TouchableHighlight onPress={() => this.rollDice()}>
-            <Image style= {{padding: 5}} source={require('../assets/roll.png')}/>
-        </TouchableHighlight>
-        <View style= {{ height: 450, width: 350}}>
-        <ScrollView style={styles.ScrollingRolls}>
+        <View style={styles.lower}>
+        <ScrollView style={styles.scrollingRolls}>
             {this.state.outText.map((item, key)=>(
-            <Text key={key} style={[(item[1]) == "Crit!" ? styles.Crit : [(item[1]) == "Fumble!" ? styles.Fumble : styles.Normal ]]} > 
+            <Text key={key} style={[(item[1]) == "Crit!" ? styles.crit : [(item[1]) == "Fumble!" ? styles.fumble : styles.normal ]]} > 
               Attack #: {item[0]} {item[1]} 
               {"\n"}  To Hit {item[2]} ({[!(Array.isArray(item[3])) ? item[3] : item[3].map((item3, key)=>(<Text key={key}>{[(key*1+1 >= item[3].length) ? ", " : ""]}{item3}</Text>))]}) + {item[4]}) 
               {"\n"}  Damage: {item[5]} ({item[6].map((item6, key)=>(<Text key={key}>{item6}{[(key*1+1 < item[6].length) ? "+" : ""]}</Text>))}){[item[1] == "Crit!" ? "x2" : ""]} + {item[7]}) </Text>)
@@ -201,40 +203,51 @@ export default class Attacking extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  Container: {
+  container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 1000,
+    height: 900,
     fontSize: 16,
   },
-  Crit: {
+  crit: {
     borderColor: '#06e83b', //green
     borderWidth: 2,
     padding: 5,
     fontSize: 16,
   },
-  Fumble : {
+  fumble : {
     borderColor: 'red',
     borderWidth: 2,
     padding: 5,
     fontSize: 16,
   },
-  Normal : {
+  lower :{
+    flex: 5,
+    flexDirection : 'column-reverse',
+    width: 350,
+  },
+  normal : {
     borderColor: '#575a5e',
     borderWidth: 2,
     padding: 5,
     fontSize: 16,
   },
-  ScrollingRolls : {
+  scrollingRolls : {
     borderColor: 'black',
     borderWidth: 5,
     borderRadius: 3,
     padding: 5,
     shadowColor: 'black',
   },
-  Text: {
+  text: {
     fontSize: 16,
     padding: 5,
+  },
+  upper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 2,
+    flexDirection : 'column',
   },
 });

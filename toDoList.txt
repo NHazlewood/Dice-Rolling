@@ -1,18 +1,27 @@
+In-Proggress
+-> improve initiative list 
+    -> make items editable
+    -> add passive perception (optional field)
+    -> add ac (optional field)
+    -> add max hp (optional field)
+
 Task List
+-> add database for monsters
+-> highlight monsters when <1 hp
+-> multiple dice type per attack for attacking.js
+-> track different damage types
+-> negative modifers to damage and to hit
+-> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
+
+
+Completed Tasks
+-> adjust monster health
+-> init list ID for search
 -> (high priority) input validation and errors
 -> graphic update / make it look pretty or at least not crappy
     -> add graphics
     -> set spacing properly
     -> settup app icon
     -> adhere to color scheme (white background, black text, and red highlights)
--> add database for monsters
--> highlight monsters when <1 hp
--> multiple dice type per attack for attacking.js
--> track different damage types
 -> make adjust monter health a popup rather than a text input field
--> negative modifers to damage and to hit
-
-
-Completed Tasks
--> adjust monster health
--> init list ID for search
+    -> added new icons with color as well

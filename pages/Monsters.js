@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
+import DialogInput from 'react-native-dialog-input';
 
 
 export default class Monsters extends React.Component {
@@ -18,27 +19,34 @@ export default class Monsters extends React.Component {
     this.state = {monsterAC: 0}
     this.state = {monstersKey: 0}
     this.state = {monsterList: []}
-    this.state = {damageOrHealing: 0}
+    this.state = {targetID: 0}
+    this.state = {isHealVisible : false}
+    this.state = {isDamageVisible : false}
+    this.state = {isTempVisible : false}
+    this.state = {adjustType: ''}
   }
 
   componentWillMount(){
-    this.setState({monsterName : ''});
-    this.setState({healthDice: 0});
-    this.setState({numberOfDice : 0});
-    this.setState({healthBonus : 0});
-    this.setState({setHealth : 0});
-    this.setState({monsterAC : 0});
-    this.setState({monstersKey : 0});
+    this.setState({isHealVisible : false})
+    this.setState({isDamageVisible : false})
+    this.setState({isTempVisible : false})
+    this.setState({monsterName : ''})
+    this.setState({healthDice: 0})
+    this.setState({numberOfDice : 0})
+    this.setState({healthBonus : 0})
+    this.setState({setHealth : 0})
+    this.setState({monsterAC : 0})
+    this.setState({monstersKey : 0})
     this.setState({monsterList : []})
   }
 
   resetState(){
-    this.setState({monsterName : ''});
-    this.setState({healthDice: 0});
-    this.setState({numberOfDice : 0});
-    this.setState({healthBonus : 0});
-    this.setState({setHealth : 0});
-    this.setState({monsterAC : 0});
+    this.setState({monsterName : ''})
+    this.setState({healthDice: 0})
+    this.setState({numberOfDice : 0})
+    this.setState({healthBonus : 0})
+    this.setState({setHealth : 0})
+    this.setState({monsterAC : 0})
   }
 
   validateState () {
@@ -116,67 +124,122 @@ export default class Monsters extends React.Component {
 
   }
 
-  adjustHealth = (entry) => {
+  adjustHealth = (amount) => {
+    this.setState({isHealVisible : false})
+    this.setState({isDamageVisible : false})
+    this.setState({isTempVisible : false})
     var monsters = this.state.monsterList
     for (i =0; i< monsters.length;++i){
-      if(monsters[i][4] == entry[4]){
-        monsters[i][1] -= this.state.damageOrHealing
+      if(monsters[i][4] == this.state.targetID){
+        if(this.state.adjustType == 'damage'){
+          monsters[i][1] -= amount
+        }
+        else { 
+          monsters[i][1] -= (amount*-1)
+          if(this.state.adjustType == 'heal'){
+            monsters[i][1] = Math.min(monsters[i][1], monsters[i][2])
+          }          
+        }
         this.setState({monserList: monsters})
         return
       }
     }
   }
 
+  healMonster = (entry) => {
+    this.setState({targetID : entry[4]})
+    this.setState({adjustType : 'heal'})
+    this.setState({isHealVisible : true})
+  }
+
+  damageMonster = (entry) => {
+    this.setState({targetID : entry[4]})
+    this.setState({adjustType : 'damage'})
+    this.setState({isDamageVisible : true})
+  }
+
+  temporaryHealthMonster = (entry) => {
+    this.setState({targetID : entry[4]})
+    this.setState({adjustType : 'temp'})
+    this.setState({isTempVisible : true})
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={styles.text}>Monster Name:</Text>
-          <TextInput
-            ref={input1 => { this.textInput1 = input1}}
-            placeholder="___"
-            maxLength = {24}
-            onChangeText={(monsterName) => this.setState({monsterName})}
-          />
-          <Text style={styles.text}>AC:</Text>
-          <TextInput
-            ref={input2 => { this.textInput2 = input2}}
-            placeholder="__"
-            keyboardType='numeric'
-            maxLength = {2}
-            onChangeText={(monsterAC) => this.setState({monsterAC})}
-          />
+        <View style = {styles.upper}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.text}>Monster Name:</Text>
+            <TextInput
+              ref={input1 => { this.textInput1 = input1}}
+              placeholder="___"
+              maxLength = {24}
+              onChangeText={(monsterName) => this.setState({monsterName})}
+            />
+            <Text style={styles.text}>AC:</Text>
+            <TextInput
+              ref={input2 => { this.textInput2 = input2}}
+              placeholder="__"
+              keyboardType='numeric'
+              maxLength = {2}
+              onChangeText={(monsterAC) => this.setState({monsterAC})}
+            />
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.text}>Health:</Text>
+            <TextInput
+              ref={input3 => { this.textInput3 = input3}}
+              placeholder="___"
+              keyboardType='numeric'
+              maxLength = {4}
+              onChangeText={(setHealth) => this.setState({setHealth})}
+            />
+            <Text style={styles.text}> OR  Health dice:</Text>
+            <TextInput
+              ref={input4 => { this.textInput4 = input4}}
+              placeholder="__"
+              keyboardType='numeric'
+              maxLength = {2}
+              onChangeText={(numberOfDice) => this.setState({numberOfDice})}
+            />
+            <Text style={styles.text}> D</Text>
+            <TextInput
+              ref={input5 => { this.textInput5 = input5}}
+              placeholder="__"
+              keyboardType='numeric'
+              maxLength = {2}
+              onChangeText={(healthDice) => this.setState({healthDice})}
+            />
+            <TouchableHighlight onPress={() => this.addNewMonster(this)}>
+              <Image source={require('../assets/plus.png')}/>
+            </TouchableHighlight>
+          </View>
         </View>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={styles.text}>Health:</Text>
-          <TextInput
-            ref={input3 => { this.textInput3 = input3}}
-            placeholder="___"
-            keyboardType='numeric'
-            maxLength = {4}
-            onChangeText={(setHealth) => this.setState({setHealth})}
-          />
-          <Text style={styles.text}> OR  Health dice:</Text>
-          <TextInput
-            ref={input4 => { this.textInput4 = input4}}
-            placeholder="__"
-            keyboardType='numeric'
-            maxLength = {2}
-            onChangeText={(numberOfDice) => this.setState({numberOfDice})}
-          />
-          <Text style={styles.text}> D</Text>
-          <TextInput
-            ref={input5 => { this.textInput5 = input5}}
-            placeholder="__"
-            keyboardType='numeric'
-            maxLength = {2}
-            onChangeText={(healthDice) => this.setState({healthDice})}
-          />
-          <TouchableHighlight onPress={() => this.addNewMonster(this)}>
-            <Image source={require('../assets/plus.png')}/>
-          </TouchableHighlight>
-        </View>
-        <View style={{ height: 600, width: 350}}>
+        <DialogInput isDialogVisible={this.state.isDamageVisible}
+            title={"Damaging"}
+            message={"Input damage amount"}
+            textInputProps = {{keyboardType:'numeric'}}
+            hintInput ={""}
+            submitInput={ (inputText) => {this.adjustHealth(inputText)} }
+            closeDialog={ () => {this.setState({isDamageVisible : false})}}>
+        </DialogInput>
+        <DialogInput isDialogVisible={this.state.isHealVisible}
+            title={"Healing"}
+            message={"Input healing amount"}
+            textInputProps = {{keyboardType:'numeric'}}
+            hintInput ={""}
+            submitInput={ (inputText) => {this.adjustHealth(inputText)} }
+            closeDialog={ () => {this.setState({isHealVisible : false})}}>
+        </DialogInput>
+        <DialogInput isDialogVisible={this.state.isTempVisible}
+            title={"Temporary Health"}
+            message={"Input temporary health amount"}
+            textInputProps = {{keyboardType:'numeric'}}
+            hintInput ={""}
+            submitInput={ (inputText) => {this.adjustHealth(inputText)} }
+            closeDialog={ () => {this.setState({isTempVisible : false})}}>
+        </DialogInput>
+        <View style={styles.lower}>
           <ScrollView style={styles.scrollList}>
           {this.state.monsterList.map((monster, key)=>(
             <View key={key} style={{flexDirection : 'row'}}>
@@ -186,8 +249,14 @@ export default class Monsters extends React.Component {
               <TouchableHighlight style={styles.imageButton} onPress={() => this.removeMonster(monster)}>
                 <Image source={require('../assets/minus.png')}/>
               </TouchableHighlight>
-              <TouchableHighlight style={styles.imageButton} onPress={() => this.adjustHealth(monster)}>
+              <TouchableHighlight style={styles.imageButton} onPress={() => this.damageMonster(monster)}>
+                <Image source={require('../assets/sword.png')}/>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.imageButton} onPress={() => this.healMonster(monster)}>
                 <Image source={require('../assets/heart.png')}/>
+              </TouchableHighlight>
+              <TouchableHighlight style={styles.imageButton} onPress={() => this.temporaryHealthMonster(monster)}>
+                <Image source={require('../assets/hourGlass.png')}/>
               </TouchableHighlight>
              </View>)
           )}            
@@ -200,30 +269,19 @@ export default class Monsters extends React.Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 900,
-  },
-  text: {
-    fontSize: 16,
-    padding: 5,
-  },
-  name: {
-    flex: 3,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    fontSize: 16,
-    padding: 2,
-  },
   ac: {
     flex: 2,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     fontSize: 16,
     padding: 2,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 900,
   },
   health: {
     flex: 2,
@@ -239,6 +297,22 @@ const styles = StyleSheet.create({
     padding: 2,
     alignItems: 'center',
   },
+  lower :{
+    flex: 5,
+    flexDirection : 'column-reverse',
+    width: 350,
+  },
+  name: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
+  },
+  text: {
+    fontSize: 16,
+    padding: 5,
+  },
   scrollList : {
     borderColor: 'black',
     borderWidth: 5,
@@ -246,5 +320,10 @@ const styles = StyleSheet.create({
     padding: 5,
     shadowColor: 'black',
   },
-  
+  upper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 2,
+    flexDirection : 'column',
+  },  
 });
