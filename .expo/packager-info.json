@@ -1,10 +1,10 @@
 {
   "expoServerNgrokUrl": "https://a2-ach.sarggeras.dice-rolling.exp.direct",
   "packagerNgrokUrl": "https://packager.a2-ach.sarggeras.dice-rolling.exp.direct",
-  "ngrokPid": 10480,
+  "ngrokPid": 12056,
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 9336,
+  "packagerPid": 12064,
   "webpackServerPort": null
 }

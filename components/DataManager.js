@@ -48,11 +48,13 @@ class DataManager extends React.Component {
 
     componentWillMount(){    
         //run this line when changes are made to the structure of the monsters tables to remove the old version of the table
+        /*
         bestiary.transaction(tx => {
         tx.executeSql(
             'DROP TABLE Monsters;'
             )
         })
+        */
         bestiary.transaction(tx => {
         tx.executeSql(
             'create table if not exists Monsters (id int(10) primary key not null, name varchar(24), setHealth int(4), healthDiceNumber int(2), healthDiceType int(2), healthBonus int(4), AC int(2), description varchar(255));'
@@ -60,7 +62,7 @@ class DataManager extends React.Component {
         })
         bestiary.transaction(tx => {
             tx.executeSql(
-                'SELECT MAX(id) FROM Monsters;', 
+                'SELECT MAX(id) AS id FROM Monsters;', 
                 [],
                 (tx, result) => {
                 if( result.rows.item(0).id > 0){
@@ -69,7 +71,8 @@ class DataManager extends React.Component {
                 else {
                     this.setState({index: 1}) 
                 }
-                console.log("ID success: " + result.rows.item(0).id + " -> " + this.state.index)
+                //console.log("ID success: " + result.rows.item(0).id)
+                console.log("ID success")
                 },
                 () => {console.log("ID error")}
             )
