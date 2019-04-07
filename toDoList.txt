@@ -1,9 +1,5 @@
 In-Proggress
--> improve initiative list 
-    -> make items editable
-    -> add passive perception (optional field)
-    -> add ac (optional field)
-    -> add max hp (optional field)
+-> add database for monsters
 
 Task List
 -> add database for monsters
@@ -12,6 +8,13 @@ Task List
 -> track different damage types
 -> negative modifers to damage and to hit
 -> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
+-> improve initiative list 
+    -> make items editable
+    -> add passive perception (optional field)
+    -> add ac (optional field)
+    -> add max hp (optional field)
+    -> highlight current have next button
+-> add health bonus to monsters tab
 
 
 Completed Tasks

@@ -247,7 +247,7 @@ export default class Monsters extends React.Component {
               <Text style={styles.health}>{monster[1]} / {monster[2]}</Text>
               <Text style={styles.ac}>AC: {monster[3]}</Text>
               <TouchableHighlight style={styles.imageButton} onPress={() => this.removeMonster(monster)}>
-                <Image source={require('../assets/minus.png')}/>
+                <Image source={require('../assets/grave.png')}/>
               </TouchableHighlight>
               <TouchableHighlight style={styles.imageButton} onPress={() => this.damageMonster(monster)}>
                 <Image source={require('../assets/sword.png')}/>

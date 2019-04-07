@@ -1,8 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, Button } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
+import { SQLite } from 'expo';
 
+const bestiary = SQLite.openDatabase('bestiary.db');
 
 export default class Bestiary extends React.Component {
+
+
 
   static navigationOptions = {
     title: 'Bestiary',
@@ -10,11 +14,149 @@ export default class Bestiary extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {index: 0}
+    this.state = {entries : []}
+    this.state = {monsterName: ''}
+    this.state = {healthDice: 0}
+    this.state = {numberOfDice: 0}
+    this.state = {healthBonus: 0}
+    this.state = {setHealth : 0}
+    this.state = {monsterAC: 0}
+    this.state = {monsterDescription: ''}
     
   }
 
-  addNewBeast = () =>{
+  componentWillMount(){    
+    //run this line when changes are made to the structure of the monsters tables to remove the old version of the table
+    bestiary.transaction(tx => {
+      tx.executeSql(
+        'DROP TABLE Monsters;'
+      )
+    })
+    bestiary.transaction(tx => {
+      tx.executeSql(
+        'create table if not exists Monsters (id int(10) primary key not null, name varchar(24), setHealth int(4), healthDiceNumber int(2), healthDiceType int(2), healthBonus int(4), AC int(2), description varchar(255));'
+      )
+    })
+
+    bestiary.transaction(tx => {
+      tx.executeSql(
+        'SELECT MAX(id) FROM Monsters;', 
+        [],
+        (tx, result) => {
+          if( result.rows.item(0).id > 0){
+            this.setState({index: (result.rows.item(0).id+1)}) 
+          }
+          else {
+            this.setState({index: 1}) 
+          }
+          console.log("ID success: " + result.rows.item(0).id + " -> " + this.state.index)
+        },
+        () => {console.log("ID error")}
+      )
+    })
+
+    bestiary.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Monsters;', [], (tx, results) => {
+          var monsters = []
+          var monster = []
+          for(var i=0; i < results.rows.length;++i){
+            monster = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
+            monsters.push(monster)
+          }
+          monsters.sort()
+          this.setState({entries : monsters})
+          console.log('Monster success')
+        }
+        , () => {console.log("Monsters error")}
+      )
+    })
+  }
+
+
+  validateState () {
+    if(this.state.monsterName == ''){
+      Alert.alert('Error','Monster requires a name',[{text:'Close'}])
+      return 0
+    }
+    if(this.state.monsterAC == '' || this.state.monsterAC < 1){
+      Alert.alert('Error','Invalid AC',[{text:'Close'}])
+      return 0
+    }
+    if(this.state.setHealth == '' || this.state.setHealth < 1){
+      Alert.alert('Error','Invalid health',[{text:'Close'}])
+      return 0
+    }
+    if(this.state.numberOfDice == '' || this.state.numberOfDice < 1){
+      Alert.alert('Error','Invalid number of dice',[{text:'Close'}])
+      return 0
+    }    
+    if(this.state.healthDice == '' || this.state.healthDice < 1){
+      Alert.alert('Error','Invalid dice type',[{text:'Close'}])
+      return 0
+    }
+    if(this.state.healthBonus == '' || this.state.healthBonus < 1){
+      Alert.alert('Error','Invalid health bonus',[{text:'Close'}])
+      return 0
+    }
+    return 1
+  }
+
+  resetState(){
+    this.setState({monsterName : ''})
+    this.setState({healthDice: 0})
+    this.setState({numberOfDice : 0})
+    this.setState({healthBonus : 0})
+    this.setState({setHealth : 0})
+    this.setState({monsterAC : 0})
+    this.setState({monsterDescription : ''})
+    bestiary.transaction(tx => {
+      tx.executeSql(
+        'SELECT * FROM Monsters;', [], (tx, results) => {
+          var monsters = []
+          var monster = []
+          for(var i=0; i < results.rows.length;++i){
+            monster = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
+            monsters.push(monster)
+          }
+          monsters.sort()
+          this.setState({entries : monsters})
+          console.log('Monster success')
+        }
+        , () => {console.log("Monsters error")}
+      )
+    })
+    this.setState({index : (this.state.index + 1)})
+  }
+
+  addNewMonster() {
+    if(!this.validateState()){
+      return
+    }
+    bestiary.transaction(tx => {
+      tx.executeSql(
+        'INSERT INTO Monsters (id, name, setHealth, healthDiceNumber, healthDiceType, healthBonus, AC, description) VALUES (?,?,?,?,?,?,?,?)',
+        [this.state.index,this.state.monsterName,this.state.setHealth,this.state.numberOfDice,this.state.healthDice,this.state.healthBonus,this.state.monsterAC,this.state.monsterDescription],
+        (tx, results)=>{console.log('Success ' + results.rowsAffected)},
+        ()=>{console.log('Failure')}
+      )
+    })
     
+    
+
+    //this.resetState()
+    for(i=0;i<this.state.entries.length;++i){
+      console.log("Entries" + this.state.entries[i])
+    }
+    console.log("Done")
+    this.textInput1.clear()
+    this.textInput2.clear()
+    this.textInput3.clear()
+    this.textInput4.clear()
+    this.textInput5.clear()
+    this.textInput6.clear()
+    this.textInput7.clear() 
   }
 
   removeBeast = (entry) => {
@@ -28,14 +170,88 @@ export default class Bestiary extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View><Text>Comming Soon</Text></View>
-        <View><Text>Browse and add monsters for reference</Text></View>     
-      </View>
+        <View style={styles.upper}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.text}>Monster Name:</Text>
+            <TextInput
+              ref={input1 => { this.textInput1 = input1}}
+              placeholder="___"
+              maxLength = {24}
+              onChangeText={(monsterName) => this.setState({monsterName})}
+            />
+            <Text style={styles.text}>AC:</Text>
+            <TextInput
+              ref={input2 => { this.textInput2 = input2}}
+              placeholder="__"
+              keyboardType='numeric'
+              maxLength = {2}
+              onChangeText={(monsterAC) => this.setState({monsterAC})}
+            />
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.text}>Health:</Text>
+            <TextInput
+              ref={input3 => { this.textInput3 = input3}}
+              placeholder="___"
+              keyboardType='numeric'
+              maxLength = {4}
+              onChangeText={(setHealth) => this.setState({setHealth})}
+            />
+            <Text style={styles.text}> OR  Health dice:</Text>
+            <TextInput
+              ref={input4 => { this.textInput4 = input4}}
+              placeholder="__"
+              keyboardType='numeric'
+              maxLength = {2}
+              onChangeText={(numberOfDice) => this.setState({numberOfDice})}
+            />
+            <Text style={styles.text}> D</Text>
+            <TextInput
+              ref={input5 => { this.textInput5 = input5}}
+              placeholder="__"
+              keyboardType='numeric'
+              maxLength = {2}
+              onChangeText={(healthDice) => this.setState({healthDice})}
+            />
+            <Text style={styles.text}> + </Text>
+            <TextInput
+              ref={input6 => { this.textInput6 = input6}}
+              placeholder="__"
+              keyboardType='numeric'
+              maxLength = {4}
+              onChangeText={(healthBonus) => this.setState({healthBonus})}
+            />
+            <TouchableHighlight onPress={() => this.addNewMonster(this)}>
+              <Image source={require('../assets/plus.png')}/>
+            </TouchableHighlight>
+          </View>
+          <View><Text style={styles.text}>Descripition:</Text></View>
+          <View>
+            <TextInput
+              ref={input7 => { this.textInput7 = input7}}
+              placeholder="__"
+              maxLength = {254}
+              onChangeText={(monsterDescription) => this.setState({monsterDescription})}
+            />
+          </View>
+        </View>
+          <View style={styles.lower}>
+          <ScrollView style={styles.scrollList}>           
+          </ScrollView>
+        </View>
+      </View>  
     );
   }
 }
 
 const styles = StyleSheet.create({
+  ac: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -43,7 +259,47 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 900,
   },
-  TextInput: {
-    height: 40,
+  health: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
   },
+  imageButton: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 2,
+    alignItems: 'center',
+  },
+  lower :{
+    flex: 5,
+    flexDirection : 'column-reverse',
+    width: 350,
+  },
+  name: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
+  },
+  text: {
+    fontSize: 16,
+    padding: 5,
+  },
+  scrollList : {
+    borderColor: 'black',
+    borderWidth: 5,
+    borderRadius: 3,
+    padding: 5,
+    shadowColor: 'black',
+  },
+  upper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 2,
+    flexDirection : 'column',
+  },  
 });
