@@ -1,12 +1,8 @@
 import React from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
-import { SQLite } from 'expo';
-
-const bestiary = SQLite.openDatabase('bestiary.db');
+import DataManager from '../components/DataManager.js';
 
 export default class Bestiary extends React.Component {
-
-
 
   static navigationOptions = {
     title: 'Bestiary',
@@ -23,57 +19,14 @@ export default class Bestiary extends React.Component {
     this.state = {setHealth : 0}
     this.state = {monsterAC: 0}
     this.state = {monsterDescription: ''}
-    
+    //this.state = {databaseReference: ''}    
   }
 
-  componentWillMount(){    
-    //run this line when changes are made to the structure of the monsters tables to remove the old version of the table
-    bestiary.transaction(tx => {
-      tx.executeSql(
-        'DROP TABLE Monsters;'
-      )
-    })
-    bestiary.transaction(tx => {
-      tx.executeSql(
-        'create table if not exists Monsters (id int(10) primary key not null, name varchar(24), setHealth int(4), healthDiceNumber int(2), healthDiceType int(2), healthBonus int(4), AC int(2), description varchar(255));'
-      )
-    })
-
-    bestiary.transaction(tx => {
-      tx.executeSql(
-        'SELECT MAX(id) FROM Monsters;', 
-        [],
-        (tx, result) => {
-          if( result.rows.item(0).id > 0){
-            this.setState({index: (result.rows.item(0).id+1)}) 
-          }
-          else {
-            this.setState({index: 1}) 
-          }
-          console.log("ID success: " + result.rows.item(0).id + " -> " + this.state.index)
-        },
-        () => {console.log("ID error")}
-      )
-    })
-
-    bestiary.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Monsters;', [], (tx, results) => {
-          var monsters = []
-          var monster = []
-          for(var i=0; i < results.rows.length;++i){
-            monster = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
-            monsters.push(monster)
-          }
-          monsters.sort()
-          this.setState({entries : monsters})
-          console.log('Monster success')
-        }
-        , () => {console.log("Monsters error")}
-      )
-    })
+  componentWillMount(){
+    //let dataManager = new DataManager
+    //this.setState({databaseReference : dataManager})
+    this.setState({entries: []})
   }
-
 
   validateState () {
     if(this.state.monsterName == ''){
@@ -111,43 +64,23 @@ export default class Bestiary extends React.Component {
     this.setState({setHealth : 0})
     this.setState({monsterAC : 0})
     this.setState({monsterDescription : ''})
-    bestiary.transaction(tx => {
-      tx.executeSql(
-        'SELECT * FROM Monsters;', [], (tx, results) => {
-          var monsters = []
-          var monster = []
-          for(var i=0; i < results.rows.length;++i){
-            monster = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
-            monsters.push(monster)
-          }
-          monsters.sort()
-          this.setState({entries : monsters})
-          console.log('Monster success')
-        }
-        , () => {console.log("Monsters error")}
-      )
-    })
-    this.setState({index : (this.state.index + 1)})
+    //this.setState({index : (this.state.index + 1)})
   }
 
   addNewMonster() {
     if(!this.validateState()){
       return
     }
-    bestiary.transaction(tx => {
-      tx.executeSql(
-        'INSERT INTO Monsters (id, name, setHealth, healthDiceNumber, healthDiceType, healthBonus, AC, description) VALUES (?,?,?,?,?,?,?,?)',
-        [this.state.index,this.state.monsterName,this.state.setHealth,this.state.numberOfDice,this.state.healthDice,this.state.healthBonus,this.state.monsterAC,this.state.monsterDescription],
-        (tx, results)=>{console.log('Success ' + results.rowsAffected)},
-        ()=>{console.log('Failure')}
-      )
-    })
-    
-    
+    const index = this.databaseReference.getNextIndex()
+    console.log("index:" + index)
+    const monster = [index, this.state.monsterName,this.state.setHealth,this.state.numberOfDice,this.state.healthDice,this.state.healthBonus,this.state.monsterAC,this.state.monsterDescription]
+    const monsters = this.databaseReference.addNewMonster(monster)
+    this.setState({entries : monsters})    
 
-    //this.resetState()
+    this.resetState()
+    console.log("Entries " + this.state.entries.length)
     for(i=0;i<this.state.entries.length;++i){
-      console.log("Entries" + this.state.entries[i])
+      console.log(this.state.entries[i])
     }
     console.log("Done")
     this.textInput1.clear()
@@ -170,6 +103,7 @@ export default class Bestiary extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <DataManager ref={databaseReference => {this.databaseReference = databaseReference}}/>
         <View style={styles.upper}>
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.text}>Monster Name:</Text>
