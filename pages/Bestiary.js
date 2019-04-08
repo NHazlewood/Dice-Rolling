@@ -2,6 +2,11 @@ import React from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
 import DataManager from '../components/DataManager.js';
 
+async function asyncHelper(newEntry, targetFuntion, callback){
+  await targetFuntion(newEntry).then((values => response = values))
+  callback(response)
+}
+
 export default class Bestiary extends React.Component {
 
   static navigationOptions = {
@@ -19,6 +24,7 @@ export default class Bestiary extends React.Component {
     this.state = {setHealth : 0}
     this.state = {monsterAC: 0}
     this.state = {monsterDescription: ''}
+    this.addNewMonsterCallback = this.addNewMonsterCallback.bind(this)
     //this.state = {databaseReference: ''}    
   }
 
@@ -74,6 +80,9 @@ export default class Bestiary extends React.Component {
     const index = this.databaseReference.getNextIndex()
     console.log("index:" + index)
     const monster = [index, this.state.monsterName,this.state.setHealth,this.state.numberOfDice,this.state.healthDice,this.state.healthBonus,this.state.monsterAC,this.state.monsterDescription]
+    asyncHelper(monster, this.databaseReference.addNewMonster, this.addNewMonsterCallback)
+    //this.databaseReference.addNewMonster(monster, this.addNewMonsterCallback())
+    /*
     const monsters = this.databaseReference.addNewMonster(monster)
     this.setState({entries : monsters})    
 
@@ -89,7 +98,26 @@ export default class Bestiary extends React.Component {
     this.textInput4.clear()
     this.textInput5.clear()
     this.textInput6.clear()
-    this.textInput7.clear() 
+    this.textInput7.clear()
+    */
+  }
+
+  addNewMonsterCallback(monsters) {
+    this.setState({entries : monsters})    
+    console.log("addNewMonstersCallback")
+    this.resetState()
+    console.log("Entries " + this.state.entries.length)
+    for(i=0;i<this.state.entries.length;++i){
+      console.log(this.state.entries[i])
+    }
+    console.log("Done")
+    this.textInput1.clear()
+    this.textInput2.clear()
+    this.textInput3.clear()
+    this.textInput4.clear()
+    this.textInput5.clear()
+    this.textInput6.clear()
+    this.textInput7.clear()
   }
 
   removeBeast = (entry) => {
