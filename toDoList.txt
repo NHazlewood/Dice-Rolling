@@ -1,17 +1,19 @@
 In-Proggress
--> improve initiative list 
-    -> make items editable
-    -> add passive perception (optional field)
-    -> add ac (optional field)
-    -> add max hp (optional field)
+
 
 Task List
--> add database for monsters
 -> highlight monsters when <1 hp
 -> multiple dice type per attack for attacking.js
 -> track different damage types
 -> negative modifers to damage and to hit
 -> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
+-> improve initiative list 
+    -> make items editable
+    -> add passive perception (optional field)
+    -> add ac (optional field)
+    -> add max hp (optional field)
+    -> highlight current have next button
+-> add health bonus to monsters tab
 
 
 Completed Tasks
@@ -25,3 +27,4 @@ Completed Tasks
     -> adhere to color scheme (white background, black text, and red highlights)
 -> make adjust monter health a popup rather than a text input field
     -> added new icons with color as well
+-> add database for monsters
