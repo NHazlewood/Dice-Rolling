@@ -7,6 +7,12 @@ async function asyncHelper(newEntry, targetFuntion, callback){
   callback(response)
 }
 
+async function asyncHelperNoArg(targetFuntion, callback){
+  await targetFuntion().then((values => response = values))
+  callback(response)
+}
+
+
 export default class Bestiary extends React.Component {
 
   static navigationOptions = {
@@ -25,6 +31,7 @@ export default class Bestiary extends React.Component {
     this.state = {monsterAC: 0}
     this.state = {monsterDescription: ''}
     this.addNewMonsterCallback = this.addNewMonsterCallback.bind(this)
+    this.state = {searchName : ''}
     //this.state = {databaseReference: ''}    
   }
 
@@ -39,7 +46,7 @@ export default class Bestiary extends React.Component {
       Alert.alert('Error','Monster requires a name',[{text:'Close'}])
       return 0
     }
-    if(this.state.monsterAC == '' || this.state.monsterAC < 1){
+    if(this.state.monsterAC == ''){
       Alert.alert('Error','Invalid AC',[{text:'Close'}])
       return 0
     }
@@ -124,8 +131,15 @@ export default class Bestiary extends React.Component {
     
   }
 
-  searchBeast = (entry) => {
-
+  searchMonsterNames = () => {
+    monster = this.state.searchName
+    if(monster == ''){
+      asyncHelperNoArg(this.databaseReference.retrieveMonsters, this.addNewMonsterCallback)
+    }
+    else {
+      //name search not in yet
+      //asyncHelper(monster, this.databaseReference.addNewMonster, this.addNewMonsterCallback)
+    }
   }
 
   render() {
@@ -192,13 +206,33 @@ export default class Bestiary extends React.Component {
             <TextInput
               ref={input7 => { this.textInput7 = input7}}
               placeholder="__"
-              maxLength = {254}
+              maxLength = {255}
               onChangeText={(monsterDescription) => this.setState({monsterDescription})}
             />
           </View>
+          <View style={{flexDirection : 'row'}}>
+            <TextInput
+              ref={input8 => { this.textInput8 = input8}}
+              placeholder="__"
+              maxLength = {24}
+              onChangeText={(searchName) => this.setState({searchName})}
+            />
+            <TouchableHighlight onPress={() => this.searchMonsterNames(this)}>
+              <Image source={require('../assets/search.png')}/>
+            </TouchableHighlight>
+          </View>
         </View>
           <View style={styles.lower}>
-          <ScrollView style={styles.scrollList}>           
+          <ScrollView style={styles.scrollList}>
+          {this.state.entries.map((item, key)=>(
+            <Text key={key}> 
+              {item[0]}
+              {"\n"}AC {item[5]}
+              {"\n"}Health {item[1]} ({item[2]} d {item[3]} + {item[4]})  
+              {"\n"}Descripition:
+              {"\n"}{item[6]}
+            </Text>  
+            ))}                   
           </ScrollView>
         </View>
       </View>  

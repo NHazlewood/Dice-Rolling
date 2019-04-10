@@ -54,11 +54,13 @@ class DataManager extends React.Component {
     constructor(props) {
         super(props);
         this.state = {index: 0}
+        this.getNextIndex = this.getNextIndex.bind(this)
+        this.addNewMonster = this.addNewMonster.bind(this)
     }
 
     componentWillMount(){    
         //run this line when changes are made to the structure of the monsters tables to remove the old version of the table
-        ///*
+        /*
         bestiary.transaction(tx => {
         tx.executeSql(
             'DROP TABLE Monsters;'
@@ -90,6 +92,7 @@ class DataManager extends React.Component {
     }
 
     addNewMonster (newEntry){
+        this.setState({index : this.state.index + 1})
         return new Promise((resolve, reject) =>
             resolve(addNewCalled(newEntry))
         )
@@ -123,7 +126,9 @@ class DataManager extends React.Component {
     }
 
     retrieveMonsters (){
-        return retrieveAll()
+        return new Promise((resolve, reject) =>
+            resolve(retrieveAll())
+        )
     }
 
     getNextIndex (){

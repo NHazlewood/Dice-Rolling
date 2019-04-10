@@ -1,8 +1,7 @@
 In-Proggress
--> add database for monsters
+
 
 Task List
--> add database for monsters
 -> highlight monsters when <1 hp
 -> multiple dice type per attack for attacking.js
 -> track different damage types
@@ -28,3 +27,4 @@ Completed Tasks
     -> adhere to color scheme (white background, black text, and red highlights)
 -> make adjust monter health a popup rather than a text input field
     -> added new icons with color as well
+-> add database for monsters
