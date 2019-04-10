@@ -21,7 +21,6 @@ export default class Bestiary extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {index: 0}
     this.state = {entries : []}
     this.state = {monsterName: ''}
     this.state = {healthDice: 0}
@@ -31,13 +30,10 @@ export default class Bestiary extends React.Component {
     this.state = {monsterAC: 0}
     this.state = {monsterDescription: ''}
     this.addNewMonsterCallback = this.addNewMonsterCallback.bind(this)
-    this.state = {searchName : ''}
-    //this.state = {databaseReference: ''}    
+    this.state = {searchName : ''}   
   }
 
   componentWillMount(){
-    //let dataManager = new DataManager
-    //this.setState({databaseReference : dataManager})
     this.setState({entries: []})
   }
 
@@ -77,7 +73,6 @@ export default class Bestiary extends React.Component {
     this.setState({setHealth : 0})
     this.setState({monsterAC : 0})
     this.setState({monsterDescription : ''})
-    //this.setState({index : (this.state.index + 1)})
   }
 
   addNewMonster() {
@@ -85,39 +80,13 @@ export default class Bestiary extends React.Component {
       return
     }
     const index = this.databaseReference.getNextIndex()
-    console.log("index:" + index)
     const monster = [index, this.state.monsterName,this.state.setHealth,this.state.numberOfDice,this.state.healthDice,this.state.healthBonus,this.state.monsterAC,this.state.monsterDescription]
     asyncHelper(monster, this.databaseReference.addNewMonster, this.addNewMonsterCallback)
-    //this.databaseReference.addNewMonster(monster, this.addNewMonsterCallback())
-    /*
-    const monsters = this.databaseReference.addNewMonster(monster)
-    this.setState({entries : monsters})    
-
-    this.resetState()
-    console.log("Entries " + this.state.entries.length)
-    for(i=0;i<this.state.entries.length;++i){
-      console.log(this.state.entries[i])
-    }
-    console.log("Done")
-    this.textInput1.clear()
-    this.textInput2.clear()
-    this.textInput3.clear()
-    this.textInput4.clear()
-    this.textInput5.clear()
-    this.textInput6.clear()
-    this.textInput7.clear()
-    */
   }
 
   addNewMonsterCallback(monsters) {
     this.setState({entries : monsters})    
-    console.log("addNewMonstersCallback")
     this.resetState()
-    console.log("Entries " + this.state.entries.length)
-    for(i=0;i<this.state.entries.length;++i){
-      console.log(this.state.entries[i])
-    }
-    console.log("Done")
     this.textInput1.clear()
     this.textInput2.clear()
     this.textInput3.clear()
@@ -225,7 +194,7 @@ export default class Bestiary extends React.Component {
           <View style={styles.lower}>
           <ScrollView style={styles.scrollList}>
           {this.state.entries.map((item, key)=>(
-            <Text key={key}> 
+            <Text key={key} style={styles.entries}> 
               {item[0]}
               {"\n"}AC {item[5]}
               {"\n"}Health {item[1]} ({item[2]} d {item[3]} + {item[4]})  
@@ -254,6 +223,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 900,
+  },
+  entries : {
+    borderColor: '#575a5e',
+    borderWidth: 2,
+    padding: 5,
+    fontSize: 16,
   },
   health: {
     flex: 2,

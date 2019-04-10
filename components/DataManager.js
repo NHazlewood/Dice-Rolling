@@ -5,12 +5,9 @@ import { SQLite } from 'expo';
 const bestiary = SQLite.openDatabase('bestiary.db');
 
 async function addNewCalled(newEntry){
-    console.log("Test1")
     await addNew(newEntry)
-    console.log("Test2")
     var monsters
     await retrieveAll().then((values) => monsters = values)
-    console.log("Test3")
     return monsters
 }
 
@@ -20,7 +17,7 @@ async function addNew (newEntry) {
             tx.executeSql(
                 'INSERT INTO Monsters (id, name, setHealth, healthDiceNumber, healthDiceType, healthBonus, AC, description) VALUES (?,?,?,?,?,?,?,?)',
                 [newEntry[0],newEntry[1],newEntry[2],newEntry[3],newEntry[4],newEntry[5],newEntry[6],newEntry[7]],
-                (tx, results)=>{console.log('Success on add ' + results.rowsAffected); resolve()},
+                (tx, results)=>{resolve()},
                 (tx, results)=>{console.log('Failure on add ' + results); reject()}
             )
         })
@@ -36,11 +33,9 @@ async function retrieveAll () {
                 var monster = [];
                 for(var i=0; i < results.rows.length;++i){
                   monster = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
-                  //console.log(monster)
                   monsters.push(monster)
                 }
                 monsters.sort()
-                console.log('Monster success')
                 resolve(monsters)
               }
               , () => {console.log("Monsters error"); reject()}
@@ -83,8 +78,6 @@ class DataManager extends React.Component {
                 else {
                     this.setState({index: 1}) 
                 }
-                //console.log("ID success: " + result.rows.item(0).id)
-                console.log("ID success")
                 },
                 () => {console.log("ID error")}
             )
@@ -96,29 +89,6 @@ class DataManager extends React.Component {
         return new Promise((resolve, reject) =>
             resolve(addNewCalled(newEntry))
         )
-        //let monsters = addNewCalled(newEntry)
-        //callback(monsters)
-        
-        /*
-        addNew(newEntry)
-        monsters = retrieveAll()
-        .then(returnValue = monsters)
-        .catch(err => console.log(err))
-        return returnValue
-        //this.setState({index : (this.state.index + 1)})
-        /*
-        return new Promise ( res => {
-            addNewCalled(newEntry, this.addNewMonsterCallback)
-        })
-        /*
-        console.log("Test1")
-        await addNew(newEntry)
-        console.log("Test2")
-        this.setState({index : (this.state.index + 1)})
-        monsters = await retrievaAll()
-        console.log("Test3")
-        return monsters
-        */
     }
 
     addNewMonsterCallback(entries){

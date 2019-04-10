@@ -1,7 +1,13 @@
 In-Proggress
-
+-> adding database funtionality (bestiary.js)
+    -> search entries by name
+    -> remove entries
+    -> edit entries
 
 Task List
+-> add database access to monsters.js
+    -> save current monster list
+    -> load monsters from bestiary
 -> highlight monsters when <1 hp
 -> multiple dice type per attack for attacking.js
 -> track different damage types
@@ -13,6 +19,8 @@ Task List
     -> add ac (optional field)
     -> add max hp (optional field)
     -> highlight current have next button
+-> add database to intiative list
+    -> allow user to save party member information
 -> add health bonus to monsters tab
 
 
