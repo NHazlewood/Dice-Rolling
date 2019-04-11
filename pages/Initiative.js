@@ -96,7 +96,7 @@ export default class Initiative extends React.Component {
               <Text style={styles.initiative}>{item[0]}</Text>
               <Text style={styles.name}>{item[1]}</Text>
               <TouchableHighlight style={styles.imageButton} onPress={() => this.remove(item)}>
-                <Image source={require('../assets/minus.png')}/>
+                <Image source={require('../assets/minusSlim.png')}/>
               </TouchableHighlight>
             </View>)
             )}

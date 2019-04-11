@@ -29,7 +29,7 @@ export default class Bestiary extends React.Component {
     this.state = {setHealth : 0}
     this.state = {monsterAC: 0}
     this.state = {monsterDescription: ''}
-    this.addNewMonsterCallback = this.addNewMonsterCallback.bind(this)
+    this.updateCallback = this.updateCallback.bind(this)
     this.state = {searchName : ''}   
   }
 
@@ -81,10 +81,10 @@ export default class Bestiary extends React.Component {
     }
     const index = this.databaseReference.getNextIndex()
     const monster = [index, this.state.monsterName,this.state.setHealth,this.state.numberOfDice,this.state.healthDice,this.state.healthBonus,this.state.monsterAC,this.state.monsterDescription]
-    asyncHelper(monster, this.databaseReference.addNewMonster, this.addNewMonsterCallback)
+    asyncHelper(monster, this.databaseReference.addNewMonster, this.updateCallback)
   }
 
-  addNewMonsterCallback(monsters) {
+  updateCallback(monsters) {
     this.setState({entries : monsters})    
     this.resetState()
     this.textInput1.clear()
@@ -97,17 +97,16 @@ export default class Bestiary extends React.Component {
   }
 
   removeBeast = (entry) => {
-    
+    asyncHelper(entry[7], this.databaseReference.removeBeast, this.updateCallback)
   }
 
   searchMonsterNames = () => {
     monster = this.state.searchName
     if(monster == ''){
-      asyncHelperNoArg(this.databaseReference.retrieveMonsters, this.addNewMonsterCallback)
+      asyncHelperNoArg(this.databaseReference.retrieveMonsters, this.updateCallback)
     }
     else {
-      //name search not in yet
-      //asyncHelper(monster, this.databaseReference.addNewMonster, this.addNewMonsterCallback)
+      asyncHelper(monster, this.databaseReference.getBeast, this.updateCallback)
     }
   }
 
@@ -194,13 +193,18 @@ export default class Bestiary extends React.Component {
           <View style={styles.lower}>
           <ScrollView style={styles.scrollList}>
           {this.state.entries.map((item, key)=>(
-            <Text key={key} style={styles.entries}> 
-              {item[0]}
-              {"\n"}AC {item[5]}
-              {"\n"}Health {item[1]} ({item[2]} d {item[3]} + {item[4]})  
-              {"\n"}Descripition:
-              {"\n"}{item[6]}
-            </Text>  
+            <View key={key} style={styles.entries}>
+              <Text>{item[0]}</Text>
+              <Text>AC {item[5]}</Text>
+              <Text>Health {item[1]} ({item[2]} d {item[3]} + {item[4]})</Text>
+              <View style={{flexDirection : 'row'}}>
+                <Text>Descripition:</Text>
+                <TouchableHighlight style={styles.imageButton} onPress={() => this.removeBeast(item)}>
+                  <Image source={require('../assets/minusSlim.png')}/>
+                </TouchableHighlight>
+              </View>
+              <Text>{item[6]}</Text>
+            </View>
             ))}                   
           </ScrollView>
         </View>
@@ -228,7 +232,6 @@ const styles = StyleSheet.create({
     borderColor: '#575a5e',
     borderWidth: 2,
     padding: 5,
-    fontSize: 16,
   },
   health: {
     flex: 2,

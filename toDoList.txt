@@ -22,7 +22,9 @@ Task List
 -> add database to intiative list
     -> allow user to save party member information
 -> add health bonus to monsters tab
-
+-> rename functions and varaibles
+    -> in bestiary to say beast not monster to keep it clearer and different from monster.js
+    -> in dataManager to say entries for general use
 
 Completed Tasks
 -> adjust monster health

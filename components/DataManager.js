@@ -4,7 +4,7 @@ import { SQLite } from 'expo';
 
 const bestiary = SQLite.openDatabase('bestiary.db');
 
-async function addNewCalled(newEntry){
+async function addNewManager(newEntry){
     await addNew(newEntry)
     var monsters
     await retrieveAll().then((values) => monsters = values)
@@ -28,17 +28,61 @@ async function retrieveAll () {
     return new Promise ((resolve, reject) =>
         bestiary.transaction(tx => {
             tx.executeSql(
-              'SELECT * FROM Monsters;', [], (tx, results) => {
-                var monsters = [];
-                var monster = [];
-                for(var i=0; i < results.rows.length;++i){
-                  monster = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
-                  monsters.push(monster)
-                }
-                monsters.sort()
-                resolve(monsters)
-              }
-              , () => {console.log("Monsters error"); reject()}
+                'SELECT * FROM Monsters;',
+                [], 
+                (tx, results) => {
+                    var monsters = [];
+                    var monster = [];
+                    for(var i=0; i < results.rows.length;++i){
+                    monster = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
+                    monsters.push(monster)
+                    }
+                    monsters.sort()
+                    resolve(monsters)
+                },
+                () => {console.log("Retrive all error"); reject()}
+            )
+        })
+    )
+}
+
+async function nameSearch (name) {
+    return new Promise ((resolve, reject) =>
+        bestiary.transaction(tx => {
+            tx.executeSql(
+                'SELECT * FROM Monsters WHERE name LIKE ?',
+                [('%'+name+'%')],
+                (tx, results) => {
+                    var monsters = [];
+                    var monster = [];
+                    for(var i=0; i < results.rows.length;++i){
+                        monster = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
+                        monsters.push(monster)
+                    }
+                    monsters.sort()
+                    resolve(monsters)
+                },
+                (tx, results) => {console.log("Name search error" + results); reject()}
+            )
+        })
+    )
+}
+
+async function removeBeastManager (id){
+    await removeBeastAsync(id)
+    var monsters
+    await retrieveAll().then((values) => monsters = values)
+    return monsters
+}
+
+async function removeBeastAsync (id) {
+    return new Promise ((resolve, reject) =>
+        bestiary.transaction(tx => {
+            tx.executeSql(
+                'DELETE FROM Monsters WHERE id = ?',
+                [id],
+                (tx,results) => {resolve()},
+                (tx,results) => {console.log('Failure on delete ' + results);reject()}
             )
         })
     )
@@ -54,7 +98,7 @@ class DataManager extends React.Component {
     }
 
     componentWillMount(){    
-        //run this line when changes are made to the structure of the monsters tables to remove the old version of the table
+        //uncommenting this command will drop the bestiary table and each restart
         /*
         bestiary.transaction(tx => {
         tx.executeSql(
@@ -87,7 +131,7 @@ class DataManager extends React.Component {
     addNewMonster (newEntry){
         this.setState({index : this.state.index + 1})
         return new Promise((resolve, reject) =>
-            resolve(addNewCalled(newEntry))
+            resolve(addNewManager(newEntry))
         )
     }
 
@@ -104,6 +148,19 @@ class DataManager extends React.Component {
     getNextIndex (){
         return this.state.index
     }
+
+    removeBeast (id){
+        return new Promise((resolve, reject) =>
+            resolve(removeBeastManager(id))
+        )
+    }
+
+    getBeast(name){
+        return new Promise ((resolve,reject)=>
+            resolve(nameSearch(name))
+        )
+    }
+
 
     render(){
         return null
