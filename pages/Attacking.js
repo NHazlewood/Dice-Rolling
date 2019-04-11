@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image, ImageBackground , Dimensions} from 'react-native';
 
 import AdvantagePicker from '../components/AdvantagePicker.js';
 
@@ -132,8 +132,10 @@ export default class Attacking extends React.Component {
   }
 
   render() {
+    var tableWidth = (((Dimensions.get('window').width) *8) /9)
+    var tableHeight = (((Dimensions.get('window').height) *9) /14)
     return (
-      <View style={styles.container}>
+      <ImageBackground source={require('../assets/background.png')} style={styles.container}>
         <View style = {styles.upper}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={styles.text}>Bonus to hit: </Text>
@@ -188,6 +190,7 @@ export default class Attacking extends React.Component {
           </TouchableHighlight>
         </View>
         <View style={styles.lower}>
+        <View style={{width: tableWidth,height: tableHeight}}>
         <ScrollView style={styles.scrollingRolls}>
             {this.state.outText.map((item, key)=>(
             <Text key={key} style={[(item[1]) == "Crit!" ? styles.crit : [(item[1]) == "Fumble!" ? styles.fumble : styles.normal ]]} > 
@@ -197,18 +200,21 @@ export default class Attacking extends React.Component {
             )}
           </ScrollView>          
         </View>
-      </View>
+        </View>
+      </ImageBackground>
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 900,
     fontSize: 16,
+    width : '100%',
+    height: '100%',
   },
   crit: {
     borderColor: '#06e83b', //green
@@ -223,9 +229,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   lower :{
-    flex: 5,
     flexDirection : 'column-reverse',
-    width: 350,
+    justifyContent: 'center',
   },
   normal : {
     borderColor: '#575a5e',
@@ -234,11 +239,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   scrollingRolls : {
-    borderColor: 'black',
-    borderWidth: 5,
-    borderRadius: 3,
-    padding: 5,
-    shadowColor: 'black',
+    
   },
   text: {
     fontSize: 16,

@@ -194,16 +194,16 @@ export default class Bestiary extends React.Component {
           <ScrollView style={styles.scrollList}>
           {this.state.entries.map((item, key)=>(
             <View key={key} style={styles.entries}>
-              <Text>{item[0]}</Text>
-              <Text>AC {item[5]}</Text>
-              <Text>Health {item[1]} ({item[2]} d {item[3]} + {item[4]})</Text>
+              <Text style={styles.text}>{item[0]}</Text>
+              <Text style={styles.text}>AC {item[5]}</Text>
+              <Text style={styles.text}>Health {item[1]} ({item[2]} d {item[3]} + {item[4]})</Text>
               <View style={{flexDirection : 'row'}}>
-                <Text>Descripition:</Text>
+                <Text style={styles.text}>Descripition:</Text>
                 <TouchableHighlight style={styles.imageButton} onPress={() => this.removeBeast(item)}>
                   <Image source={require('../assets/minusSlim.png')}/>
                 </TouchableHighlight>
               </View>
-              <Text>{item[6]}</Text>
+              <Text style={styles.text}>{item[6]}</Text>
             </View>
             ))}                   
           </ScrollView>
