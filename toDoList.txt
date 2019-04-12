@@ -1,4 +1,9 @@
 In-Proggress
+-> improve code (Monsters.js)
+    -> export code into compenets
+    -> rename confusing/misleading varaibles
+    -> simply code for pages
+Back Burner
 -> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
 -> add database access to monsters.js
     -> save current monster list
