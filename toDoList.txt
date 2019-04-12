@@ -1,8 +1,10 @@
 In-Proggress
--> adding database funtionality (bestiary.js)
-    -> search entries by name
-    -> remove entries
-    -> edit entries
+-> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
+-> add database access to monsters.js
+    -> save current monster list
+    -> load monsters from bestiary
+
+
 
 Task List
 -> add database access to monsters.js
@@ -25,6 +27,7 @@ Task List
 -> rename functions and varaibles
     -> in bestiary to say beast not monster to keep it clearer and different from monster.js
     -> in dataManager to say entries for general use
+-> edit besitary entry (will probably need a new page)
 
 Completed Tasks
 -> adjust monster health
@@ -38,3 +41,7 @@ Completed Tasks
 -> make adjust monter health a popup rather than a text input field
     -> added new icons with color as well
 -> add database for monsters
+-> adding database funtionality (bestiary.js)
+    -> add monsters
+    -> search entries by name
+    -> remove entries

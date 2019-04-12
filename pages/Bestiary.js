@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
-import DataManager from '../components/DataManager.js';
+import BestiaryManager from '../components/BestiaryManager.js';
 
 async function asyncHelper(newEntry, targetFuntion, callback){
   await targetFuntion(newEntry).then((values => response = values))
@@ -22,13 +22,13 @@ export default class Bestiary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {entries : []}
-    this.state = {monsterName: ''}
+    this.state = {beastName: ''}
     this.state = {healthDice: 0}
     this.state = {numberOfDice: 0}
     this.state = {healthBonus: 0}
     this.state = {setHealth : 0}
-    this.state = {monsterAC: 0}
-    this.state = {monsterDescription: ''}
+    this.state = {beastAC: 0}
+    this.state = {beastDescription: ''}
     this.updateCallback = this.updateCallback.bind(this)
     this.state = {searchName : ''}   
   }
@@ -38,11 +38,11 @@ export default class Bestiary extends React.Component {
   }
 
   validateState () {
-    if(this.state.monsterName == ''){
-      Alert.alert('Error','Monster requires a name',[{text:'Close'}])
+    if(this.state.beastName == ''){
+      Alert.alert('Error','The beast requires a name',[{text:'Close'}])
       return 0
     }
-    if(this.state.monsterAC == ''){
+    if(this.state.beastAC == ''){
       Alert.alert('Error','Invalid AC',[{text:'Close'}])
       return 0
     }
@@ -66,26 +66,26 @@ export default class Bestiary extends React.Component {
   }
 
   resetState(){
-    this.setState({monsterName : ''})
+    this.setState({beastName : ''})
     this.setState({healthDice: 0})
     this.setState({numberOfDice : 0})
     this.setState({healthBonus : 0})
     this.setState({setHealth : 0})
-    this.setState({monsterAC : 0})
-    this.setState({monsterDescription : ''})
+    this.setState({beastAC : 0})
+    this.setState({beastDescription : ''})
   }
 
-  addNewMonster() {
+  addNewBeast() {
     if(!this.validateState()){
       return
     }
     const index = this.databaseReference.getNextIndex()
-    const monster = [index, this.state.monsterName,this.state.setHealth,this.state.numberOfDice,this.state.healthDice,this.state.healthBonus,this.state.monsterAC,this.state.monsterDescription]
-    asyncHelper(monster, this.databaseReference.addNewMonster, this.updateCallback)
+    const beast = [index, this.state.beastName,this.state.setHealth,this.state.numberOfDice,this.state.healthDice,this.state.healthBonus,this.state.beastAC,this.state.beastDescription]
+    asyncHelper(beast, this.databaseReference.addNewBeast, this.updateCallback)
   }
 
-  updateCallback(monsters) {
-    this.setState({entries : monsters})    
+  updateCallback(beasts) {
+    this.setState({entries : beasts})    
     this.resetState()
     this.textInput1.clear()
     this.textInput2.clear()
@@ -100,28 +100,28 @@ export default class Bestiary extends React.Component {
     asyncHelper(entry[7], this.databaseReference.removeBeast, this.updateCallback)
   }
 
-  searchMonsterNames = () => {
-    monster = this.state.searchName
-    if(monster == ''){
-      asyncHelperNoArg(this.databaseReference.retrieveMonsters, this.updateCallback)
+  searchBeastNames = () => {
+    beast = this.state.searchName
+    if(beast == ''){
+      asyncHelperNoArg(this.databaseReference.retrieveBeasts, this.updateCallback)
     }
     else {
-      asyncHelper(monster, this.databaseReference.getBeast, this.updateCallback)
+      asyncHelper(beast, this.databaseReference.getBeast, this.updateCallback)
     }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <DataManager ref={databaseReference => {this.databaseReference = databaseReference}}/>
+        <BestiaryManager ref={databaseReference => {this.databaseReference = databaseReference}}/>
         <View style={styles.upper}>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.text}>Monster Name:</Text>
+            <Text style={styles.text}>Beast's Name:</Text>
             <TextInput
               ref={input1 => { this.textInput1 = input1}}
               placeholder="___"
               maxLength = {24}
-              onChangeText={(monsterName) => this.setState({monsterName})}
+              onChangeText={(beastName) => this.setState({beastName})}
             />
             <Text style={styles.text}>AC:</Text>
             <TextInput
@@ -129,7 +129,7 @@ export default class Bestiary extends React.Component {
               placeholder="__"
               keyboardType='numeric'
               maxLength = {2}
-              onChangeText={(monsterAC) => this.setState({monsterAC})}
+              onChangeText={(beastAC) => this.setState({beastAC})}
             />
           </View>
           <View style={{flexDirection: 'row'}}>
@@ -165,7 +165,7 @@ export default class Bestiary extends React.Component {
               maxLength = {4}
               onChangeText={(healthBonus) => this.setState({healthBonus})}
             />
-            <TouchableHighlight onPress={() => this.addNewMonster(this)}>
+            <TouchableHighlight onPress={() => this.addNewBeast(this)}>
               <Image source={require('../assets/plus.png')}/>
             </TouchableHighlight>
           </View>
@@ -175,7 +175,7 @@ export default class Bestiary extends React.Component {
               ref={input7 => { this.textInput7 = input7}}
               placeholder="__"
               maxLength = {255}
-              onChangeText={(monsterDescription) => this.setState({monsterDescription})}
+              onChangeText={(beastDescription) => this.setState({beastDescription})}
             />
           </View>
           <View style={{flexDirection : 'row'}}>
@@ -185,7 +185,7 @@ export default class Bestiary extends React.Component {
               maxLength = {24}
               onChangeText={(searchName) => this.setState({searchName})}
             />
-            <TouchableHighlight onPress={() => this.searchMonsterNames(this)}>
+            <TouchableHighlight onPress={() => this.searchBeastNames(this)}>
               <Image source={require('../assets/search.png')}/>
             </TouchableHighlight>
           </View>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
 import DialogInput from 'react-native-dialog-input';
+import BestiaryManager from '../components/BestiaryManager.js';
 
 
 export default class Monsters extends React.Component {
@@ -106,7 +107,8 @@ export default class Monsters extends React.Component {
     this.textInput2.clear()
     this.textInput3.clear()
     this.textInput4.clear()
-    this.textInput5.clear() 
+    this.textInput5.clear()
+    this.textInput6.clear()
   }
 
   removeMonster = (entry) => {
@@ -167,6 +169,7 @@ export default class Monsters extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+      <BestiaryManager ref={databaseReference => {this.databaseReference = databaseReference}}/>
         <View style = {styles.upper}>
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.text}>Monster Name:</Text>
@@ -209,6 +212,14 @@ export default class Monsters extends React.Component {
               keyboardType='numeric'
               maxLength = {2}
               onChangeText={(healthDice) => this.setState({healthDice})}
+            />
+            <Text style={styles.text}> + </Text>
+            <TextInput
+              ref={input6 => { this.textInput6 = input6}}
+              placeholder="__"
+              keyboardType='numeric'
+              maxLength = {4}
+              onChangeText={(healthBonus) => this.setState({healthBonus})}
             />
             <TouchableHighlight onPress={() => this.addNewMonster(this)}>
               <Image source={require('../assets/plus.png')}/>
