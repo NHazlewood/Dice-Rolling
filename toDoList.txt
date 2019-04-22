@@ -1,8 +1,15 @@
 In-Proggress
--> improve code (Monsters.js)
-    -> export code into compenets
-    -> rename confusing/misleading varaibles
-    -> simply code for pages
+-> improve initiative list 
+    -> make items editable
+    -> add passive perception (optional field)
+    -> add ac (optional field)
+    -> add max hp (optional field)
+    -> highlight current have next button
+-> improve initiative list 2
+    -> add dp for party
+    -> load existing party
+    -> parties?
+
 Back Burner
 -> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
 -> add database access to monsters.js
@@ -15,10 +22,11 @@ Task List
 -> add database access to monsters.js
     -> save current monster list
     -> load monsters from bestiary
--> highlight monsters when <1 hp
--> multiple dice type per attack for attacking.js
--> track different damage types
--> negative modifers to damage and to hit
+-> highlight monsters when <1 hp (monsters.js)
+Improve attacking.js
+    -> multiple dice type per attack for attacking.js
+    -> track different damage types
+    -> negative modifers to damage and to hit
 -> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
 -> improve initiative list 
     -> make items editable
@@ -50,3 +58,11 @@ Completed Tasks
     -> add monsters
     -> search entries by name
     -> remove entries
+-> improve code (Monsters.js)
+    -> export code into componets
+    -> rename confusing/misleading varaibles
+    -> simply code for pages
+-> improve code (Attacking.js)
+    -> export code into componets
+-> improve code (Bestiary.js)
+    -> export code into componets

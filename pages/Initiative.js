@@ -12,6 +12,9 @@ export default class Initiative extends React.Component {
     super(props);
     this.state = {nameToAdd: ''}
     this.state = {initiativeToAdd: 0}
+    this.state = {ACToAdd: 0}
+    this.state = {HPToAdd: 0}
+    this.state = {passiveToAdd: 0}
     this.state = {initiativeOrder: []}
     this.state = {initiativeKey: 0}
   }
@@ -20,6 +23,9 @@ export default class Initiative extends React.Component {
     this.setState({nameToAdd : ''})
     this.setState({initiativeToAdd: -1})
     this.setState({initiativeKey : 0})
+    this.setState({ACToAdd: 0})
+    this.setState({HPToAdd: 0})
+    this.setState({passiveToAdd: 0})
     this.setState({initiativeOrder : []})
   }
 
@@ -42,7 +48,7 @@ export default class Initiative extends React.Component {
 
   addNew = () =>{
     if(!this.validateState()){return}
-    const newEntry = [this.state.initiativeToAdd, this.state.nameToAdd,this.state.initiativeKey];
+    const newEntry = [this.state.initiativeToAdd, this.state.nameToAdd,this.state.ACToAdd,this.state.HPToAdd,this.state.passiveToAdd,this.state.initiativeKey];
     this.setState({initiativeKey: (this.state.initiativeKey+1)})
     var orderCopy = this.state.initiativeOrder;
     orderCopy.push(newEntry);
@@ -51,12 +57,15 @@ export default class Initiative extends React.Component {
     this.resetState()
     this.textInput1.clear()
     this.textInput2.clear()
+    this.textInput3.clear()
+    this.textInput4.clear()
+    this.textInput5.clear()
   }
 
   remove = (entry) =>{
     var initList = this.state.initiativeOrder
     for (i =0; i< initList.length;++i){
-      if(initList[i][2] == entry[2]){
+      if(initList[i][5] == entry[5]){
         initList.splice(i,1)
         this.setState({initiativeOrder: initList})
         return
@@ -84,6 +93,32 @@ export default class Initiative extends React.Component {
               placeholder="___"
               onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
             />
+            <Text style={styles.text}> AC: </Text>
+            <TextInput
+              ref={input3 => { this.textInput3 = input3 }}
+              keyboardType='numeric'
+              maxLength = {2}
+              placeholder="___"
+              onChangeText={(ACToAdd) => this.setState({ACToAdd})}
+            />
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={styles.text}> Max HP: </Text>
+            <TextInput
+              ref={input4 => { this.textInput4 = input4 }}
+              keyboardType='numeric'
+              maxLength = {2}
+              placeholder="___"
+              onChangeText={(HPToAdd) => this.setState({HPToAdd})}
+            />
+            <Text style={styles.text}> Passive Perception: </Text>
+            <TextInput
+              ref={input5 => { this.textInput5 = input5 }}
+              keyboardType='numeric'
+              maxLength = {2}
+              placeholder="___"
+              onChangeText={(passiveToAdd) => this.setState({passiveToAdd})}
+            />
             <TouchableHighlight onPress={() => this.addNew(this)}>
               <Image source={require('../assets/plus.png')}/>
             </TouchableHighlight>
@@ -93,8 +128,11 @@ export default class Initiative extends React.Component {
           <ScrollView style={styles.scrollList}>
             {this.state.initiativeOrder.map((item, key)=>(
             <View key={key} style={styles.initiativeItem}>
-              <Text style={styles.initiative}>{item[0]}</Text>
-              <Text style={styles.name}>{item[1]}</Text>
+              <Text style={styles.number}>{item[0]}</Text>
+              <Text style={styles.word}>{item[1]}</Text>
+              <Text style={styles.number}>{item[2]}</Text>
+              <Text style={styles.number}>{item[3]}</Text>
+              <Text style={styles.number}>{item[4]}</Text>
               <TouchableHighlight style={styles.imageButton} onPress={() => this.remove(item)}>
                 <Image source={require('../assets/minusSlim.png')}/>
               </TouchableHighlight>
@@ -116,12 +154,11 @@ const styles = StyleSheet.create({
     height: 1000,
   },
   initiativeItem:{
-    height: 60,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  initiative: {
+  number: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -133,7 +170,7 @@ const styles = StyleSheet.create({
     flexDirection : 'column-reverse',
     width: 350,
   },
-  name: {
+  word: {
     flex: 3,
     flexDirection: 'row',
     justifyContent: 'flex-start',
