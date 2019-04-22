@@ -78,6 +78,8 @@ export default class Monsters extends React.Component {
     }
   }
 
+  
+  
   healMonster = (entry) => {
     this.setState({targetID : entry[4]})
     this.setState({adjustType : 'heal'})
@@ -94,6 +96,10 @@ export default class Monsters extends React.Component {
     this.setState({targetID : entry[4]})
     this.setState({adjustType : 'temp'})
     this.setState({isTempVisible : true})
+  }
+
+  listerHandler (entry, mode) {
+    
   }
 
   render() {
@@ -129,7 +135,7 @@ export default class Monsters extends React.Component {
             closeDialog={ () => {this.setState({isTempVisible : false})}}>
         </DialogInput>
         <View style={styles.lower}>
-          <ScrollView style={styles.scrollList}>
+        <ScrollView style={styles.scrollList}>
           {this.state.monsterList.map((monster, key)=>(
             <View key={key} style={{flexDirection : 'row'}}>
               <Text style={styles.name}>{monster[0]}</Text>
