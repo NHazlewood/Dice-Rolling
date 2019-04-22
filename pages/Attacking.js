@@ -31,18 +31,18 @@ export default class Attacking extends React.Component {
     var tableHeight = (((Dimensions.get('window').height) *9) /14)
     return (
       <ImageBackground source={require('../assets/background.png')} style={styles.container}>
-        <DiceInput style={styles.upper}  callback={this.recieveRolls}/>      
+        <DiceInput callback={this.recieveRolls}/> 
         <View style={styles.lower}>
-        <View style={{width: tableWidth,height: tableHeight}}>
-        <ScrollView style={styles.scrollingRolls}>
-            {this.state.outText.map((item, key)=>(
-            <Text key={key} style={[(item[1]) == "Crit!" ? styles.crit : [(item[1]) == "Fumble!" ? styles.fumble : styles.normal ]]} > 
-              Attack #: {item[0]} {item[1]} 
-              {"\n"}  To Hit {item[2]} ({[!(Array.isArray(item[3])) ? item[3] : item[3].map((item3, key)=>(<Text key={key}>{[(key*1+1 >= item[3].length) ? ", " : ""]}{item3}</Text>))]}) + {item[4]}) 
-              {"\n"}  Damage: {item[5]} ({item[6].map((item6, key)=>(<Text key={key}>{item6}{[(key*1+1 < item[6].length) ? "+" : ""]}</Text>))}){[item[1] == "Crit!" ? "x2" : ""]} + {item[7]}) </Text>)
-            )}
-          </ScrollView>          
-        </View>
+          <View style={{width: tableWidth,height: tableHeight}}>
+          <ScrollView style={styles.scrollingRolls}>
+              {this.state.outText.map((item, key)=>(
+              <Text key={key} style={[(item[1]) == "Crit!" ? styles.crit : [(item[1]) == "Fumble!" ? styles.fumble : styles.normal ]]} > 
+                Attack #: {item[0]} {item[1]} 
+                {"\n"}  To Hit {item[2]} ({[!(Array.isArray(item[3])) ? item[3] : item[3].map((item3, key)=>(<Text key={key}>{[(key*1+1 >= item[3].length) ? ", " : ""]}{item3}</Text>))]}) + {item[4]}) 
+                {"\n"}  Damage: {item[5]} ({item[6].map((item6, key)=>(<Text key={key}>{item6}{[(key*1+1 < item[6].length) ? "+" : ""]}</Text>))}){[item[1] == "Crit!" ? "x2" : ""]} + {item[7]}) </Text>)
+              )}
+            </ScrollView>          
+          </View>
         </View>
       </ImageBackground>
     );

@@ -76,9 +76,7 @@ export default class Monsters extends React.Component {
         return
       }
     }
-  }
-
-  
+  }  
   
   healMonster = (entry) => {
     this.setState({targetID : entry[4]})
