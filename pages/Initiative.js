@@ -107,7 +107,7 @@ export default class Initiative extends React.Component {
             <TextInput
               ref={input4 => { this.textInput4 = input4 }}
               keyboardType='numeric'
-              maxLength = {2}
+              maxLength = {4}
               placeholder="___"
               onChangeText={(HPToAdd) => this.setState({HPToAdd})}
             />
@@ -128,11 +128,11 @@ export default class Initiative extends React.Component {
           <ScrollView style={styles.scrollList}>
             {this.state.initiativeOrder.map((item, key)=>(
             <View key={key} style={styles.initiativeItem}>
-              <Text style={styles.number}>{item[0]}</Text>
+              <Text style={styles.number}>Init:{item[0]}</Text>
               <Text style={styles.word}>{item[1]}</Text>
-              <Text style={styles.number}>{item[2]}</Text>
-              <Text style={styles.number}>{item[3]}</Text>
-              <Text style={styles.number}>{item[4]}</Text>
+              <Text style={styles.number}>AC:{[(item[2] > 0) ? item[2] : ' -']}</Text>
+              <Text style={styles.number}>HP:{[(item[3] > 0) ? item[3] : ' -']}</Text>
+              <Text style={styles.number}>PP:{[(item[4] > 0) ? item[4] : ' -']}</Text>
               <TouchableHighlight style={styles.imageButton} onPress={() => this.remove(item)}>
                 <Image source={require('../assets/minusSlim.png')}/>
               </TouchableHighlight>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   number: {
-    flex: 1,
+    flex: 2,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     fontSize: 16,

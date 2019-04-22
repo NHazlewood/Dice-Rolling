@@ -66,3 +66,6 @@ Completed Tasks
     -> export code into componets
 -> improve code (Bestiary.js)
     -> export code into componets
+
+Notes:
+armor pixel art orgional by hansipixel https://www.deviantart.com/hansipixel/art/Suit-of-Armor-609684316
