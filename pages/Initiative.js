@@ -1,5 +1,7 @@
 import React from 'react';
 import {Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
+import initiativeDB from '../support classes/initiativeDB';
+
 
 
 export default class Initiative extends React.Component {
@@ -17,6 +19,7 @@ export default class Initiative extends React.Component {
     this.state = {passiveToAdd: 0}
     this.state = {initiativeOrder: []}
     this.state = {initiativeKey: 0}
+    this.databaseReference = new initiativeDB;
   }
 
   componentWillMount(){
@@ -139,6 +142,12 @@ export default class Initiative extends React.Component {
             </View>)
             )}
           </ScrollView>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+            <Button title="Save" onPress={() => {}}/>
+            <Button title="Load" onPress={() => {}}/>
+            <Button title="Clear" onPress={() => {}}/>
+            <Button title="Delete" onPress={() => {}}/>
         </View>
       </View>
     );

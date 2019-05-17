@@ -2,9 +2,9 @@
   "packagerPort": null,
   "packagerPid": null,
   "webpackServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://a2-ach.sarggeras.dice-rolling.exp.direct",
+  "packagerNgrokUrl": "https://packager.a2-ach.sarggeras.dice-rolling.exp.direct",
+  "ngrokPid": 11924,
   "devToolsPort": 19002,
-  "expoServerPort": null
+  "expoServerPort": 19000
 }

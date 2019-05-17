@@ -102,7 +102,7 @@ class BestiaryManager extends React.Component {
         /*
         bestiary.transaction(tx => {
         tx.executeSql(
-            'DROP TABLE Beasts;'
+            'DROP TABLE Beastiary;'
             )
         })
         //*/
