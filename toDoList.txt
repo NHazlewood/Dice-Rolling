@@ -1,23 +1,25 @@
 In-Proggress
 -> improve initiative list 
     -> make items editable
-    -> add passive perception (optional field)
-    -> add ac (optional field)
-    -> add max hp (optional field)
-    -> highlight current have next button
+    -> add passive perception (optional field) (done)
+    -> add ac (optional field) (done)
+    -> add max hp (optional field) (done)
 -> improve initiative list 2
-    -> add dp for party
-    -> load existing party
-    -> parties?
-
+    -> add dp for party (done)
+    -> save parties (done)
+    -> delete parties 
+    -> clear current list (done)
+    -> load existing party (done)
+-> improve initiative list 3
+    -> have load produce a list of parties to choose from
+    -> have delete produce a list of parties to choose from
+------------------------------------------------------------------------------------------
 Back Burner
 -> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
 -> add database access to monsters.js
     -> save current monster list
     -> load monsters from bestiary
-
-
-
+------------------------------------------------------------------------------------------
 Task List
 -> add database access to monsters.js
     -> save current monster list
@@ -28,20 +30,12 @@ Improve attacking.js
     -> track different damage types
     -> negative modifers to damage and to hit
 -> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
--> improve initiative list 
-    -> make items editable
-    -> add passive perception (optional field)
-    -> add ac (optional field)
-    -> add max hp (optional field)
-    -> highlight current have next button
--> add database to intiative list
-    -> allow user to save party member information
 -> add health bonus to monsters tab
 -> rename functions and varaibles
     -> in bestiary to say beast not monster to keep it clearer and different from monster.js
     -> in dataManager to say entries for general use
 -> edit besitary entry (will probably need a new page)
-
+------------------------------------------------------------------------------------------
 Completed Tasks
 -> adjust monster health
 -> init list ID for search
@@ -66,6 +60,6 @@ Completed Tasks
     -> export code into componets
 -> improve code (Bestiary.js)
     -> export code into componets
-
+------------------------------------------------------------------------------------------
 Notes:
 armor pixel art orgional by hansipixel https://www.deviantart.com/hansipixel/art/Suit-of-Armor-609684316

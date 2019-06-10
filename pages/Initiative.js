@@ -1,7 +1,20 @@
 import React from 'react';
 import {Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
 import initiativeDB from '../support classes/initiativeDB';
+import DialogInput from 'react-native-dialog-input'
 
+async function asyncSave(teamName, partyList, saveFunction, callback){
+  await saveFunction(teamName,partyList).then(callback())
+}
+
+async function asyncLoad(teamName, loadFunction, callback){
+  await loadFunction(teamName).then((values => response = values))
+  callback(response)
+}
+
+async function asyncDelete(teamName, deleteFunction, callback){
+  await deleteFunction(teamName).then(callback())
+}
 
 
 export default class Initiative extends React.Component {
@@ -19,7 +32,13 @@ export default class Initiative extends React.Component {
     this.state = {passiveToAdd: 0}
     this.state = {initiativeOrder: []}
     this.state = {initiativeKey: 0}
-    this.databaseReference = new initiativeDB;
+    this.databaseReference = new initiativeDB
+    this.state = {teamName: ''}
+    this.state = {isSaveVisible: false}
+    this.state = {isDeleteVisible: false}
+    this.state = {isLoadVisible: false}
+    this.staticCallback = this.staticCallback.bind(this)
+    this.updateCallback = this.updateCallback.bind(this)
   }
 
   componentWillMount(){
@@ -29,6 +48,10 @@ export default class Initiative extends React.Component {
     this.setState({ACToAdd: 0})
     this.setState({HPToAdd: 0})
     this.setState({passiveToAdd: 0})
+    this.setState({teamName:''})
+    this.setState({isSaveVisible: false})
+    this.setState({isDeleteVisible: false})
+    this.setState({isLoadVisible: false})
     this.setState({initiativeOrder : []})
   }
 
@@ -76,10 +99,53 @@ export default class Initiative extends React.Component {
     }
   }
 
+  save () {
+    this.setState({isSaveVisible : true})
+  }
+
+  load () {
+    this.setState({isLoadVisible: true})
+  }
+
+  delete () {
+    this.setState({isDeleteVisible: true})
+  }
+
+  staticCallback () {
+    this.setState({isSaveVisible : false})
+    this.setState({isDeleteVisible: false})
+  }
+
+  updateCallback (newList){ 
+    this.setState({initiativeOrder : newList})
+    this.setState({isLoadVisible: false})
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style = {styles.container}>
+          <DialogInput isDialogVisible={this.state.isSaveVisible}
+            title={"Save"}
+            message={"Enter Party Name"}
+            hintInput ={""}
+            submitInput={ (inputText) => {asyncSave(inputText, this.state.initiativeOrder, this.databaseReference.saveParty, this.staticCallback)}}
+            closeDialog={ () => {this.setState({isSaveVisible : false})}}>
+          </DialogInput>
+          <DialogInput isDialogVisible={this.state.isLoadVisible}
+            title={"Load"}
+            message={"Enter Party Name"}
+            hintInput ={""}
+            submitInput={ (inputText) => {asyncLoad(inputText, this.databaseReference.loadParty, this.updateCallback)}}
+            closeDialog={ () => {this.setState({isLoadVisible : false})}}>
+          </DialogInput>
+          <DialogInput isDialogVisible={this.state.isDeleteVisible}
+            title={"Delete"}
+            message={"Enter Party Name"}
+            hintInput ={""}
+            submitInput={ (inputText) => {asyncDelete(inputText, this.databaseReference.deleteParty, this.staticCallback)}}
+            closeDialog={ () => {this.setState({isDeleteVisible : false})}}>
+          </DialogInput>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={styles.text}> Name: </Text>
             <TextInput
@@ -144,10 +210,10 @@ export default class Initiative extends React.Component {
           </ScrollView>
         </View>
         <View style={{flexDirection: 'row'}}>
-            <Button title="Save" onPress={() => {}}/>
-            <Button title="Load" onPress={() => {}}/>
-            <Button title="Clear" onPress={() => {}}/>
-            <Button title="Delete" onPress={() => {}}/>
+            <Button title="Save" onPress={() => this.save()}/>
+            <Button title="Load" onPress={() => this.load()}/>
+            <Button title="Clear" onPress={() => {this.setState({initiativeOrder : []})}}/>
+            <Button title="Delete" onPress={() => this.delete()}/>
         </View>
       </View>
     );

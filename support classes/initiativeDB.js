@@ -2,96 +2,141 @@ import React from 'react';
 
 import { SQLite } from 'expo';
 
-const partyList = SQLite.openDatabase('parties.db');
+const parties = SQLite.openDatabase('parties.db');
+
+async function savePartyManager(teamName,team){
+    await removeParty(teamName)
+    await addNewParty(teamName)
+    await addMembers(teamName, team)
+}
+
+async function addNewParty(teamName){
+    return new Promise ((resolve, reject) =>
+        parties.transaction(tx => {
+            tx.executeSql(
+                'INSERT INTO PartyList (PartyName) VALUES (?)',
+                [teamName],
+                (tx,results) => {resolve()},
+                (tx,results) => {console.log('Failure on adding team ' + results); reject()}
+            )
+        })
+    )
+}
+
+async function addMembers(teamName, team){
+    return new Promise((resolve, reject) =>
+        parties.transaction(tx => {
+            tx.executeSql(
+                'SELECT PartyID as ID FROM PartyList WHERE PartyName = ?',
+                [teamName],
+                (tx,results) => {
+                    team.map((character,key) =>(
+                        parties.transaction(tx => {
+                            tx.executeSql(
+                                'INSERT INTO CharacterList (CharacterName, Initiative, AC, MaxHP, PassivePerception, PartyID) VALUES (?,?,?,?,?,?)',
+                                [character[1],character[0],character[2],character[3],character[4],results.rows.item(0).ID],
+                                (tx, results)=>{resolve()},
+                                (tx, results)=>{console.log('Failure on save ' + results); reject()}
+                            )
+                        })
+                    ))
+                },
+                (tx,results) => {console.log('Failure on save ' + results); reject()}
+            )
+        })
+    )
+}
+
+async function removeParty(teamName){
+    return new Promise ((resolve, reject) =>
+        parties.transaction(tx => {
+            tx.executeSql(
+                'DELETE FROM PartyList WHERE PartyName = ?',
+                [teamName],
+                (tx,results) => {resolve()},
+                (tx,results) => {console.log('Failure on delete ' + results); reject()}
+            )
+        })
+    )
+}
+
+async function loadManager(teamName){
+
+    return new Promise ((resolve, reject) =>
+        parties.transaction(tx => {
+            tx.executeSql(
+                'SELECT * ' +
+                'FROM CharacterList CH, (' + 
+                    'SELECT PartyID as ID ' + 
+                    'FROM PartyList ' +
+                    'WHERE PartyName = ?' +
+                    ') Party ' +
+                'WHERE CH.PartyID = Party.ID',
+                [teamName],
+                (tx,results) => {
+                    var members = [];
+                    var member = [];
+                    for(var i=0; i < results.rows.length;++i){
+                        member = [results.rows.item(i).Initiative, results.rows.item(i).CharacterName, results.rows.item(i).AC, results.rows.item(i).MaxHP, results.rows.item(i).PassivePerception,results.rows.item(i).CharacterID]
+                        members.push(member)
+                    }
+                    members.sort()
+                    resolve(members)
+                },
+                (tx,results) => {console.log('Failure on load  ' + results);reject()},
+            )
+        })
+    )
+}
 
 export default class initiativeDB {
     constructor (){
-        partyList.transaction(tx => {
+        ///*
+        parties.transaction(tx => {
             tx.executeSql(
                 'DROP TABLE PartyList;'
             )
         })
-        partyList.transaction(tx => {
+        parties.transaction(tx => {
             tx.executeSql(
                 'DROP TABLE CharacterList;'
             )
         })
-        partyList.transaction(tx => {
+        //*/
+        parties.transaction(tx => {
             tx.executeSql(
-                'create table if not exists PartyList (PartID INTEGER primary key AUTOINCREMENT, PartyName VARCHAR Unique);'
+                'create table if not exists PartyList (PartyID INTEGER primary key AUTOINCREMENT, PartyName VARCHAR Unique);'
             )
         })
-        partyList.transaction(tx => {
+        parties.transaction(tx => {
             tx.executeSql(
-                'create table if not exists CharacterList (CharacterID INTEGER primary key AUTOINCREMENT, CharacterName VARCHAR, initiative INTEGER, AC INTEGER, MaxHP INTEGER, PassivePerception INTEGER, PartyID Foreign Key References PartyList(PartyID) On Delete Cascade);'
+                'create table if not exists CharacterList (CharacterID INTEGER primary key AUTOINCREMENT, PartyID INTEGER, CharacterName VARCHAR, Initiative INTEGER, AC INTEGER, MaxHP INTEGER, PassivePerception INTEGER, FOREIGN KEY ( PartyID ) REFERENCES PartyList ( PartID ));'
             )
         })
     }
 
-    async saveParty(teamName,team){
-        await removeParty(teamName)
-
+    saveParty(teamName, team){
         return new Promise ((resolve, reject) =>
-            partyList.transaction(tx => {
-                tx.executeSql(
-                    'SELECT PartyID as ID FROM PartyList WHERE PartyName = ?',
-                    [teamName],
-                    (tx,results) => {
-                        team.map((character,key) =>(
-                            partyList.transaction(tx => {
-                                tx.executeSql(
-                                    'INSERT INTO CharacterList (CharacterName, Initiative, AC, MaxHP, PassivePerception, PartyID) VALUES (?,?,?,?,?,?)',
-                                    [character[key][1],character[key][2],character[key][3],character[key][4],character[key][5],results.rows.item(0).ID],
-                                    (tx, results)=>{resolve()},
-                                    (tx, results)=>{console.log('Failure on save ' + results); reject()}
-                                )
-                            })
-                        ))
-                    },
-                    (tx,results) => {console.log('Failure on save ' + results); reject()}
-                )
-            })
+            resolve(savePartyManager(teamName, team))
         )
     }
 
-    async loadParty(teamName){
+
+    loadParty(teamName){
         return new Promise ((resolve, reject) =>
-            partyList.transaction(tx => {
-                tx.executeSql(
-                    'SELECT PartyID as ID FROM PartyList WHERE PartyName = ?',
-                    [teamName],
-                    (tx,results) => {
-                        partyList.transaction(tx => {
-                            tx.executeSql(
-                                'SELECT * FROM CharacterList WHERE PartyID = ?',
-                                [results.rows.item(0).ID],
-                                (tx,results) => {resolve(results)},
-                                (tx,results) => {console.log('Failure on load ' + results);reject()}
-                            )
-                        })
-                    },
-                    (tx,results) => {console.log('Failure on load  ' + results);reject()}
-                )
-            })
+            resolve(loadManager(teamName))
         )
     }
 
-    async removeParty(teamName){
+    deleteParty(teamName){
         return new Promise ((resolve, reject) =>
-            partyList.transaction(tx => {
-                tx.executeSql(
-                    'DELETE FROM PartyList WHERE PartyName = ?',
-                    [teamName],
-                    (tx,results) => {resolve()},
-                    (tx,results) => {console.log('Failure on delete ' + results);reject()}
-                )
-            })
+            resolve(removeParty(teamName))
         )
     }
 
     async getCharacterIndex(){
         return new Promise ((resolve,reject) =>
-            partyList.transaction(tx => {
+            parties.transaction(tx => {
                 tx.executeSql(
                     'SELECT MAX(CharacterID) AS ID FROM CharacterList;', 
                     [],

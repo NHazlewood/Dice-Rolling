@@ -4,7 +4,7 @@
   "webpackServerPort": null,
   "expoServerNgrokUrl": "https://a2-ach.sarggeras.dice-rolling.exp.direct",
   "packagerNgrokUrl": "https://packager.a2-ach.sarggeras.dice-rolling.exp.direct",
-  "ngrokPid": 11924,
+  "ngrokPid": 11768,
   "devToolsPort": 19002,
   "expoServerPort": 19000
 }

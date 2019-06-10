@@ -3,8 +3,8 @@ import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, Touchable
 import BestiaryManager from '../components/BestiaryManager.js';
 import BeastInput from '../components/BeastInput.js';
 
-async function asyncHelper(newEntry, targetFuntion, callback){
-  await targetFuntion(newEntry).then((values => response = values))
+async function asyncHelper(newEntry, targetFunction, callback){
+  await targetFunction(newEntry).then((values => response = values))
   callback(response)
 }
 

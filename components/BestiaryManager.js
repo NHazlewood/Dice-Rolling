@@ -34,8 +34,8 @@ async function retrieveAll () {
                     var beasts = [];
                     var beast = [];
                     for(var i=0; i < results.rows.length;++i){
-                    beast = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
-                    beasts.push(beast)
+                        beast = [results.rows.item(i).name, results.rows.item(i).setHealth, results.rows.item(i).healthDiceNumber, results.rows.item(i).healthDiceType, results.rows.item(i).healthBonus, results.rows.item(i).AC, results.rows.item(i).description, results.rows.item(i).id]
+                        beasts.push(beast)
                     }
                     beasts.sort()
                     resolve(beasts)
