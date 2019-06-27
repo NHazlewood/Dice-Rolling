@@ -46,16 +46,6 @@ export default class Monsters extends React.Component {
     }
   }
 
-  loadMonster() {
-    console.log("load")
-    //have a popup that lets the user enter a name
-    //send name to BesitaryManager
-    //retiever monster(s)
-    //have a drop down with each monster returned and allow the user to specify a quantity
-    //add the specified number of a number with either the avg or random health specified
-    //name new monsters monster(1) monster(2) etc 
-  }
-
   adjustHealth = (amount) => {
     this.setState({isHealVisible : false})
     this.setState({isDamageVisible : false})
@@ -106,7 +96,6 @@ export default class Monsters extends React.Component {
         <BestiaryManager ref={databaseReference => {this.databaseReference = databaseReference}}/>
         <View style = {styles.upper}>          
           <MonsterAdder callback={this.addNewMonster} />
-          <Button title="Load" onPress={() => this.loadMonster()} />
         </View>
         <DialogInput isDialogVisible={this.state.isDamageVisible}
             title={"Damaging"}

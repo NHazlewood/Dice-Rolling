@@ -2,13 +2,11 @@ import { createMaterialTopTabNavigator, createAppContainer} from 'react-navigati
 
 import Attacking from "./pages/Attacking";
 import Initiative from "./pages/Initiative";
-import Bestiary from "./pages/Bestiary";
 import Monsters from "./pages/Monsters";
 
 const TabNavigator = createMaterialTopTabNavigator({
   Attacking: {screen: Attacking},
   Initiative: {screen: Initiative},
-  Bestiary: {screen: Bestiary},
   Monsters: {screen: Monsters},
 },
 {
