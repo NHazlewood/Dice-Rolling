@@ -8,6 +8,7 @@ async function savePartyManager(teamName,team){
     await removeParty(teamName)
     await addNewParty(teamName)
     await addMembers(teamName, team)
+    return await getParties()
 }
 
 async function addNewParty(teamName){
@@ -47,6 +48,11 @@ async function addMembers(teamName, team){
     )
 }
 
+async function removePartyManger(teamName){
+    await removeParty(teamName)
+    return await getParties()
+}
+
 async function removeParty(teamName){
     return new Promise ((resolve, reject) =>
         parties.transaction(tx => {
@@ -59,6 +65,7 @@ async function removeParty(teamName){
         })
     )
 }
+
 
 async function loadManager(teamName){
 
@@ -138,7 +145,7 @@ export default class initiativeDB {
 
     saveParty(teamName, team){
         return new Promise ((resolve, reject) =>
-            savePartyManager(teamName, team).then(resolve(getParties()))
+            resolve(savePartyManager(teamName, team))
         )
     }
 
@@ -151,7 +158,7 @@ export default class initiativeDB {
 
     deleteParty(teamName){
         return new Promise ((resolve, reject) =>
-            removeParty(teamName).then(resolve(getParties()))         
+            resolve(removePartyManger(teamName))       
         )
     }
 

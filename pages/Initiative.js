@@ -117,6 +117,7 @@ export default class Initiative extends React.Component {
 
   updatePartiesCallback (newParties){ 
     this.setState({savedParties: newParties})
+    this.setState({isSaveVisible : false})
     //this.setState({isLoadVisible: false})
   }
 
