@@ -89,6 +89,27 @@ async function loadManager(teamName){
     )
 }
 
+async function getParties(){
+    return new Promise ((resolve, reject) =>
+        parties.transaction(tx => {
+            tx.executeSql(
+                'SELECT PartyName FROM PartyList',
+                [],
+                (tx,results) => {
+                    var parties = [];
+                    var party = '';
+                    for(var i=0; i < results.rows.length;++i){
+                        party = [results.rows.item(i).PartyName]
+                        parties.push(party)
+                    }
+                    parties.sort()
+                    resolve(parties)},
+                (tx,results) => {console.log('Failure on delete ' + results); reject()}
+            )
+        })
+    )
+}
+
 export default class initiativeDB {
     constructor (){
         ///*
@@ -117,7 +138,7 @@ export default class initiativeDB {
 
     saveParty(teamName, team){
         return new Promise ((resolve, reject) =>
-            resolve(savePartyManager(teamName, team))
+            savePartyManager(teamName, team).then(resolve(getParties()))
         )
     }
 
@@ -130,7 +151,7 @@ export default class initiativeDB {
 
     deleteParty(teamName){
         return new Promise ((resolve, reject) =>
-            resolve(removeParty(teamName))
+            removeParty(teamName).then(resolve(getParties()))         
         )
     }
 

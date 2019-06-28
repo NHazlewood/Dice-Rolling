@@ -51,7 +51,7 @@ class CharacterAdder extends React.Component {
             return
         }
 
-        newCharacter = [this.state.nameToAdd, this.state.initiativeToAdd,, this.state.ACToAdd,, this.state.HPToAdd,this.state.passiveToAdd]
+        newCharacter = [this.state.nameToAdd, this.state.initiativeToAdd, this.state.ACToAdd, this.state.HPToAdd, this.state.passiveToAdd]
         this.clearState()
         this.props.callback(newCharacter)
     }

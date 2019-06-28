@@ -6,18 +6,21 @@ import CharacterAdder from '../components/CharacterAdder.js'
 import InitiativeTabs from '../components/InitiativeTabs.js'
 
 async function asyncSave(teamName, partyList, saveFunction, callback){
+  if(!teamName) return
   await saveFunction(teamName,partyList).then((values => response = values))
-  callback(response[0],response[1])
+  callback(response)
 }
 
 async function asyncLoad(teamName, loadFunction, callback){
+  if(!teamName) return
   await loadFunction(teamName).then((values => response = values))
-  callback(response[0],response[1])
+  callback(response)
 }
 
 async function asyncDelete(teamName, deleteFunction, callback){
+  if(!teamName) return
   await deleteFunction(teamName).then((values => response = values))
-  callback(response[0],response[1])
+  callback(response)
 }
 
 
@@ -31,7 +34,7 @@ export default class Initiative extends React.Component {
     super(props);
     this.state = {initiativeOrder: []}
     this.state = {savedParties: []}
-    this.state = {activeTab : 0}
+    this.state = {activeTab : 1}
     //this.state = {initiativeKey: 0}
     this.databaseReference = new initiativeDB
     this.state = {teamName: ''}
@@ -39,7 +42,8 @@ export default class Initiative extends React.Component {
     this.state = {isDeleteVisible: false}
     this.state = {isLoadVisible: false}
     //this.staticCallback = this.staticCallback.bind(this)
-    this.updateCallback = this.updateCallback.bind(this)
+    this.updateCharactersCallback = this.updateCharactersCallback.bind(this)
+    this.updatePartiesCallback = this.updatePartiesCallback.bind(this)
     this.tabManager = this.tabManager.bind(this)
   }
 
@@ -56,7 +60,7 @@ export default class Initiative extends React.Component {
     this.setState({isLoadVisible: false})
     this.setState({initiativeOrder : []})
     this.setState({savedParties : []})
-    this.setState({activeTab : 0})
+    this.setState({activeTab : 1})
   }
 
   resetState(){
@@ -83,7 +87,7 @@ export default class Initiative extends React.Component {
   }
 
   tabManager (mode) {
-    console.log(mode)
+    //console.log(mode)
     //mode = 0 show characters, mode = 1 show parties
     // logic bug for displaying have to reserve it
     this.setState({activeTab: mode})
@@ -106,10 +110,14 @@ export default class Initiative extends React.Component {
     this.setState({isDeleteVisible: false})
   }
 */
-  updateCallback (newCharacters, newParties){ 
+  updateCharactersCallback (newCharacters){ 
     this.setState({initiativeOrder : newCharacters})
+    //this.setState({isLoadVisible: false})
+  }
+
+  updatePartiesCallback (newParties){ 
     this.setState({savedParties: newParties})
-    this.setState({isLoadVisible: false})
+    //this.setState({isLoadVisible: false})
   }
 
   render() {
@@ -120,21 +128,21 @@ export default class Initiative extends React.Component {
             title={"Save as New"}
             message={"Enter Party Name"}
             hintInput ={""}
-            submitInput={ (inputText) => {asyncSave(inputText, this.state.initiativeOrder, this.databaseReference.saveParty, this.updateCallback)}}
+            submitInput={ (inputText) => {asyncSave(inputText, this.state.initiativeOrder, this.databaseReference.saveParty, this.updatePartiesCallback)}}
             closeDialog={ () => {this.setState({isSaveVisible : false})}}>
           </DialogInput>
           <DialogInput isDialogVisible={this.state.isLoadVisible}
             title={"Load"}
             message={"Enter Party Name"}
             hintInput ={""}
-            submitInput={ (inputText) => {asyncLoad(inputText, this.databaseReference.loadParty, this.updateCallback)}}
+            submitInput={ (inputText) => {asyncLoad(inputText, this.databaseReference.loadParty, this.updateCharactersCallback)}}
             closeDialog={ () => {this.setState({isLoadVisible : false})}}>
           </DialogInput>
           <DialogInput isDialogVisible={this.state.isDeleteVisible}
             title={"Delete"}
             message={"Enter Party Name"}
             hintInput ={""}
-            submitInput={ (inputText) => {asyncDelete(inputText, this.databaseReference.deleteParty, this.updateCallback)}}
+            submitInput={ (inputText) => {asyncDelete(inputText, this.databaseReference.deleteParty, this.updatePartiesCallback)}}
             closeDialog={ () => {this.setState({isDeleteVisible : false})}}>
           </DialogInput>          
           <View style = {styles.upper}>
@@ -164,14 +172,14 @@ export default class Initiative extends React.Component {
               {this.state.savedParties.map((item, key)=>(
                 <View key={key} style={styles.initiativeItem}>
                   <Text style={styles.number}>Party:{item}</Text>
-                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncDelete(item, this.databaseReference.deleteParty, this.updateCallback)}>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncDelete(item, this.databaseReference.deleteParty, this.updatePartiesCallback)}>
                     <Text>Remove</Text>
                   </TouchableHighlight>
-                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncLoad(item, this.databaseReference.loadParty, this.updateCallback)}>
-                    <Text>Save</Text>
-                  </TouchableHighlight>
-                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncSave(item, this.state.initiativeOrder, this.databaseReference.saveParty, this.updateCallback)}>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncLoad(item, this.databaseReference.loadParty, this.updatePartiesCallback)}>
                     <Text>Load</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncSave(item, this.state.initiativeOrder, this.databaseReference.saveParty, this.updateCharactersCallback)}>
+                    <Text>Save</Text>
                   </TouchableHighlight>
                 </View>
               ))}
