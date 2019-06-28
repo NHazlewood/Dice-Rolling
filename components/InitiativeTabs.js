@@ -31,7 +31,7 @@ class InitiativeTabs extends React.Component {
         return 0
     }
 
-    upDateTab(){
+    updateTab(){
         if(!this.validateState()){
             return
         }
@@ -45,14 +45,14 @@ class InitiativeTabs extends React.Component {
                 <TouchableHighlight
                 style={[(this.state.mode) == 0 ? styles.active : styles.inactive]} 
                 disabled = {(this.state.mode) == 0 ? true : false}
-                onPress={() => this.upDateTab()}>
+                onPress={() => this.updateTab()}>
                     <Text style={styles.text}>Characters</Text>
                 </TouchableHighlight>
 
                 <TouchableHighlight
                 style={[(this.state.mode) == 1 ? styles.active : styles.inactive]} 
                 disabled = {(this.state.mode) == 1 ? true : false}
-                onPress={() => this.upDateTab()}
+                onPress={() => this.updateTab()}
                 >
                     <Text style={styles.text} >Parties</Text>
                 </TouchableHighlight>

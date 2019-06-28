@@ -6,16 +6,18 @@ import CharacterAdder from '../components/CharacterAdder.js'
 import InitiativeTabs from '../components/InitiativeTabs.js'
 
 async function asyncSave(teamName, partyList, saveFunction, callback){
-  await saveFunction(teamName,partyList).then(callback())
+  await saveFunction(teamName,partyList).then((values => response = values))
+  callback(response[0],response[1])
 }
 
 async function asyncLoad(teamName, loadFunction, callback){
   await loadFunction(teamName).then((values => response = values))
-  callback(response)
+  callback(response[0],response[1])
 }
 
 async function asyncDelete(teamName, deleteFunction, callback){
-  await deleteFunction(teamName).then(callback())
+  await deleteFunction(teamName).then((values => response = values))
+  callback(response[0],response[1])
 }
 
 
@@ -28,14 +30,17 @@ export default class Initiative extends React.Component {
   constructor(props) {
     super(props);
     this.state = {initiativeOrder: []}
+    this.state = {savedParties: []}
+    this.state = {activeTab : 0}
     //this.state = {initiativeKey: 0}
     this.databaseReference = new initiativeDB
     this.state = {teamName: ''}
     this.state = {isSaveVisible: false}
     this.state = {isDeleteVisible: false}
     this.state = {isLoadVisible: false}
-    this.staticCallback = this.staticCallback.bind(this)
+    //this.staticCallback = this.staticCallback.bind(this)
     this.updateCallback = this.updateCallback.bind(this)
+    this.tabManager = this.tabManager.bind(this)
   }
 
   componentWillMount(){
@@ -50,6 +55,8 @@ export default class Initiative extends React.Component {
     this.setState({isDeleteVisible: false})
     this.setState({isLoadVisible: false})
     this.setState({initiativeOrder : []})
+    this.setState({savedParties : []})
+    this.setState({activeTab : 0})
   }
 
   resetState(){
@@ -58,22 +65,13 @@ export default class Initiative extends React.Component {
   }
 
   addNew = (newEntry) =>{
-    //if(!this.validateState()){return}
-    //const newEntry = [this.state.initiativeToAdd, this.state.nameToAdd,this.state.ACToAdd,this.state.HPToAdd,this.state.passiveToAdd,this.state.initiativeKey];
-    //this.setState({initiativeKey: (this.state.initiativeKey+1)})
     var orderCopy = this.state.initiativeOrder;
     orderCopy.push(newEntry);
     orderCopy.sort((a,b) => {return b[0]-a[0]});
     this.setState({initiativeOrder: orderCopy});
-    //this.resetState()
-    //this.textInput1.clear()
-    //this.textInput2.clear()
-    //this.textInput3.clear()
-    //this.textInput4.clear()
-    //this.textInput5.clear()
   }
 
-  remove = (entry) =>{
+  removeCharacter = (entry) =>{
     var initList = this.state.initiativeOrder
     for (i =0; i< initList.length;++i){
       if(initList[i][5] == entry[5]){
@@ -86,6 +84,9 @@ export default class Initiative extends React.Component {
 
   tabManager (mode) {
     console.log(mode)
+    //mode = 0 show characters, mode = 1 show parties
+    // logic bug for displaying have to reserve it
+    this.setState({activeTab: mode})
   }
 
   save () {
@@ -99,14 +100,15 @@ export default class Initiative extends React.Component {
   delete () {
     this.setState({isDeleteVisible: true})
   }
-
+/*
   staticCallback () {
     this.setState({isSaveVisible : false})
     this.setState({isDeleteVisible: false})
   }
-
-  updateCallback (newList){ 
-    this.setState({initiativeOrder : newList})
+*/
+  updateCallback (newCharacters, newParties){ 
+    this.setState({initiativeOrder : newCharacters})
+    this.setState({savedParties: newParties})
     this.setState({isLoadVisible: false})
   }
 
@@ -115,10 +117,10 @@ export default class Initiative extends React.Component {
       <View style={styles.container}>
         <View style = {styles.container}>
           <DialogInput isDialogVisible={this.state.isSaveVisible}
-            title={"Save"}
+            title={"Save as New"}
             message={"Enter Party Name"}
             hintInput ={""}
-            submitInput={ (inputText) => {asyncSave(inputText, this.state.initiativeOrder, this.databaseReference.saveParty, this.staticCallback)}}
+            submitInput={ (inputText) => {asyncSave(inputText, this.state.initiativeOrder, this.databaseReference.saveParty, this.updateCallback)}}
             closeDialog={ () => {this.setState({isSaveVisible : false})}}>
           </DialogInput>
           <DialogInput isDialogVisible={this.state.isLoadVisible}
@@ -132,7 +134,7 @@ export default class Initiative extends React.Component {
             title={"Delete"}
             message={"Enter Party Name"}
             hintInput ={""}
-            submitInput={ (inputText) => {asyncDelete(inputText, this.databaseReference.deleteParty, this.staticCallback)}}
+            submitInput={ (inputText) => {asyncDelete(inputText, this.databaseReference.deleteParty, this.updateCallback)}}
             closeDialog={ () => {this.setState({isDeleteVisible : false})}}>
           </DialogInput>          
           <View style = {styles.upper}>
@@ -140,27 +142,46 @@ export default class Initiative extends React.Component {
             <InitiativeTabs callback={this.tabManager}/>
           </View>
         </View>
+
         <View style={styles.lower}>
-          <ScrollView style={styles.scrollList}>
-            {this.state.initiativeOrder.map((item, key)=>(
-              <View key={key} style={styles.initiativeItem}>
-                <Text style={styles.number}>Init:{item[0]}</Text>
-                <Text style={styles.word}>{item[1]}</Text>
-                <Text style={styles.number}>AC:{[(item[2] > 0) ? item[2] : ' -']}</Text>
-                <Text style={styles.number}>HP:{[(item[3] > 0) ? item[3] : ' -']}</Text>
-                <Text style={styles.number}>PP:{[(item[4] > 0) ? item[4] : ' -']}</Text>
-                <TouchableHighlight style={styles.imageButton} onPress={() => this.remove(item)}>
-                  <Image source={require('../assets/minusSlim.png')}/>
-                </TouchableHighlight>
-              </View>)
-            )}
-          </ScrollView>
+          {(this.state.activeTab) == 1 ?
+            <ScrollView style = {styles.scrollList}>
+              {this.state.initiativeOrder.map((item, key)=>(
+                <View key={key} style={styles.initiativeItem}>
+                  <Text style={styles.number}>Init:{item[0]}</Text>
+                  <Text style={styles.word}>{item[1]}</Text>
+                  <Text style={styles.number}>AC:{[(item[2] > 0) ? item[2] : ' -']}</Text>
+                  <Text style={styles.number}>HP:{[(item[3] > 0) ? item[3] : ' -']}</Text>
+                  <Text style={styles.number}>PP:{[(item[4] > 0) ? item[4] : ' -']}</Text>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => this.removeCharacter(item)}>
+                    <Image source={require('../assets/minusSlim.png')}/>
+                  </TouchableHighlight>
+                </View>
+              ))}
+            </ScrollView>
+          :
+            <ScrollView style = {styles.scrollList}>
+              {this.state.savedParties.map((item, key)=>(
+                <View key={key} style={styles.initiativeItem}>
+                  <Text style={styles.number}>Party:{item}</Text>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncDelete(item, this.databaseReference.deleteParty, this.updateCallback)}>
+                    <Text>Remove</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncLoad(item, this.databaseReference.loadParty, this.updateCallback)}>
+                    <Text>Save</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncSave(item, this.state.initiativeOrder, this.databaseReference.saveParty, this.updateCallback)}>
+                    <Text>Load</Text>
+                  </TouchableHighlight>
+                </View>
+              ))}
+            </ScrollView>
+          }    
         </View>
+
         <View style={{flexDirection: 'row'}}>
-          <Button title="Save" onPress={() => this.save()}/>
-          <Button title="Load" onPress={() => this.load()}/>
           <Button title="Clear" onPress={() => {this.setState({initiativeOrder : []})}}/>
-          <Button title="Delete" onPress={() => this.delete()}/>
+          <Button title="Save as New" onPress={() => this.save()}/>
         </View>
       </View>
     );
@@ -208,6 +229,20 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     padding: 5,
+  },
+  activeScrollList : {
+    borderColor: 'black',
+    borderWidth: 5,
+    borderRadius: 3,
+    padding: 5,
+    shadowColor: 'black',
+  },
+  inactiveScrollList : {
+    borderColor: 'black',
+    borderWidth: 5,
+    borderRadius: 3,
+    padding: 5,
+    shadowColor: 'black',
   },
   scrollList : {
     borderColor: 'black',
