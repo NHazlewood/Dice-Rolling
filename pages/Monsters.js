@@ -1,7 +1,6 @@
 import React from 'react'
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native'
 import DialogInput from 'react-native-dialog-input'
-import BestiaryManager from '../components/BestiaryManager.js'
 import MonsterAdder from '../components/MonsterAdder.js'
 
 
@@ -93,7 +92,6 @@ export default class Monsters extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <BestiaryManager ref={databaseReference => {this.databaseReference = databaseReference}}/>
         <View style = {styles.upper}>          
           <MonsterAdder callback={this.addNewMonster} />
         </View>

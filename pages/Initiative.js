@@ -2,6 +2,8 @@ import React from 'react';
 import {Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
 import initiativeDB from '../support classes/initiativeDB';
 import DialogInput from 'react-native-dialog-input'
+import CharacterAdder from '../components/CharacterAdder.js'
+import InitiativeTabs from '../components/InitiativeTabs.js'
 
 async function asyncSave(teamName, partyList, saveFunction, callback){
   await saveFunction(teamName,partyList).then(callback())
@@ -25,13 +27,8 @@ export default class Initiative extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {nameToAdd: ''}
-    this.state = {initiativeToAdd: 0}
-    this.state = {ACToAdd: 0}
-    this.state = {HPToAdd: 0}
-    this.state = {passiveToAdd: 0}
     this.state = {initiativeOrder: []}
-    this.state = {initiativeKey: 0}
+    //this.state = {initiativeKey: 0}
     this.databaseReference = new initiativeDB
     this.state = {teamName: ''}
     this.state = {isSaveVisible: false}
@@ -42,12 +39,12 @@ export default class Initiative extends React.Component {
   }
 
   componentWillMount(){
-    this.setState({nameToAdd : ''})
-    this.setState({initiativeToAdd: -1})
-    this.setState({initiativeKey : 0})
-    this.setState({ACToAdd: 0})
-    this.setState({HPToAdd: 0})
-    this.setState({passiveToAdd: 0})
+    //this.setState({nameToAdd : ''})
+    //this.setState({initiativeToAdd: -1})
+    //this.setState({initiativeKey : 0})
+    //this.setState({ACToAdd: 0})
+    //this.setState({HPToAdd: 0})
+    //this.setState({passiveToAdd: 0})
     this.setState({teamName:''})
     this.setState({isSaveVisible: false})
     this.setState({isDeleteVisible: false})
@@ -55,37 +52,25 @@ export default class Initiative extends React.Component {
     this.setState({initiativeOrder : []})
   }
 
-  validateState(){
-    if(this.state.nameToAdd == ''){
-      Alert.alert('Error','New entree requires a name',[{text:'Close'}])
-      return 0
-    }
-    if(this.state.initiativeToAdd == '' || this.state.initiativeToAdd < 0){
-      Alert.alert('Error','Invalid initiative',[{text:'Close'}])
-      return 0
-    }
-    return 1
-  }
-
   resetState(){
     this.setState({nameToAdd : ''})
     this.setState({initiativeToAdd: -1})
   }
 
-  addNew = () =>{
-    if(!this.validateState()){return}
-    const newEntry = [this.state.initiativeToAdd, this.state.nameToAdd,this.state.ACToAdd,this.state.HPToAdd,this.state.passiveToAdd,this.state.initiativeKey];
-    this.setState({initiativeKey: (this.state.initiativeKey+1)})
+  addNew = (newEntry) =>{
+    //if(!this.validateState()){return}
+    //const newEntry = [this.state.initiativeToAdd, this.state.nameToAdd,this.state.ACToAdd,this.state.HPToAdd,this.state.passiveToAdd,this.state.initiativeKey];
+    //this.setState({initiativeKey: (this.state.initiativeKey+1)})
     var orderCopy = this.state.initiativeOrder;
     orderCopy.push(newEntry);
     orderCopy.sort((a,b) => {return b[0]-a[0]});
     this.setState({initiativeOrder: orderCopy});
-    this.resetState()
-    this.textInput1.clear()
-    this.textInput2.clear()
-    this.textInput3.clear()
-    this.textInput4.clear()
-    this.textInput5.clear()
+    //this.resetState()
+    //this.textInput1.clear()
+    //this.textInput2.clear()
+    //this.textInput3.clear()
+    //this.textInput4.clear()
+    //this.textInput5.clear()
   }
 
   remove = (entry) =>{
@@ -97,6 +82,10 @@ export default class Initiative extends React.Component {
         return
       }
     }
+  }
+
+  tabManager (mode) {
+    console.log(mode)
   }
 
   save () {
@@ -145,75 +134,33 @@ export default class Initiative extends React.Component {
             hintInput ={""}
             submitInput={ (inputText) => {asyncDelete(inputText, this.databaseReference.deleteParty, this.staticCallback)}}
             closeDialog={ () => {this.setState({isDeleteVisible : false})}}>
-          </DialogInput>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={styles.text}> Name: </Text>
-            <TextInput
-              ref={input1 => { this.textInput1 = input1 }}
-              placeholder="___"
-              maxLength={20}
-              onChangeText={(nameToAdd) => this.setState({nameToAdd})}
-            />
-            <Text style={styles.text}> Initiative: </Text>
-            <TextInput
-              ref={input2 => { this.textInput2 = input2 }}
-              keyboardType='numeric'
-              maxLength = {2}
-              placeholder="___"
-              onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
-            />
-            <Text style={styles.text}> AC: </Text>
-            <TextInput
-              ref={input3 => { this.textInput3 = input3 }}
-              keyboardType='numeric'
-              maxLength = {2}
-              placeholder="___"
-              onChangeText={(ACToAdd) => this.setState({ACToAdd})}
-            />
-          </View>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.text}> Max HP: </Text>
-            <TextInput
-              ref={input4 => { this.textInput4 = input4 }}
-              keyboardType='numeric'
-              maxLength = {4}
-              placeholder="___"
-              onChangeText={(HPToAdd) => this.setState({HPToAdd})}
-            />
-            <Text style={styles.text}> Passive Perception: </Text>
-            <TextInput
-              ref={input5 => { this.textInput5 = input5 }}
-              keyboardType='numeric'
-              maxLength = {2}
-              placeholder="___"
-              onChangeText={(passiveToAdd) => this.setState({passiveToAdd})}
-            />
-            <TouchableHighlight onPress={() => this.addNew(this)}>
-              <Image source={require('../assets/plus.png')}/>
-            </TouchableHighlight>
+          </DialogInput>          
+          <View style = {styles.upper}>
+            <CharacterAdder callback={this.addNew} />
+            <InitiativeTabs callback={this.tabManager}/>
           </View>
         </View>
         <View style={styles.lower}>
           <ScrollView style={styles.scrollList}>
             {this.state.initiativeOrder.map((item, key)=>(
-            <View key={key} style={styles.initiativeItem}>
-              <Text style={styles.number}>Init:{item[0]}</Text>
-              <Text style={styles.word}>{item[1]}</Text>
-              <Text style={styles.number}>AC:{[(item[2] > 0) ? item[2] : ' -']}</Text>
-              <Text style={styles.number}>HP:{[(item[3] > 0) ? item[3] : ' -']}</Text>
-              <Text style={styles.number}>PP:{[(item[4] > 0) ? item[4] : ' -']}</Text>
-              <TouchableHighlight style={styles.imageButton} onPress={() => this.remove(item)}>
-                <Image source={require('../assets/minusSlim.png')}/>
-              </TouchableHighlight>
-            </View>)
+              <View key={key} style={styles.initiativeItem}>
+                <Text style={styles.number}>Init:{item[0]}</Text>
+                <Text style={styles.word}>{item[1]}</Text>
+                <Text style={styles.number}>AC:{[(item[2] > 0) ? item[2] : ' -']}</Text>
+                <Text style={styles.number}>HP:{[(item[3] > 0) ? item[3] : ' -']}</Text>
+                <Text style={styles.number}>PP:{[(item[4] > 0) ? item[4] : ' -']}</Text>
+                <TouchableHighlight style={styles.imageButton} onPress={() => this.remove(item)}>
+                  <Image source={require('../assets/minusSlim.png')}/>
+                </TouchableHighlight>
+              </View>)
             )}
           </ScrollView>
         </View>
         <View style={{flexDirection: 'row'}}>
-            <Button title="Save" onPress={() => this.save()}/>
-            <Button title="Load" onPress={() => this.load()}/>
-            <Button title="Clear" onPress={() => {this.setState({initiativeOrder : []})}}/>
-            <Button title="Delete" onPress={() => this.delete()}/>
+          <Button title="Save" onPress={() => this.save()}/>
+          <Button title="Load" onPress={() => this.load()}/>
+          <Button title="Clear" onPress={() => {this.setState({initiativeOrder : []})}}/>
+          <Button title="Delete" onPress={() => this.delete()}/>
         </View>
       </View>
     );
