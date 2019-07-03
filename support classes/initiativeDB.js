@@ -5,9 +5,15 @@ import { SQLite } from 'expo';
 const parties = SQLite.openDatabase('parties.db');
 
 async function savePartyManager(teamName,team){
+    console.log('Save: Team name |' + teamName + '|')
+    console.log('Save: Team |' + team + '|')
     await removeParty(teamName)
     await addNewParty(teamName)
     await addMembers(teamName, team)
+
+    await showAllCharacters()
+    await showAllParties()
+
     return await getParties()
 }
 
@@ -49,7 +55,12 @@ async function addMembers(teamName, team){
 }
 
 async function removePartyManger(teamName){
+    console.log('Remove: Team name |' + teamName + '|')
     await removeParty(teamName)
+
+    await showAllCharacters()
+    await showAllParties()
+
     return await getParties()
 }
 
@@ -68,7 +79,15 @@ async function removeParty(teamName){
 
 
 async function loadManager(teamName){
+    console.log('Load: Team name |' + teamName + '|')
 
+    await showAllCharacters()
+    await showAllParties()
+
+    return await loadTeam(teamName)
+}
+
+async function loadTeam(teamName){
     return new Promise ((resolve, reject) =>
         parties.transaction(tx => {
             tx.executeSql(
@@ -91,6 +110,42 @@ async function loadManager(teamName){
                     resolve(members)
                 },
                 (tx,results) => {console.log('Failure on load  ' + results);reject()},
+            )
+        })
+    )
+}
+
+async function showAllCharacters(){
+    return new Promise ((resolve, reject) =>
+        parties.transaction(tx => {
+            tx.executeSql(
+                'SELECT * FROM CharacterList',
+                [],
+                (tx,results) => {
+                    for(var i=0; i < results.rows.length;++i){
+                        console.log(results.rows.item(i).PartyID + ',' + results.rows.item(i).CharacterID + ',' + results.rows.item(i).Initiative + ',' + results.rows.item(i).CharacterName + ',' + results.rows.item(i).AC + ',' + results.rows.item(i).MaxHP + ',' + results.rows.item(i).PassivePerception + ',' + results.rows.item(i).CharacterID + '|')
+                    }
+                    resolve()
+                },
+                (tx,results) => {console.log('Failure on showAllCharacters  ' + results);reject()},
+            )
+        })
+    )
+}
+
+async function showAllParties(){
+    return new Promise ((resolve, reject) =>
+        parties.transaction(tx => {
+            tx.executeSql(
+                'SELECT * FROM PartyList',
+                [],
+                (tx,results) => {
+                    for(var i=0; i < results.rows.length;++i){
+                        console.log(results.rows.item(i).PartyName  + ',' + results.rows.item(i).PartyID + '|')
+                    }
+                    resolve()
+                },
+                (tx,results) => {console.log('Failure on showAllParties  ' + results);reject()},
             )
         })
     )
