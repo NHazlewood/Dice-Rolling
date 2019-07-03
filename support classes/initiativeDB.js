@@ -5,14 +5,14 @@ import { SQLite } from 'expo';
 const parties = SQLite.openDatabase('parties.db');
 
 async function savePartyManager(teamName,team){
-    console.log('Save: Team name |' + teamName + '|')
-    console.log('Save: Team |' + team + '|')
+    //console.log('Save: Team name |' + teamName + '|')
+    //console.log('Save: Team |' + team + '|')
     await removeParty(teamName)
     await addNewParty(teamName)
     await addMembers(teamName, team)
 
-    await showAllCharacters()
-    await showAllParties()
+    //await showAllCharacters()
+    //await showAllParties()
 
     return await getParties()
 }
@@ -58,8 +58,8 @@ async function removePartyManger(teamName){
     console.log('Remove: Team name |' + teamName + '|')
     await removeParty(teamName)
 
-    await showAllCharacters()
-    await showAllParties()
+    //await showAllCharacters()
+    //await showAllParties()
 
     return await getParties()
 }
@@ -79,15 +79,16 @@ async function removeParty(teamName){
 
 
 async function loadManager(teamName){
-    console.log('Load: Team name |' + teamName + '|')
+    //console.log('Load: Team name |' + teamName + '|')
 
-    await showAllCharacters()
-    await showAllParties()
+    //await showAllCharacters()
+    //await showAllParties()
 
     return await loadTeam(teamName)
 }
 
 async function loadTeam(teamName){
+    if(teamName == null) console.log('wtf')
     return new Promise ((resolve, reject) =>
         parties.transaction(tx => {
             tx.executeSql(

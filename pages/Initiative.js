@@ -12,7 +12,8 @@ async function asyncSave(teamName, partyList, saveFunction, callback){
 }
 
 async function asyncLoad(teamName, loadFunction, callback){
-  if(!teamName) return
+  if(!teamName[0]) return
+  //console.log(typeof teamName)
   await loadFunction(teamName).then((values => response = values))
   callback(response)
 }
@@ -37,10 +38,10 @@ export default class Initiative extends React.Component {
     this.state = {activeTab : 1}
     //this.state = {initiativeKey: 0}
     this.databaseReference = new initiativeDB
-    this.state = {teamName: ''}
+    //this.state = {teamName: ''}
     this.state = {isSaveVisible: false}
-    this.state = {isDeleteVisible: false}
-    this.state = {isLoadVisible: false}
+    //this.state = {isDeleteVisible: false}
+    //this.state = {isLoadVisible: false}
     //this.staticCallback = this.staticCallback.bind(this)
     this.updateCharactersCallback = this.updateCharactersCallback.bind(this)
     this.updatePartiesCallback = this.updatePartiesCallback.bind(this)
@@ -54,10 +55,10 @@ export default class Initiative extends React.Component {
     //this.setState({ACToAdd: 0})
     //this.setState({HPToAdd: 0})
     //this.setState({passiveToAdd: 0})
-    this.setState({teamName:''})
+    //this.setState({teamName:''})
     this.setState({isSaveVisible: false})
-    this.setState({isDeleteVisible: false})
-    this.setState({isLoadVisible: false})
+    //this.setState({isDeleteVisible: false})
+    //this.setState({isLoadVisible: false})
     this.setState({initiativeOrder : []})
     this.setState({savedParties : []})
     this.setState({activeTab : 1})
@@ -97,7 +98,7 @@ export default class Initiative extends React.Component {
     this.setState({isSaveVisible : true})
   }
 
-  load () {
+ /* load () {
     this.setState({isLoadVisible: true})
   }
 
@@ -131,21 +132,7 @@ export default class Initiative extends React.Component {
             hintInput ={""}
             submitInput={ (inputText) => {asyncSave(inputText, this.state.initiativeOrder, this.databaseReference.saveParty, this.updatePartiesCallback)}}
             closeDialog={ () => {this.setState({isSaveVisible : false})}}>
-          </DialogInput>
-          <DialogInput isDialogVisible={this.state.isLoadVisible}
-            title={"Load"}
-            message={"Enter Party Name"}
-            hintInput ={""}
-            submitInput={ (inputText) => {asyncLoad(inputText, this.databaseReference.loadParty, this.updateCharactersCallback)}}
-            closeDialog={ () => {this.setState({isLoadVisible : false})}}>
-          </DialogInput>
-          <DialogInput isDialogVisible={this.state.isDeleteVisible}
-            title={"Delete"}
-            message={"Enter Party Name"}
-            hintInput ={""}
-            submitInput={ (inputText) => {asyncDelete(inputText, this.databaseReference.deleteParty, this.updatePartiesCallback)}}
-            closeDialog={ () => {this.setState({isDeleteVisible : false})}}>
-          </DialogInput>          
+          </DialogInput>      
           <View style = {styles.upper}>
             <CharacterAdder callback={this.addNew} />
             <InitiativeTabs callback={this.tabManager}/>
@@ -172,14 +159,14 @@ export default class Initiative extends React.Component {
             <ScrollView style = {styles.scrollList}>
               {this.state.savedParties.map((item, key)=>(
                 <View key={key} style={styles.initiativeItem}>
-                  <Text style={styles.number}>Party:{item}</Text>
-                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncDelete(item, this.databaseReference.deleteParty, this.updatePartiesCallback)}>
+                  <Text style={styles.number}>Party:{item[0]}</Text>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncDelete(item[0], this.databaseReference.deleteParty, this.updatePartiesCallback)}>
                     <Text>Remove</Text>
                   </TouchableHighlight>
-                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncLoad(item, this.databaseReference.loadParty, this.updatePartiesCallback)}>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncLoad(item[0], this.databaseReference.loadParty, this.updateCharactersCallback)}>
                     <Text>Load</Text>
                   </TouchableHighlight>
-                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncSave(item, this.state.initiativeOrder, this.databaseReference.saveParty, this.updateCharactersCallback)}>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncSave(item[0], this.state.initiativeOrder, this.databaseReference.saveParty, this.updatePartiesCallback)}>
                     <Text>Save</Text>
                   </TouchableHighlight>
                 </View>
