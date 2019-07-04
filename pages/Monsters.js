@@ -5,7 +5,7 @@ import MonsterAdder from '../components/MonsterAdder.js'
 import encounterDB from  '../support classes/encounterDB'
 import EncounterTabs from '../components/EncounterTabs.js'
 
-//encounter support
+
 async function asyncSave(ecnounterName, encounterList, saveFunction, callback){
   if(!ecnounterName) return
   await saveFunction(ecnounterName,encounterList).then((values => response = values))
@@ -23,7 +23,7 @@ async function asyncDelete(ecnounterName, deleteFunction, callback){
   await deleteFunction(ecnounterName).then((values => response = values))
   callback(response)
 }
-//
+
 
 export default class Monsters extends React.Component {
 
@@ -34,13 +34,6 @@ export default class Monsters extends React.Component {
   constructor(props) {
     super(props);
     this.state = {monsterList: []}
-    //this.state = {targetID: 0}
-    //this.state = {isHealVisible : false}
-    //this.state = {isDamageVisible : false}
-    //this.state = {isTempVisible : false}
-    //this.state = {adjustType: ''}
-
-    //encounter support
     this.state = {savedEncounters: []}
     this.state = {activeTab : 1}
     this.databaseReference = new encounterDB
@@ -48,20 +41,15 @@ export default class Monsters extends React.Component {
     this.updateMonstersCallback = this.updateMonstersCallback.bind(this)
     this.updateEncountersCallback = this.updateEncountersCallback.bind(this)
     this.tabManager = this.tabManager.bind(this)
-    //
+
   }
 
   componentWillMount(){
-    //this.setState({isHealVisible : false})
-    //this.setState({isDamageVisible : false})
-    //this.setState({isTempVisible : false})
     this.setState({monsterList : []})
-
-    //encouter support
     this.setState({activeTab : 1})
     this.setState({savedEncounters : []})
     asyncDelete('LoadAllParties', this.databaseReference.deleteEncounter, this.updateEncountersCallback) //doing this to populate the parities list, hopefully
-    //
+
   }
 
   addNewMonster = (newMonster) =>{
@@ -81,48 +69,7 @@ export default class Monsters extends React.Component {
       }
     }
   }
-/*
-  adjustHealth = (amount) => {
-    this.setState({isHealVisible : false})
-    this.setState({isDamageVisible : false})
-    this.setState({isTempVisible : false})
-    var monsters = this.state.monsterList
-    for (i =0; i< monsters.length;++i){
-      if(monsters[i][4] == this.state.targetID){
-        if(this.state.adjustType == 'damage'){
-          monsters[i][1] -= amount
-        }
-        else { 
-          monsters[i][1] -= (amount*-1)
-          if(this.state.adjustType == 'heal'){
-            monsters[i][1] = Math.min(monsters[i][1], monsters[i][2])
-          }          
-        }
-        this.setState({monserList: monsters})
-        return
-      }
-    }
-  }  
-  
-  healMonster = (entry) => {
-    this.setState({targetID : entry[4]})
-    this.setState({adjustType : 'heal'})
-    this.setState({isHealVisible : true})
-  }
 
-  damageMonster = (entry) => {
-    this.setState({targetID : entry[4]})
-    this.setState({adjustType : 'damage'})
-    this.setState({isDamageVisible : true})
-  }
-
-  temporaryHealthMonster = (entry) => {
-    this.setState({targetID : entry[4]})
-    this.setState({adjustType : 'temp'})
-    this.setState({isTempVisible : true})
-  }
-*/
-//encounter support
   tabManager (mode) {
     this.setState({activeTab: mode})
   }
@@ -140,7 +87,7 @@ export default class Monsters extends React.Component {
     this.setState({savedEncounters : newEncounters})
     this.setState({isSaveVisible : false})
   }
-//
+
   render() {
     return (
       <ImageBackground source={require('../assets/backgroundInitiative.png')} style={styles.container}>
