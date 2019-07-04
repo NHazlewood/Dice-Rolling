@@ -16,7 +16,7 @@ async function addNewEncounter(encounterName){
     return new Promise ((resolve, reject) =>
         encounters.transaction(tx => {
             tx.executeSql(
-                'INSERT INTO Encounters (EncounterName) VALUES (?)',
+                'INSERT INTO EncounterList (EncounterName) VALUES (?)',
                 [encounterName],
                 (tx,results) => {resolve()},
                 (tx,results) => {console.log('Failure on addNewEncounter ' + results); reject()}
@@ -35,7 +35,7 @@ async function addMonsters(encounterName, monsterList){
                     monsterList.map((monster,key) =>(
                         encounters.transaction(tx => {
                             tx.executeSql(
-                                'INSERT INTO MonsterList (MonsterName, AC, CurrentHP, MaxHP, EncounterID) VALUES (?,?,?,?,?,?)',
+                                'INSERT INTO MonsterList (MonsterName, AC, CurrentHP, MaxHP, EncounterID) VALUES (?,?,?,?,?)',
                                 [monster[0],monster[1],monster[2],monster[3],results.rows.item(0).ID],
                                 (tx, results)=>{resolve()},
                                 (tx, results)=>{console.log('Failure on addMonsters ' + results); reject()}
@@ -95,7 +95,7 @@ async function loadManager(encounterName){
     )
 }
 
-async function getEncounter(){
+async function getEncounters(){
     return new Promise ((resolve, reject) =>
         encounters.transaction(tx => {
             tx.executeSql(
@@ -132,7 +132,7 @@ export default class encountersDB {
         //*/
         encounters.transaction(tx => {
             tx.executeSql(
-                'create table if not exists EcnounterList (EncounterID INTEGER primary key AUTOINCREMENT, EncounterName VARCHAR Unique);'
+                'create table if not exists EncounterList (EncounterID INTEGER primary key AUTOINCREMENT, EncounterName VARCHAR Unique);'
             )
         })
         encounters.transaction(tx => {

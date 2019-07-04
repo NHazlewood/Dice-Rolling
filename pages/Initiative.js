@@ -94,7 +94,7 @@ export default class Initiative extends React.Component {
   render() {
     return (
       <ImageBackground source={require('../assets/backgroundInitiative.png')} style={styles.container}>
-        <View style = {styles.container}>
+        <View style = {styles.upper}>
           <DialogInput isDialogVisible={this.state.isSaveVisible}
             title={"Save as New"}
             message={"Enter Party Name"}
@@ -102,10 +102,9 @@ export default class Initiative extends React.Component {
             submitInput={ (inputText) => {asyncSave(inputText, this.state.initiativeOrder, this.databaseReference.saveParty, this.updatePartiesCallback)}}
             closeDialog={ () => {this.setState({isSaveVisible : false})}}>
           </DialogInput>      
-          <View style = {styles.upper}>
-            <CharacterAdder callback={this.addNew} />
-            <InitiativeTabs callback={this.tabManager}/>
-          </View>
+            
+          <CharacterAdder callback={this.addNew} />
+          <InitiativeTabs callback={this.tabManager}/>
         </View>
 
         <View style={styles.lower}>
@@ -176,7 +175,7 @@ export default class Initiative extends React.Component {
             <ScrollView style = {styles.scrollList}>
               {this.state.savedParties.map((item, key)=>(
                 <View key={key} style={styles.initiativeItem}>
-                  <Text style={styles.number}>Party:{item[0]}</Text>
+                  <Text style={styles.name}>{item[0]}</Text>
                   <TouchableHighlight style={styles.imageButton} onPress={() => asyncDelete(item[0], this.databaseReference.deleteParty, this.updatePartiesCallback)}>
                     <Text>Remove</Text>
                   </TouchableHighlight>

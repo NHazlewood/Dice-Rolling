@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 
-class InitiativeTabs extends React.Component {
+class EncounterTabs extends React.Component {
 
     constructor(props) {
         super(props);
@@ -25,7 +25,7 @@ class InitiativeTabs extends React.Component {
             return 1
         }
         else {
-            console.log("Invalid state in InitiaveTab.js")
+            console.log("Invalid state in EncounterTab.js")
             this.setState({mode : 0})
         }
         return 0
@@ -46,7 +46,7 @@ class InitiativeTabs extends React.Component {
                 style={[(this.state.mode) == 0 ? styles.active : styles.inactive]} 
                 disabled = {(this.state.mode) == 0 ? true : false}
                 onPress={() => this.updateTab()}>
-                    <Text style={styles.text}>Characters</Text>
+                    <Text style={styles.text}>Monsters</Text>
                 </TouchableHighlight>
 
                 <TouchableHighlight
@@ -54,7 +54,7 @@ class InitiativeTabs extends React.Component {
                 disabled = {(this.state.mode) == 1 ? true : false}
                 onPress={() => this.updateTab()}
                 >
-                    <Text style={styles.text} >Parties</Text>
+                    <Text style={styles.text} >Encounters</Text>
                 </TouchableHighlight>
             </View>
         )
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default InitiativeTabs
+export default EncounterTabs

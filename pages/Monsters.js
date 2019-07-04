@@ -1,8 +1,9 @@
 import React from 'react'
-import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native'
+import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image, ImageBackground } from 'react-native'
 import DialogInput from 'react-native-dialog-input'
 import MonsterAdder from '../components/MonsterAdder.js'
 import encounterDB from  '../support classes/encounterDB'
+import EncounterTabs from '../components/EncounterTabs.js'
 
 //encounter support
 async function asyncSave(ecnounterName, encounterList, saveFunction, callback){
@@ -33,33 +34,33 @@ export default class Monsters extends React.Component {
   constructor(props) {
     super(props);
     this.state = {monsterList: []}
-    this.state = {targetID: 0}
-    this.state = {isHealVisible : false}
-    this.state = {isDamageVisible : false}
-    this.state = {isTempVisible : false}
-    this.state = {adjustType: ''}
+    //this.state = {targetID: 0}
+    //this.state = {isHealVisible : false}
+    //this.state = {isDamageVisible : false}
+    //this.state = {isTempVisible : false}
+    //this.state = {adjustType: ''}
 
     //encounter support
     this.state = {savedEncounters: []}
     this.state = {activeTab : 1}
     this.databaseReference = new encounterDB
     this.state = {isSaveVisible: false}
-    this.updateCharactersCallback = this.updateCharactersCallback.bind(this)
-    this.updatePartiesCallback = this.updatePartiesCallback.bind(this)
+    this.updateMonstersCallback = this.updateMonstersCallback.bind(this)
+    this.updateEncountersCallback = this.updateEncountersCallback.bind(this)
     this.tabManager = this.tabManager.bind(this)
     //
   }
 
   componentWillMount(){
-    this.setState({isHealVisible : false})
-    this.setState({isDamageVisible : false})
-    this.setState({isTempVisible : false})
+    //this.setState({isHealVisible : false})
+    //this.setState({isDamageVisible : false})
+    //this.setState({isTempVisible : false})
     this.setState({monsterList : []})
 
     //encouter support
     this.setState({activeTab : 1})
     this.setState({savedEncounters : []})
-    asyncDelete('LoadAllParties', this.databaseReference.deleteParty, this.updatePartiesCallback) //doing this to populate the parities list, hopefully
+    asyncDelete('LoadAllParties', this.databaseReference.deleteEncounter, this.updateEncountersCallback) //doing this to populate the parities list, hopefully
     //
   }
 
@@ -80,7 +81,7 @@ export default class Monsters extends React.Component {
       }
     }
   }
-
+/*
   adjustHealth = (amount) => {
     this.setState({isHealVisible : false})
     this.setState({isDamageVisible : false})
@@ -120,6 +121,7 @@ export default class Monsters extends React.Component {
     this.setState({adjustType : 'temp'})
     this.setState({isTempVisible : true})
   }
+*/
 //encounter support
   tabManager (mode) {
     this.setState({activeTab: mode})
@@ -129,70 +131,111 @@ export default class Monsters extends React.Component {
     this.setState({isSaveVisible : true})
   }
 
-  updateCharactersCallback (newCharacters){
-    newCharacters.sort((a,b) => {return b[0]-a[0]});
-    this.setState({initiativeOrder : newCharacters})
+  updateMonstersCallback (newMonsters){
+    newMonsters.sort((a,b) => {return b[0]-a[0]});
+    this.setState({monsterList : newMonsters})
   }
 
-  updatePartiesCallback (newParties){ 
-    this.setState({savedParties: newParties})
+  updateEncountersCallback (newEncounters){ 
+    this.setState({savedEncounters : newEncounters})
     this.setState({isSaveVisible : false})
   }
 //
   render() {
     return (
-      <View style={styles.container}>
+      <ImageBackground source={require('../assets/backgroundInitiative.png')} style={styles.container}>
         <View style = {styles.upper}>          
+          <DialogInput isDialogVisible={this.state.isSaveVisible}
+            title={"Save as New"}
+            message={"Enter Encounter Name"}
+            hintInput ={""}
+            submitInput={ (inputText) => {asyncSave(inputText, this.state.monsterList, this.databaseReference.saveEncounter, this.updateEncountersCallback)}}
+            closeDialog={ () => {this.setState({isSaveVisible : false})}}>
+          </DialogInput>
+
           <MonsterAdder callback={this.addNewMonster} />
+          <EncounterTabs callback={this.tabManager}/>
         </View>
-        <DialogInput isDialogVisible={this.state.isDamageVisible}
-            title={"Damaging"}
-            message={"Input damage amount"}
-            textInputProps = {{keyboardType:'numeric'}}
-            hintInput ={""}
-            submitInput={ (inputText) => {this.adjustHealth(inputText)} }
-            closeDialog={ () => {this.setState({isDamageVisible : false})}}>
-        </DialogInput>
-        <DialogInput isDialogVisible={this.state.isHealVisible}
-            title={"Healing"}
-            message={"Input healing amount"}
-            textInputProps = {{keyboardType:'numeric'}}
-            hintInput ={""}
-            submitInput={ (inputText) => {this.adjustHealth(inputText)} }
-            closeDialog={ () => {this.setState({isHealVisible : false})}}>
-        </DialogInput>
-        <DialogInput isDialogVisible={this.state.isTempVisible}
-            title={"Temporary Health"}
-            message={"Input temporary health amount"}
-            textInputProps = {{keyboardType:'numeric'}}
-            hintInput ={""}
-            submitInput={ (inputText) => {this.adjustHealth(inputText)} }
-            closeDialog={ () => {this.setState({isTempVisible : false})}}>
-        </DialogInput>
+        
         <View style={styles.lower}>
-        <ScrollView style={styles.scrollList}>
-          {this.state.monsterList.map((monster, key)=>(
-            <View key={key} style={{flexDirection : 'row'}}>
-              <Text style={styles.name}>{monster[0]}</Text>
-              <Text style={styles.health}>{monster[1]} / {monster[2]}</Text>
-              <Text style={styles.ac}>AC: {monster[3]}</Text>
-              <TouchableHighlight style={styles.imageButton} onPress={() => this.removeMonster(monster)}>
-                <Image source={require('../assets/grave.png')}/>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.imageButton} onPress={() => this.damageMonster(monster)}>
-                <Image source={require('../assets/sword.png')}/>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.imageButton} onPress={() => this.healMonster(monster)}>
-                <Image source={require('../assets/heart.png')}/>
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.imageButton} onPress={() => this.temporaryHealthMonster(monster)}>
-                <Image source={require('../assets/hourGlass.png')}/>
-              </TouchableHighlight>
-             </View>)
-          )}            
-          </ScrollView>
-        </View>        
+          {(this.state.activeTab) == 1 ?
+            <View>
+            <View style={styles.topBar}>
+              <Text style={styles.name}>Monster</Text>
+              <Text style={styles.health}>Health</Text>
+              <Text style={styles.ac}>AC</Text>
+            </View>
+            <ScrollView style={styles.scrollList}>
+              {this.state.monsterList.map((monster, key)=>(
+                <View key={key} style={{flexDirection : 'row'}}>
+                  <TextInput
+                    style = {styles.name}
+                    placeholder= {monster[0]}
+                    maxLength={24}
+                    onChangeText={(updateName) => monster[0] = updateName}
+                    placeholderTextColor = 'black'
+                  />
+                  <View style = {styles.health}>
+                  <TextInput
+                    style = {styles.text}
+                    placeholder= {monster[1].toString()}
+                    keyboardType='numeric'
+                    maxLength = {2}
+                    onChangeText={(updateName) => monster[1] = updateName}
+                    placeholderTextColor = 'black'
+                  />
+                  <Text style = {styles.text}> / </Text>
+                  <TextInput
+                    style = {styles.text}
+                    placeholder= {monster[2].toString()}
+                    keyboardType='numeric'
+                    maxLength = {2}
+                    onChangeText={(updateName) => monster[2] = updateName}
+                    placeholderTextColor = 'black'
+                  />
+                  </View>
+                  <TextInput
+                    style = {styles.ac}
+                    placeholder= {monster[3].toString()}
+                    keyboardType='numeric'
+                    maxLength = {2}
+                    onChangeText={(updateName) => monster[3] = updateName}
+                    placeholderTextColor = 'black'
+                  />
+                </View>)
+              )}            
+            </ScrollView>
+          </View>
+        :
+          <View>
+            <View style={styles.topBar}>
+              <Text style={styles.name}>Saved Ecnounters</Text>
+            </View>
+            <ScrollView style = {styles.scrollList}>
+              {this.state.savedEncounters.map((item, key)=>(
+                <View key={key} style={{flexDirection : 'row'}}>
+                  <Text style={styles.name}>{item[0]}</Text>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncDelete(item[0], this.databaseReference.deleteEncounter, this.updateEncountersCallback)}>
+                    <Text>Remove</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncLoad(item[0], this.databaseReference.loadEncounter, this.updateMonstersCallback)}>
+                    <Text>Load</Text>
+                  </TouchableHighlight>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => asyncSave(item[0], this.state.monsterList, this.databaseReference.saveEncounter, this.updateEncountersCallback)}>
+                    <Text>Save</Text>
+                  </TouchableHighlight>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        }  
       </View>
+
+        <View style={{flexDirection: 'row'}}>
+          <Button title="Clear" onPress={() => {this.setState({monsterList : []})}}/>
+          <Button title="Save as New" onPress={() => this.save()}/>
+        </View>  
+      </ImageBackground>
     );
   }
 }
@@ -211,7 +254,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 900,
+    height: '100%',
+    width: '100%',
   },
   health: {
     flex: 2,
@@ -230,6 +274,7 @@ const styles = StyleSheet.create({
   lower :{
     flex: 5,
     flexDirection : 'column-reverse',
+    justifyContent: 'flex-end',
     width: 350,
   },
   name: {
@@ -243,12 +288,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 5,
   },
-  scrollList : {
-    borderColor: 'black',
-    borderWidth: 5,
-    borderRadius: 3,
+  topBar:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 5,
-    shadowColor: 'black',
+  },
+  scrollList : {
+    padding: 5,
+
   },
   upper: {
     alignItems: 'center',
