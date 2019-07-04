@@ -110,7 +110,7 @@ async function getParties(){
                     }
                     parties.sort()
                     resolve(parties)},
-                (tx,results) => {console.log('Failure on delete ' + results); reject()}
+                (tx,results) => {console.log('Failure on getParties ' + results); reject()}
             )
         })
     )
@@ -118,7 +118,7 @@ async function getParties(){
 
 export default class initiativeDB {
     constructor (){
-        ///*
+        /*
         parties.transaction(tx => {
             tx.executeSql(
                 'DROP TABLE PartyList;'
@@ -129,7 +129,7 @@ export default class initiativeDB {
                 'DROP TABLE CharacterList;'
             )
         })
-        //*/
+        */
         parties.transaction(tx => {
             tx.executeSql(
                 'create table if not exists PartyList (PartyID INTEGER primary key AUTOINCREMENT, PartyName VARCHAR Unique);'

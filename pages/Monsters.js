@@ -2,7 +2,27 @@ import React from 'react'
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native'
 import DialogInput from 'react-native-dialog-input'
 import MonsterAdder from '../components/MonsterAdder.js'
+import encounterDB from  '../support classes/encounterDB'
 
+//encounter support
+async function asyncSave(ecnounterName, encounterList, saveFunction, callback){
+  if(!ecnounterName) return
+  await saveFunction(ecnounterName,encounterList).then((values => response = values))
+  callback(response)
+}
+
+async function asyncLoad(ecnounterName, loadFunction, callback){
+  if(!ecnounterName) return
+  await loadFunction(ecnounterName).then((values => response = values))
+  callback(response)
+}
+
+async function asyncDelete(ecnounterName, deleteFunction, callback){
+  if(!ecnounterName) return
+  await deleteFunction(ecnounterName).then((values => response = values))
+  callback(response)
+}
+//
 
 export default class Monsters extends React.Component {
 
@@ -18,6 +38,16 @@ export default class Monsters extends React.Component {
     this.state = {isDamageVisible : false}
     this.state = {isTempVisible : false}
     this.state = {adjustType: ''}
+
+    //encounter support
+    this.state = {savedEncounters: []}
+    this.state = {activeTab : 1}
+    this.databaseReference = new encounterDB
+    this.state = {isSaveVisible: false}
+    this.updateCharactersCallback = this.updateCharactersCallback.bind(this)
+    this.updatePartiesCallback = this.updatePartiesCallback.bind(this)
+    this.tabManager = this.tabManager.bind(this)
+    //
   }
 
   componentWillMount(){
@@ -25,6 +55,12 @@ export default class Monsters extends React.Component {
     this.setState({isDamageVisible : false})
     this.setState({isTempVisible : false})
     this.setState({monsterList : []})
+
+    //encouter support
+    this.setState({activeTab : 1})
+    this.setState({savedEncounters : []})
+    asyncDelete('LoadAllParties', this.databaseReference.deleteParty, this.updatePartiesCallback) //doing this to populate the parities list, hopefully
+    //
   }
 
   addNewMonster = (newMonster) =>{
@@ -84,11 +120,25 @@ export default class Monsters extends React.Component {
     this.setState({adjustType : 'temp'})
     this.setState({isTempVisible : true})
   }
-
-  listerHandler (entry, mode) {
-    
+//encounter support
+  tabManager (mode) {
+    this.setState({activeTab: mode})
   }
 
+  save () {
+    this.setState({isSaveVisible : true})
+  }
+
+  updateCharactersCallback (newCharacters){
+    newCharacters.sort((a,b) => {return b[0]-a[0]});
+    this.setState({initiativeOrder : newCharacters})
+  }
+
+  updatePartiesCallback (newParties){ 
+    this.setState({savedParties: newParties})
+    this.setState({isSaveVisible : false})
+  }
+//
   render() {
     return (
       <View style={styles.container}>

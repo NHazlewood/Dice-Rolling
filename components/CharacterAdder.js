@@ -29,6 +29,15 @@ class CharacterAdder extends React.Component {
           Alert.alert('Error','Invalid initiative',[{text:'Close'}])
           return 0
         }
+        if(this.state.ACToAdd == '' ){
+            this.setState({ACToAdd : 0})
+        }
+        if(this.state.HPToAdd == ''){
+            this.setState({HPToAdd : 0})
+        }
+        if(this.state.passiveToAdd == ''){
+            this.setState({passiveToAdd : 0})
+        }
         return 1
       }
     
@@ -51,7 +60,8 @@ class CharacterAdder extends React.Component {
             return
         }
 
-        newCharacter = [this.state.nameToAdd, this.state.initiativeToAdd, this.state.ACToAdd, this.state.HPToAdd, this.state.passiveToAdd]
+        newCharacter = [this.state.initiativeToAdd, this.state.nameToAdd, this.state.ACToAdd, this.state.HPToAdd, this.state.passiveToAdd]
+        //console.log(newCharacter)
         this.clearState()
         this.props.callback(newCharacter)
     }

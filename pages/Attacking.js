@@ -27,13 +27,14 @@ export default class Attacking extends React.Component {
   }
 
   render() {
-    var tableWidth = (((Dimensions.get('window').width) *8) /9)
-    var tableHeight = (((Dimensions.get('window').height) *9) /14)
+    //var tableWidth = (((Dimensions.get('window').width) *8) /9)
+    //var tableHeight = (((Dimensions.get('window').height) *9) /14)
+    //{width: tableWidth,height: tableHeight}
     return (
-      <ImageBackground source={require('../assets/background.png')} style={styles.container}>
+      <ImageBackground source={require('../assets/backgroundRolling.png')} style={styles.container}>
         <DiceInput callback={this.recieveRolls}/> 
         <View style={styles.lower}>
-          <View style={{width: tableWidth,height: tableHeight}}>
+          <View style={styles.table}>
           <ScrollView style={styles.scrollingRolls}>
               {this.state.outText.map((item, key)=>(
               <Text key={key} style={[(item[1]) == "Crit!" ? styles.crit : [(item[1]) == "Fumble!" ? styles.fumble : styles.normal ]]} > 
@@ -94,4 +95,8 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection : 'column',
   },
+  table: {
+    width : '90%',
+    height : '65%',
+  }
 });

@@ -1,6 +1,6 @@
 import React from 'react';
-import {Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
-import initiativeDB from '../support classes/initiativeDB';
+import {Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image, ImageBackground } from 'react-native';
+import initiativeDB from '../support classes/initiativeDB'
 import DialogInput from 'react-native-dialog-input'
 import CharacterAdder from '../components/CharacterAdder.js'
 import InitiativeTabs from '../components/InitiativeTabs.js'
@@ -12,8 +12,7 @@ async function asyncSave(teamName, partyList, saveFunction, callback){
 }
 
 async function asyncLoad(teamName, loadFunction, callback){
-  if(!teamName[0]) return
-  //console.log(typeof teamName)
+  if(!teamName) return
   await loadFunction(teamName).then((values => response = values))
   callback(response)
 }
@@ -36,32 +35,19 @@ export default class Initiative extends React.Component {
     this.state = {initiativeOrder: []}
     this.state = {savedParties: []}
     this.state = {activeTab : 1}
-    //this.state = {initiativeKey: 0}
     this.databaseReference = new initiativeDB
-    //this.state = {teamName: ''}
     this.state = {isSaveVisible: false}
-    //this.state = {isDeleteVisible: false}
-    //this.state = {isLoadVisible: false}
-    //this.staticCallback = this.staticCallback.bind(this)
     this.updateCharactersCallback = this.updateCharactersCallback.bind(this)
     this.updatePartiesCallback = this.updatePartiesCallback.bind(this)
     this.tabManager = this.tabManager.bind(this)
   }
 
   componentWillMount(){
-    //this.setState({nameToAdd : ''})
-    //this.setState({initiativeToAdd: -1})
-    //this.setState({initiativeKey : 0})
-    //this.setState({ACToAdd: 0})
-    //this.setState({HPToAdd: 0})
-    //this.setState({passiveToAdd: 0})
-    //this.setState({teamName:''})
     this.setState({isSaveVisible: false})
-    //this.setState({isDeleteVisible: false})
-    //this.setState({isLoadVisible: false})
     this.setState({initiativeOrder : []})
     this.setState({savedParties : []})
     this.setState({activeTab : 1})
+    asyncDelete('LoadAllParties', this.databaseReference.deleteParty, this.updatePartiesCallback) //doing this to populate the parities list, hopefully
   }
 
   resetState(){
@@ -88,9 +74,6 @@ export default class Initiative extends React.Component {
   }
 
   tabManager (mode) {
-    //console.log(mode)
-    //mode = 0 show characters, mode = 1 show parties
-    // logic bug for displaying have to reserve it
     this.setState({activeTab: mode})
   }
 
@@ -98,33 +81,19 @@ export default class Initiative extends React.Component {
     this.setState({isSaveVisible : true})
   }
 
- /* load () {
-    this.setState({isLoadVisible: true})
-  }
-
-  delete () {
-    this.setState({isDeleteVisible: true})
-  }
-/*
-  staticCallback () {
-    this.setState({isSaveVisible : false})
-    this.setState({isDeleteVisible: false})
-  }
-*/
-  updateCharactersCallback (newCharacters){ 
+  updateCharactersCallback (newCharacters){
+    newCharacters.sort((a,b) => {return b[0]-a[0]});
     this.setState({initiativeOrder : newCharacters})
-    //this.setState({isLoadVisible: false})
   }
 
   updatePartiesCallback (newParties){ 
     this.setState({savedParties: newParties})
     this.setState({isSaveVisible : false})
-    //this.setState({isLoadVisible: false})
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <ImageBackground source={require('../assets/backgroundInitiative.png')} style={styles.container}>
         <View style = {styles.container}>
           <DialogInput isDialogVisible={this.state.isSaveVisible}
             title={"Save as New"}
@@ -141,21 +110,69 @@ export default class Initiative extends React.Component {
 
         <View style={styles.lower}>
           {(this.state.activeTab) == 1 ?
+          <View>
+            <View style={styles.topBar}>
+              <Text style={styles.word}>Name</Text>
+              <Text style={styles.number}>Init</Text>
+              <Text style={styles.number}>AC</Text>
+              <Text style={styles.number}>HP</Text>
+              <Text style={styles.number}>PP</Text>
+              <Text style={styles.imageButton}></Text>
+            </View>
             <ScrollView style = {styles.scrollList}>
               {this.state.initiativeOrder.map((item, key)=>(
                 <View key={key} style={styles.initiativeItem}>
-                  <Text style={styles.number}>Init:{item[0]}</Text>
-                  <Text style={styles.word}>{item[1]}</Text>
-                  <Text style={styles.number}>AC:{[(item[2] > 0) ? item[2] : ' -']}</Text>
-                  <Text style={styles.number}>HP:{[(item[3] > 0) ? item[3] : ' -']}</Text>
-                  <Text style={styles.number}>PP:{[(item[4] > 0) ? item[4] : ' -']}</Text>
+                  <TextInput
+                    style = {styles.word}
+                    placeholder= {item[1]}
+                    maxLength={24}
+                    onChangeText={(updateName) => item[1] = updateName}
+                    placeholderTextColor = 'black'
+                  />
+                  <TextInput
+                    style = {styles.number}
+                    placeholder={item[0].toString()}
+                    keyboardType='numeric'
+                    maxLength = {2}
+                    onChangeText={(updateInitiative) => item[0] = updateInitiative}
+                    placeholderTextColor = 'black'
+                  />
+                  <TextInput
+                    style = {styles.number}
+                    placeholder={(item[2] > 0) ? item[2].toString() : '-'}
+                    keyboardType='numeric'
+                    maxLength = {2}
+                    onChangeText={(updateAC) => item[2] = updateAC}
+                    placeholderTextColor = 'black'
+                  />
+                  <TextInput
+                    style = {styles.number}
+                    placeholder={(item[3] > 0) ? item[3].toString() : '-'}
+                    keyboardType='numeric'
+                    maxLength = {4}
+                    onChangeText={(updateHP) => item[3] = updateHP}
+                    placeholderTextColor = 'black'
+                  />
+                  <TextInput
+                    style = {styles.number}
+                    placeholder={(item[4] > 0) ? item[4].toString() : '-'}
+                    keyboardType='numeric'
+                    maxLength = {2}
+                    onChangeText={(updatePP) => item[4] = updatePP}
+                    placeholderTextColor = 'black'
+                  />
                   <TouchableHighlight style={styles.imageButton} onPress={() => this.removeCharacter(item)}>
                     <Image source={require('../assets/minusSlim.png')}/>
                   </TouchableHighlight>
                 </View>
               ))}
             </ScrollView>
+            </View>
           :
+            <View>
+            <View style={styles.topBar}>
+              <Text style={styles.word}>Saved Parties</Text>
+            </View>
             <ScrollView style = {styles.scrollList}>
               {this.state.savedParties.map((item, key)=>(
                 <View key={key} style={styles.initiativeItem}>
@@ -172,6 +189,7 @@ export default class Initiative extends React.Component {
                 </View>
               ))}
             </ScrollView>
+            </View>
           }    
         </View>
 
@@ -179,7 +197,7 @@ export default class Initiative extends React.Component {
           <Button title="Clear" onPress={() => {this.setState({initiativeOrder : []})}}/>
           <Button title="Save as New" onPress={() => this.save()}/>
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }
@@ -190,12 +208,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 1000,
+    height: '100%',
+    width: '100%',
   },
   initiativeItem:{
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  topBar:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 5,
   },
   number: {
     flex: 2,
@@ -207,6 +232,7 @@ const styles = StyleSheet.create({
   lower :{
     flex: 5,
     flexDirection : 'column-reverse',
+    justifyContent: 'flex-end',
     width: 350,
   },
   word: {
@@ -226,26 +252,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 5,
   },
-  activeScrollList : {
-    borderColor: 'black',
-    borderWidth: 5,
-    borderRadius: 3,
-    padding: 5,
-    shadowColor: 'black',
-  },
-  inactiveScrollList : {
-    borderColor: 'black',
-    borderWidth: 5,
-    borderRadius: 3,
-    padding: 5,
-    shadowColor: 'black',
-  },
   scrollList : {
-    borderColor: 'black',
-    borderWidth: 5,
-    borderRadius: 3,
     padding: 5,
-    shadowColor: 'black',
   },
   upper: {
     alignItems: 'center',
