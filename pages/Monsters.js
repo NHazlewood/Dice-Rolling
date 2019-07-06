@@ -111,6 +111,7 @@ export default class Monsters extends React.Component {
               <Text style={styles.name}>Monster</Text>
               <Text style={styles.health}>Health</Text>
               <Text style={styles.ac}>AC</Text>
+              <Text style={styles.imageButton}></Text>
             </View>
             <ScrollView style={styles.scrollList}>
               {this.state.monsterList.map((monster, key)=>(
@@ -149,6 +150,9 @@ export default class Monsters extends React.Component {
                     onChangeText={(updateName) => monster[3] = updateName}
                     placeholderTextColor = 'black'
                   />
+                  <TouchableHighlight style={styles.imageButton} onPress={() => this.removeMonster(item)}>
+                    <Image source={require('../assets/minusSlim.png')}/>
+                  </TouchableHighlight>
                 </View>)
               )}            
             </ScrollView>
@@ -190,7 +194,7 @@ export default class Monsters extends React.Component {
 
 const styles = StyleSheet.create({
   ac: {
-    flex: 2,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     fontSize: 16,
@@ -205,7 +209,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   health: {
-    flex: 2,
+    flex: 3,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     fontSize: 16,

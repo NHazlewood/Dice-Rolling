@@ -25,6 +25,6 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "A work in progress app to be used along Dungeons and Dragons or similar systems."
+    "description": "Release 0.8\nA work in progress app to be used along Dungeons and Dragons or similar systems. Bug / platform debugging release, has the desired functionality for release 1.0 but none of the style."
   }
 }

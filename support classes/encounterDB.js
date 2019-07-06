@@ -118,7 +118,7 @@ async function getEncounters(){
 
 export default class encountersDB {
     constructor (){
-        ///*
+        /*
         encounters.transaction(tx => {
             tx.executeSql(
                 'DROP TABLE EncounterList;'
