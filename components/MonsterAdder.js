@@ -79,9 +79,11 @@ class MonsterAdder extends React.Component {
         }
         else{
             for(i=0;i<(this.state.numberOfDice*1);++i){
-                healthTotal = Math.ceil(Math.random() * this.state.healthDice) + parseInt(this.state.healthBonus)
+                healthTotal += Math.ceil(Math.random() * this.state.healthDice)
             }
+            healthTotal += parseInt(this.state.healthBonus)
         }
+
         newMonster = [this.state.monsterName, healthTotal, healthTotal, this.state.monsterAC,this.state.index]
         this.setState({index: (this.state.index+1)})
         this.clearInputs()

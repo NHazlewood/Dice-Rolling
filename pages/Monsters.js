@@ -150,7 +150,7 @@ export default class Monsters extends React.Component {
                     onChangeText={(updateName) => monster[3] = updateName}
                     placeholderTextColor = 'black'
                   />
-                  <TouchableHighlight style={styles.imageButton} onPress={() => this.removeMonster(item)}>
+                  <TouchableHighlight style={styles.imageButton} onPress={() => this.removeMonster(monster)}>
                     <Image source={require('../assets/minusSlim.png')}/>
                   </TouchableHighlight>
                 </View>)
