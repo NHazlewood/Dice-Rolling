@@ -95,27 +95,33 @@ class MonsterAdder extends React.Component {
         return (
             <View>
                 <View style={{flexDirection: 'row'}}>
-                    <Text style={styles.text}>Monster Name:</Text>
-                    <TextInput
-                        ref={input1 => { this.textInput1 = input1}}
-                        placeholder="___"
-                        maxLength = {24}
-                        onChangeText={(monsterName) => this.setState({monsterName})}
-                    />
-                    <Text style={styles.text}>AC:</Text>
-                    <TextInput
-                        ref={input2 => { this.textInput2 = input2}}
-                        placeholder="__"
-                        keyboardType='numeric'
-                        maxLength = {2}
-                        onChangeText={(monsterAC) => this.setState({monsterAC})}
-                    />
+                    <View style={{flex:3,flexDirection: 'row'}} >
+                        <Text style={styles.text}>Monster Name:</Text>
+                        <TextInput
+                            ref={input1 => { this.textInput1 = input1}}
+                            placeholder="          "
+                            maxLength = {20}
+                            onChangeText={(monsterName) => this.setState({monsterName})}
+                        />
+                    </View>
+                    <View style={{flex:1, flexDirection: 'row'}} >
+                        <Text style={styles.text}>AC:</Text>
+                        <TextInput
+                            ref={input2 => { this.textInput2 = input2}}
+                            placeholder="  "
+                            keyboardType='numeric'
+                            maxLength = {2}
+                            onChangeText={(monsterAC) => this.setState({monsterAC})}
+                        />
+                    </View>
                 </View>
                 <View style={{flexDirection: 'row'}}>
+
                     <Text style={styles.text}>Health:</Text>
                     <TextInput
                         ref={input3 => { this.textInput3 = input3}}
-                        placeholder="___"
+                        placeholder="         -"
+                        placeholderTextColor = 'transparent'
                         keyboardType='numeric'
                         maxLength = {4}
                         onChangeText={(setHealth) => this.setState({setHealth})}
@@ -123,7 +129,7 @@ class MonsterAdder extends React.Component {
                     <Text style={styles.text}> OR  Health dice:</Text>
                     <TextInput
                         ref={input4 => { this.textInput4 = input4}}
-                        placeholder="__"
+                        placeholder="  "
                         keyboardType='numeric'
                         maxLength = {2}
                         onChangeText={(numberOfDice) => this.setState({numberOfDice})}
@@ -131,7 +137,7 @@ class MonsterAdder extends React.Component {
                     <Text style={styles.text}> D</Text>
                     <TextInput
                         ref={input5 => { this.textInput5 = input5}}
-                        placeholder="__"
+                        placeholder="  "
                         keyboardType='numeric'
                         maxLength = {2}
                         onChangeText={(healthDice) => this.setState({healthDice})}
@@ -139,7 +145,8 @@ class MonsterAdder extends React.Component {
                     <Text style={styles.text}> + </Text>
                     <TextInput
                         ref={input6 => { this.textInput6 = input6}}
-                        placeholder="__"
+                        placeholder="         -"
+                        placeholderTextColor = 'transparent'
                         keyboardType='numeric'
                         maxLength = {4}
                         onChangeText={(healthBonus) => this.setState({healthBonus})}
@@ -155,8 +162,8 @@ class MonsterAdder extends React.Component {
 
 const styles = StyleSheet.create({
     text: {
-      fontSize: 16,
-      padding: 5,
+        fontSize: 16,
+        padding: 5,
     },
   });
 

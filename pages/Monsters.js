@@ -90,8 +90,8 @@ export default class Monsters extends React.Component {
 
   render() {
     return (
-      <ImageBackground source={require('../assets/backgroundInitiative.png')} style={styles.container}>
-        <View style = {styles.upper}>          
+      <ImageBackground source={require('../assets/backgroundMonstersHD.png')} style={styles.container}>
+        <View style={styles.upper}>          
           <DialogInput isDialogVisible={this.state.isSaveVisible}
             title={"Save as New"}
             message={"Enter Encounter Name"}
@@ -100,8 +100,8 @@ export default class Monsters extends React.Component {
             closeDialog={ () => {this.setState({isSaveVisible : false})}}>
           </DialogInput>
 
-          <MonsterAdder callback={this.addNewMonster} />
-          <EncounterTabs callback={this.tabManager}/>
+          <MonsterAdder callback={this.addNewMonster}/>
+          <EncounterTabs callback={this.tabManager} />
         </View>
         
         <View style={styles.lower}>
@@ -109,7 +109,9 @@ export default class Monsters extends React.Component {
             <View>
             <View style={styles.topBar}>
               <Text style={styles.name}>Monster</Text>
-              <Text style={styles.health}>Health</Text>
+              <View style={styles.health} >
+                <Text style={styles.text}>Health</Text>
+              </View>
               <Text style={styles.ac}>AC</Text>
               <Text style={styles.imageButton}></Text>
             </View>
@@ -124,23 +126,23 @@ export default class Monsters extends React.Component {
                     placeholderTextColor = 'black'
                   />
                   <View style = {styles.health}>
-                  <TextInput
-                    style = {styles.text}
-                    placeholder= {monster[1].toString()}
-                    keyboardType='numeric'
-                    maxLength = {2}
-                    onChangeText={(updateName) => monster[1] = updateName}
-                    placeholderTextColor = 'black'
-                  />
-                  <Text style = {styles.text}> / </Text>
-                  <TextInput
-                    style = {styles.text}
-                    placeholder= {monster[2].toString()}
-                    keyboardType='numeric'
-                    maxLength = {2}
-                    onChangeText={(updateName) => monster[2] = updateName}
-                    placeholderTextColor = 'black'
-                  />
+                    <TextInput
+                      style = {styles.text}
+                      placeholder= {monster[1].toString()}
+                      keyboardType='numeric'
+                      maxLength = {2}
+                      onChangeText={(updateName) => monster[1] = updateName}
+                      placeholderTextColor = 'black'
+                    />
+                    <Text style = {styles.text}> / </Text>
+                    <TextInput
+                      style = {styles.text}
+                      placeholder= {monster[2].toString()}
+                      keyboardType='numeric'
+                      maxLength = {2}
+                      onChangeText={(updateName) => monster[2] = updateName}
+                      placeholderTextColor = 'black'
+                    />
                   </View>
                   <TextInput
                     style = {styles.ac}
@@ -160,7 +162,7 @@ export default class Monsters extends React.Component {
         :
           <View>
             <View style={styles.topBar}>
-              <Text style={styles.name}>Saved Ecnounters</Text>
+              <Text style={styles.name}>Saved Encounters</Text>
             </View>
             <ScrollView style = {styles.scrollList}>
               {this.state.savedEncounters.map((item, key)=>(
@@ -179,13 +181,16 @@ export default class Monsters extends React.Component {
               ))}
             </ScrollView>
           </View>
-        }  
+        }
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly', paddingBottom: 5, backgroundColor: 'transparent'}}>
+          <TouchableHighlight style = {styles.bottomButton} onPress={() => {this.setState({monsterList : []})}} >
+            <Text style={styles.buttonText}>Clear</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style = {styles.bottomButton} onPress={() => this.save()} >
+            <Text style={styles.buttonText}>Save as New</Text>
+          </TouchableHighlight>
+        </View>
       </View>
-
-        <View style={{flexDirection: 'row'}}>
-          <Button title="Clear" onPress={() => {this.setState({monsterList : []})}}/>
-          <Button title="Save as New" onPress={() => this.save()}/>
-        </View>  
       </ImageBackground>
     );
   }
@@ -195,14 +200,11 @@ export default class Monsters extends React.Component {
 const styles = StyleSheet.create({
   ac: {
     flex: 1,
-    flexDirection: 'row',
     justifyContent: 'flex-start',
     fontSize: 16,
     padding: 2,
   },
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
@@ -211,7 +213,7 @@ const styles = StyleSheet.create({
   health: {
     flex: 3,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     fontSize: 16,
     padding: 2,
   },
@@ -223,36 +225,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   lower :{
-    flex: 5,
-    flexDirection : 'column-reverse',
-    justifyContent: 'flex-end',
-    width: 350,
+    flexDirection : 'column',
+    justifyContent: 'flex-start',
+    width: '90%',
+    height: '75%',
   },
   name: {
-    flex: 3,
-    flexDirection: 'row',
+    flex: 4,
     justifyContent: 'flex-start',
     fontSize: 16,
     padding: 2,
+    flexWrap : 'wrap',
   },
   text: {
     fontSize: 16,
-    padding: 5,
+  },
+  buttonText: {
+    fontSize: 18,
+  },
+  bottomButton: {
+    backgroundColor : 'white',
+    borderWidth : 1,
+    borderColor: 'black',
+    paddingBottom: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   topBar:{
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 5,
   },
   scrollList : {
     padding: 5,
-
+    height: '95%',
   },
   upper: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 2,
+    justifyContent: 'space-between',
+    height: '15%',
+    width: '90%',
     flexDirection : 'column',
-  },  
+  },
 });

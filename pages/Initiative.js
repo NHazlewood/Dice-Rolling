@@ -229,10 +229,10 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   lower :{
-    flex: 5,
+    flex: 7,
     flexDirection : 'column-reverse',
     justifyContent: 'flex-end',
-    width: 350,
+    width: '90%',
   },
   word: {
     flex: 3,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   upper: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 2,
+    flex: 3,
     flexDirection : 'column',
   },
 });

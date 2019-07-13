@@ -70,29 +70,35 @@ class CharacterAdder extends React.Component {
         return (
             <View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <Text style={styles.text}> Name: </Text>
-                    <TextInput
-                        ref={input1 => { this.textInput1 = input1 }}
-                        placeholder="___"
-                        maxLength={20}
-                        onChangeText={(nameToAdd) => this.setState({nameToAdd})}
-                    />
-                    <Text style={styles.text}> Initiative: </Text>
-                    <TextInput
-                        ref={input2 => { this.textInput2 = input2 }}
-                        keyboardType='numeric'
-                        maxLength = {2}
-                        placeholder="___"
-                        onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
-                    />
-                    <Text style={styles.text}> AC: </Text>
-                    <TextInput
-                        ref={input3 => { this.textInput3 = input3 }}
-                        keyboardType='numeric'
-                        maxLength = {2}
-                        placeholder="___"
-                        onChangeText={(ACToAdd) => this.setState({ACToAdd})}
-                    />
+                    <View style={{flex:3, flexDirection: 'row'}} >
+                        <Text style={styles.text}> Name: </Text>
+                        <TextInput
+                            ref={input1 => { this.textInput1 = input1 }}
+                            placeholder="            "
+                            maxLength={20}
+                            onChangeText={(nameToAdd) => this.setState({nameToAdd})}
+                        />
+                    </View>
+                    <View style={{flex:2, flexDirection: 'row'}} >
+                        <Text style={styles.text}> Initiative: </Text>
+                        <TextInput
+                            ref={input2 => { this.textInput2 = input2 }}
+                            keyboardType='numeric'
+                            maxLength = {2}
+                            placeholder="  "
+                            onChangeText={(initiativeToAdd) => this.setState({initiativeToAdd})}
+                        />
+                    </View>
+                    <View style={{flex:1, flexDirection: 'row'}} >
+                        <Text style={styles.text}> AC: </Text>
+                        <TextInput
+                            ref={input3 => { this.textInput3 = input3 }}
+                            keyboardType='numeric'
+                            maxLength = {2}
+                            placeholder="  "
+                            onChangeText={(ACToAdd) => this.setState({ACToAdd})}
+                        />
+                    </View>
                 </View>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={styles.text}> Max HP: </Text>
@@ -100,7 +106,7 @@ class CharacterAdder extends React.Component {
                         ref={input4 => { this.textInput4 = input4 }}
                         keyboardType='numeric'
                         maxLength = {4}
-                        placeholder="___"
+                        placeholder="    "
                         onChangeText={(HPToAdd) => this.setState({HPToAdd})}
                     />
                     <Text style={styles.text}> Passive Perception: </Text>
@@ -108,7 +114,7 @@ class CharacterAdder extends React.Component {
                         ref={input5 => { this.textInput5 = input5 }}
                         keyboardType='numeric'
                         maxLength = {2}
-                        placeholder="___"
+                        placeholder="  "
                         onChangeText={(passiveToAdd) => this.setState({passiveToAdd})}
                     />
                     <TouchableHighlight onPress={() => this.addNew(this)}>
