@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, TouchableHighlight, Image } from 'react-native';
 
 class CharacterAdder extends React.Component {
 
@@ -61,7 +61,6 @@ class CharacterAdder extends React.Component {
         }
 
         newCharacter = [this.state.initiativeToAdd, this.state.nameToAdd, this.state.ACToAdd, this.state.HPToAdd, this.state.passiveToAdd]
-        //console.log(newCharacter)
         this.clearState()
         this.props.callback(newCharacter)
     }

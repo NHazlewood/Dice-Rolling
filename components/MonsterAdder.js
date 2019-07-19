@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, TouchableHighlight, Image } from 'react-native';
 
 class MonsterAdder extends React.Component {
 

@@ -204,6 +204,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 2,
   },
+  bottomButton: {
+    backgroundColor : 'white',
+    borderWidth : 1,
+    borderColor: 'black',
+    paddingBottom: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  buttonText: {
+    fontSize: 18,
+  },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -246,17 +257,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-  },
-  buttonText: {
-    fontSize: 18,
-  },
-  bottomButton: {
-    backgroundColor : 'white',
-    borderWidth : 1,
-    borderColor: 'black',
-    paddingBottom: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
   },
   topBar:{
     flexDirection: 'row',

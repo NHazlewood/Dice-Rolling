@@ -43,7 +43,6 @@ class InitiativeTabs extends React.Component {
         return (
             <View style= {styles.container}>
                 <TouchableHighlight
-                //style={[(this.state.mode) == 0 ? styles.active : styles.inactive]}
                 underlayColor = {'transparent'} 
                 disabled = {(this.state.mode) == 0 ? true : false}
                 onPress={() => this.updateTab()}>
@@ -51,11 +50,9 @@ class InitiativeTabs extends React.Component {
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                //style={[(this.state.mode) == 1 ? styles.active : styles.inactive]} 
                 underlayColor = {'transparent'} 
                 disabled = {(this.state.mode) == 1 ? true : false}
-                onPress={() => this.updateTab()}
-                >
+                onPress={() => this.updateTab()}>
                     <Text style={[(this.state.mode) == 1 ? styles.active : styles.inactive]}>Parties</Text>
                 </TouchableHighlight>
             </View>
@@ -64,21 +61,21 @@ class InitiativeTabs extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    text: {
+    active:{
         fontSize: 18,
         padding: 5,
+        textDecorationLine: 'underline',
     },
     container: {
         flexDirection: 'row',
         alignItems: 'flex-start',
         width: '100%',
     },
-    active:{
+    inactive: {
         fontSize: 18,
         padding: 5,
-        textDecorationLine: 'underline',
     },
-    inactive: {
+    text: {
         fontSize: 18,
         padding: 5,
     },

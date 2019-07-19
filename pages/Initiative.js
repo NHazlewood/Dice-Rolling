@@ -208,42 +208,22 @@ export default class Initiative extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  bottomButton: {
+    backgroundColor : 'white',
+    borderWidth : 1,
+    borderColor: 'black',
+    paddingBottom: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  buttonText: {
+    fontSize: 18,
+  },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
     width: '100%',
-  },
-  initiativeItem:{
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  topBar:{
-    flexDirection: 'row',
-    //justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 5,
-  },
-  number: {
-    flex: 2,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    fontSize: 16,
-    padding: 2,
-  },
-  lower :{
-    flexDirection : 'column',
-    justifyContent: 'flex-start',
-    width: '90%',
-    height: '75%',
-  },
-  word: {
-    flex: 3,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    fontSize: 16,
-    padding: 2,
   },
   imageButton: {
     flex: 1,
@@ -259,13 +239,35 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     padding: 2,
   },
-  text: {
+  initiativeItem:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  lower :{
+    flexDirection : 'column',
+    justifyContent: 'flex-start',
+    width: '90%',
+    height: '75%',
+  },
+  number: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     fontSize: 16,
-    //padding: 5,
+    padding: 2,
   },
   scrollList : {
     padding: 5,
     height: '95%',
+  },
+  text: {
+    fontSize: 16,
+  },
+  topBar:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 5,
   },
   upper: {
     alignItems: 'center',
@@ -274,15 +276,11 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection : 'column',
   },
-  bottomButton: {
-    backgroundColor : 'white',
-    borderWidth : 1,
-    borderColor: 'black',
-    paddingBottom: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-  },
-  buttonText: {
-    fontSize: 18,
+  word: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
   },
 });

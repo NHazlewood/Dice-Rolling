@@ -43,27 +43,17 @@ class EncounterTabs extends React.Component {
         return (
             <View style= {styles.container}>
                 <TouchableHighlight
-                //style={[(this.state.mode) == 0 ? styles.active : styles.inactive]}
                 underlayColor = {'transparent'}
                 disabled = {(this.state.mode) == 0 ? true : false}
                 onPress={() => this.updateTab()}>
-                    <Text //style={styles.text}
-                    style={[(this.state.mode) == 0 ? styles.active : styles.inactive]}
-                    >
-                        Monsters</Text>
+                    <Text style={[(this.state.mode) == 0 ? styles.active : styles.inactive]}> Monsters</Text>
                 </TouchableHighlight>
 
                 <TouchableHighlight
-                //style={[(this.state.mode) == 1 ? styles.active : styles.inactive]}
                 underlayColor = {'transparent'} 
                 disabled = {(this.state.mode) == 1 ? true : false}
-                onPress={() => this.updateTab()}
-                >
-                    <Text 
-                    //style={styles.text} 
-                    style={[(this.state.mode) == 1 ? styles.active : styles.inactive]} 
-                    >
-                        Encounters</Text>
+                onPress={() => this.updateTab()}>
+                    <Text style={[(this.state.mode) == 1 ? styles.active : styles.inactive]}> Encounters</Text>
                 </TouchableHighlight>
             </View>
         )
@@ -71,48 +61,23 @@ class EncounterTabs extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    text: {
-        fontSize: 18,
-        padding: 5,
-        //paddingRight: 5,
-    },
     active: {
         fontSize: 18,
         padding: 5,
         textDecorationLine: 'underline',
-        //paddingRight: 5,
-    },
-    inactive: {
-        fontSize: 18,
-        padding: 5,
-        //textDecorationLine: 'underline'
-        //paddingRight: 5,
     },
     container: {
         flexDirection: 'row',
         alignItems: 'flex-start',
         width: '100%',
     },
-    button:{
-        borderColor: 'black',
-        borderWidth : 1,
-        borderTopLeftRadius : 5,
-        borderTopRightRadius : 5,
-        //backgroundColor: 'red',
+    inactive: {
+        fontSize: 18,
+        padding: 5,
     },
-    Iactive:{
-        borderColor: 'black',
-        borderWidth : 1,
-        borderTopLeftRadius : 5,
-        borderTopRightRadius : 5,
-        //backgroundColor: 'red',
-    },
-    Iinactive: {
-        borderColor: 'black',
-        borderWidth : 1,
-        borderTopLeftRadius : 5,
-        borderTopRightRadius : 5,
-       //backgroundColor: 'grey',
+    text: {
+        fontSize: 18,
+        padding: 5,
     },
   });
 
