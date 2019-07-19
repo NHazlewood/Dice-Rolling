@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     active: {
         fontSize: 18,
         padding: 5,
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
         //paddingRight: 5,
     },
     inactive: {

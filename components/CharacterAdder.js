@@ -69,8 +69,8 @@ class CharacterAdder extends React.Component {
     render () {
         return (
             <View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={{flex:3, flexDirection: 'row'}} >
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{flex:4, flexDirection: 'row'}} >
                         <Text style={styles.text}> Name: </Text>
                         <TextInput
                             ref={input1 => { this.textInput1 = input1 }}
@@ -95,18 +95,20 @@ class CharacterAdder extends React.Component {
                             ref={input3 => { this.textInput3 = input3 }}
                             keyboardType='numeric'
                             maxLength = {2}
-                            placeholder="  "
+                            placeholder="   -"
+                            placeholderTextColor = 'transparent'
                             onChangeText={(ACToAdd) => this.setState({ACToAdd})}
                         />
                     </View>
                 </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row'}}>
                     <Text style={styles.text}> Max HP: </Text>
                     <TextInput
                         ref={input4 => { this.textInput4 = input4 }}
                         keyboardType='numeric'
                         maxLength = {4}
-                        placeholder="    "
+                        placeholder="         -"
+                        placeholderTextColor = 'transparent'
                         onChangeText={(HPToAdd) => this.setState({HPToAdd})}
                     />
                     <Text style={styles.text}> Passive Perception: </Text>

@@ -113,7 +113,7 @@ export default class Monsters extends React.Component {
                 <Text style={styles.text}>Health</Text>
               </View>
               <Text style={styles.ac}>AC</Text>
-              <Text style={styles.imageButton}></Text>
+              <Text style={styles.imageButtonBorderless}></Text>
             </View>
             <ScrollView style={styles.scrollList}>
               {this.state.monsterList.map((monster, key)=>(
@@ -152,7 +152,7 @@ export default class Monsters extends React.Component {
                     onChangeText={(updateName) => monster[3] = updateName}
                     placeholderTextColor = 'black'
                   />
-                  <TouchableHighlight style={styles.imageButton} onPress={() => this.removeMonster(monster)}>
+                  <TouchableHighlight style={styles.imageButtonBorderless} onPress={() => this.removeMonster(monster)}>
                     <Image source={require('../assets/minusSlim.png')}/>
                   </TouchableHighlight>
                 </View>)
@@ -167,7 +167,7 @@ export default class Monsters extends React.Component {
             <ScrollView style = {styles.scrollList}>
               {this.state.savedEncounters.map((item, key)=>(
                 <View key={key} style={{flexDirection : 'row'}}>
-                  <Text style={styles.name}>{item[0]}</Text>
+                  <Text style={styles.word}>{item[0]}</Text>
                   <TouchableHighlight style={styles.imageButton} onPress={() => asyncDelete(item[0], this.databaseReference.deleteEncounter, this.updateEncountersCallback)}>
                     <Text>Remove</Text>
                   </TouchableHighlight>
@@ -220,9 +220,16 @@ const styles = StyleSheet.create({
   imageButton: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 2,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  imageButtonBorderless: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: 2,
-    alignItems: 'center',
   },
   lower :{
     flexDirection : 'column',
@@ -266,5 +273,12 @@ const styles = StyleSheet.create({
     height: '15%',
     width: '90%',
     flexDirection : 'column',
+  },
+  word: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    fontSize: 16,
+    padding: 2,
   },
 });

@@ -93,7 +93,7 @@ export default class Initiative extends React.Component {
 
   render() {
     return (
-      <ImageBackground source={require('../assets/backgroundInitiative.png')} style={styles.container}>
+      <ImageBackground source={require('../assets/backgroundInitiativeHD.png')} style={styles.container}>
         <View style = {styles.upper}>
           <DialogInput isDialogVisible={this.state.isSaveVisible}
             title={"Save as New"}
@@ -116,7 +116,7 @@ export default class Initiative extends React.Component {
               <Text style={styles.number}>AC</Text>
               <Text style={styles.number}>HP</Text>
               <Text style={styles.number}>PP</Text>
-              <Text style={styles.imageButton}></Text>
+              <Text style={styles.imageButtonBorderless}></Text>
             </View>
             <ScrollView style = {styles.scrollList}>
               {this.state.initiativeOrder.map((item, key)=>(
@@ -160,7 +160,7 @@ export default class Initiative extends React.Component {
                     onChangeText={(updatePP) => item[4] = updatePP}
                     placeholderTextColor = 'black'
                   />
-                  <TouchableHighlight style={styles.imageButton} onPress={() => this.removeCharacter(item)}>
+                  <TouchableHighlight style={styles.imageButtonBorderless} onPress={() => this.removeCharacter(item)}>
                     <Image source={require('../assets/minusSlim.png')}/>
                   </TouchableHighlight>
                 </View>
@@ -174,8 +174,8 @@ export default class Initiative extends React.Component {
             </View>
             <ScrollView style = {styles.scrollList}>
               {this.state.savedParties.map((item, key)=>(
-                <View key={key} style={styles.initiativeItem}>
-                  <Text style={styles.name}>{item[0]}</Text>
+                <View key={key} style={{flexDirection: 'row'}}>
+                  <Text style={styles.word}>{item[0]}</Text>
                   <TouchableHighlight style={styles.imageButton} onPress={() => asyncDelete(item[0], this.databaseReference.deleteParty, this.updatePartiesCallback)}>
                     <Text>Remove</Text>
                   </TouchableHighlight>
@@ -190,12 +190,18 @@ export default class Initiative extends React.Component {
             </ScrollView>
             </View>
           }    
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly', paddingBottom: 5, backgroundColor: 'transparent'}}>
+          <TouchableHighlight style = {styles.bottomButton} onPress={() => {this.setState({initiativeOrder : []})}} >
+            <Text style={styles.buttonText}>Clear</Text>
+          </TouchableHighlight>
+          <TouchableHighlight style = {styles.bottomButton} onPress={() => this.save()} >
+            <Text style={styles.buttonText}>Save as New</Text>
+          </TouchableHighlight>
+        </View>
+        
         </View>
 
-        <View style={{flexDirection: 'row'}}>
-          <Button title="Clear" onPress={() => {this.setState({initiativeOrder : []})}}/>
-          <Button title="Save as New" onPress={() => this.save()}/>
-        </View>
+
       </ImageBackground>
     );
   }
@@ -203,8 +209,6 @@ export default class Initiative extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
@@ -217,7 +221,7 @@ const styles = StyleSheet.create({
   },
   topBar:{
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    //justifyContent: 'space-between',
     alignItems: 'center',
     padding: 5,
   },
@@ -229,10 +233,10 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   lower :{
-    flex: 7,
-    flexDirection : 'column-reverse',
-    justifyContent: 'flex-end',
+    flexDirection : 'column',
+    justifyContent: 'flex-start',
     width: '90%',
+    height: '75%',
   },
   word: {
     flex: 3,
@@ -244,20 +248,41 @@ const styles = StyleSheet.create({
   imageButton: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 2,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  imageButtonBorderless: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'flex-end',
     padding: 2,
   },
   text: {
     fontSize: 16,
-    padding: 5,
+    //padding: 5,
   },
   scrollList : {
     padding: 5,
+    height: '95%',
   },
   upper: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flex: 3,
+    justifyContent: 'space-between',
+    height: '15%',
+    width: '90%',
     flexDirection : 'column',
+  },
+  bottomButton: {
+    backgroundColor : 'white',
+    borderWidth : 1,
+    borderColor: 'black',
+    paddingBottom: 5,
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  buttonText: {
+    fontSize: 18,
   },
 });
