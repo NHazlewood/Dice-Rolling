@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SQLite } from 'expo';
+import { SQLite } from 'expo-sqlite';
 
 const encounters = SQLite.openDatabase('encounters.db');
 

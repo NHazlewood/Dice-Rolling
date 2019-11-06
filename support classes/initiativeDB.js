@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SQLite } from 'expo';
+import { SQLite } from 'expo-sqlite';
 
 const parties = SQLite.openDatabase('parties.db');
 
