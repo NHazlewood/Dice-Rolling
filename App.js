@@ -1,4 +1,6 @@
-import { createMaterialTopTabNavigator, createAppContainer} from 'react-navigation';
+//import { createMaterialTopTabNavigator, createAppContainer} from 'react-navigation';
+import { createAppContainer} from 'react-navigation';
+import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
 import Attacking from "./pages/Attacking";
 import Initiative from "./pages/Initiative";

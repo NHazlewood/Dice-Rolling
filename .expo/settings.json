@@ -3,6 +3,6 @@
   "lanType": "ip",
   "dev": true,
   "minify": false,
-  "urlRandomness": "a2-ach",
+  "urlRandomness": "v4-zch",
   "https": false
 }
