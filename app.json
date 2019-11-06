@@ -3,7 +3,7 @@
     "name": "D&D Companion",
     "slug": "dandd-companion",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android"
@@ -25,6 +25,6 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "Release 0.8.5\nA work in progress app to be used along Dungeons and Dragons or similar systems. Bug / platform debugging release, has the desired functionality for release 1.0 but none of the style."
+    "description": "Release 0.8.9\nA work in progress app to be used along Dungeons and Dragons or similar systems. Bug / platform debugging release, has the desired functionality for release 1.0 but none of the style."
   }
 }
