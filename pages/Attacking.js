@@ -27,9 +27,6 @@ export default class Attacking extends React.Component {
   }
 
   render() {
-    //var tableWidth = (((Dimensions.get('window').width) *8) /9)
-    //var tableHeight = (((Dimensions.get('window').height) *9) /14)
-    //{width: tableWidth,height: tableHeight}
     return (
       <ImageBackground source={require('../assets/backgroundRolling.png')} style={styles.container}>
         <DiceInput callback={this.recieveRolls}/> 

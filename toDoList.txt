@@ -1,40 +1,29 @@
 In-Proggress
--> improve initiative list 
-    -> make items editable
-    -> add passive perception (optional field) (done)
-    -> add ac (optional field) (done)
-    -> add max hp (optional field) (done)
--> improve initiative list 2
-    -> add dp for party (done)
-    -> save parties (done)
-    -> delete parties 
-    -> clear current list (done)
-    -> load existing party (done)
--> improve initiative list 3
-    -> have load produce a list of parties to choose from
-    -> have delete produce a list of parties to choose from
+Redo Rolling/attacking
+    -> display dice images for rolls
+    -> not all roll s associated with an attack
+    -> give dice a color and group colored dice together for totals and bonuses
+        -> blue, black, red, green, yellow, purple, white, orange, grey
+    -> set dice types d4, d6, d8, d10, d12, d20, and d100
+    -> save dice set 
 ------------------------------------------------------------------------------------------
 Back Burner
 -> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
 -> add database access to monsters.js
     -> save current monster list
     -> load monsters from bestiary
+-> rename functions and varaibles
+    -> in bestiary to say beast not monster to keep it clearer and different from monster.js
+    -> in dataManager to say entries for general use
+-> edit besitary entry (will probably need a new page)
 ------------------------------------------------------------------------------------------
 Task List
--> add database access to monsters.js
-    -> save current monster list
-    -> load monsters from bestiary
 -> highlight monsters when <1 hp (monsters.js)
 Improve attacking.js
     -> multiple dice type per attack for attacking.js
     -> track different damage types
     -> negative modifers to damage and to hit
--> more custom images (ie custom borders, better '+' '-' etc) and color added to pages
 -> add health bonus to monsters tab
--> rename functions and varaibles
-    -> in bestiary to say beast not monster to keep it clearer and different from monster.js
-    -> in dataManager to say entries for general use
--> edit besitary entry (will probably need a new page)
 ------------------------------------------------------------------------------------------
 Completed Tasks
 -> adjust monster health
@@ -60,6 +49,21 @@ Completed Tasks
     -> export code into componets
 -> improve code (Bestiary.js)
     -> export code into componets
+
+-> improve initiative list 
+    -> make items editable (done)
+    -> add passive perception (optional field) (done)
+    -> add ac (optional field) (done)
+    -> add max hp (optional field) (done)
+-> improve initiative list 2
+    -> add dp for party (done)
+    -> save parties (done)
+    -> delete parties (done)
+    -> clear current list (done)
+    -> load existing party (done)
+-> improve initiative list 3 -> Not Applicable have seperate tabs now
+    -> have load produce a list of parties to choose from
+    -> have delete produce a list of parties to choose from
 ------------------------------------------------------------------------------------------
 Notes:
 armor pixel art orgional by hansipixel https://www.deviantart.com/hansipixel/art/Suit-of-Armor-609684316
