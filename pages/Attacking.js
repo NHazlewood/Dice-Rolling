@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image, ImageBackground , Dimensions} from 'react-native';
 
-import DiceInput from '../components/DiceInput.js';
+import DiceInput from '../components/DiceInput.js/index.js.js';
 
 export default class Attacking extends React.Component {
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
 
-import AdvantagePicker from '../components/AdvantagePicker.js';
+import AdvantagePicker from './AdvantagePicker.js';
 
 class DiceInput extends React.Component {
 
