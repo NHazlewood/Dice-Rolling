@@ -10,8 +10,8 @@ class DiceInput extends React.Component {
         this.state = {bonus: 0}
         this.state = {diceType: 0}
         this.state = {numberOfDice: 0}
-        this.state = {diceList: []}
         this.state = {diceColor: ''}
+        this.state = {diceList: []}
     }
 
     componentWillMount(){
@@ -47,6 +47,15 @@ class DiceInput extends React.Component {
         }
         
       }
+
+      addDice = () => {
+        //validate state
+        var newSet = [this.state.diceType,this.state.numberOfDice,this.state.diceColor,this.state.bonus]
+        var listCopy = this.state.diceList;
+        listCopy.push(newSet);
+        listCopy.sort((a,b) => {return b[0]-a[0]});
+        this.setState({diceList: listCopy});
+      }
     
       adjustmentCallBack = (newAdjustment) => {
         this.setState({adjustment: newAdjustment})
@@ -77,9 +86,27 @@ class DiceInput extends React.Component {
               </Picker>
               
               <Text style={styles.Text}>#: </Text>
+              <TextInput
+                    placeholder="_"
+                    keyboardType='numeric'
+                    maxLength = {2}
+                    onChangeText={(numberOfDice) => this.setState({numberOfDice})}
+                />
 
-              <Text style={styles.Text}>Bonus: </Text>   
+              <Text style={styles.Text}>Bonus: </Text>
+              <TextInput
+                placeholder="_"
+                keyboardType='numeric'
+                maxLength = {3}
+                onChangeText={(bonus) => this.setState({bonus})}
+                />
+              <TouchableHighlight onPress={() => this.addDice()}>
+                <Text>Add</Text>
+              </TouchableHighlight> 
             </View>
+            <TouchableHighlight onPress={() => this.rollDice()}>
+                <Image style= {{padding: 5}} source={require('../assets/roll.png')}/>
+            </TouchableHighlight>
           </View>
         )
     }
