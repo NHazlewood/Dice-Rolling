@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image, Picker } from 'react-native';
 
 import AdvantagePicker from '../components/AdvantagePicker.js';
 
@@ -12,13 +12,13 @@ class DiceInput extends React.Component {
         this.state = {numberOfDice: 0}
         this.state = {diceColor: 0}
         this.state = {diceList: []}
-        this.state = {hitOrDamage: false}
+        this.state = {hitOrDamage: true}
         this.state = {outPut: []}
     }
 
     componentWillMount(){
         this.setState({bonus : 0})
-        this.setState({diceType : 0})
+        this.setState({diceType : 6})
         this.setState({numberOfDice : 0})
         this.setState({hitOrDamage : false})
         this.setState({diceColor : 0})
@@ -27,67 +27,57 @@ class DiceInput extends React.Component {
     }
 
     validateState () {
-      /*
-        if(this.state.bonus == ''){this.setState({bonus : 0})}
-    
-        if(this.state.diceType == '' || this.state.diceType < 1){
-          Alert.alert('Error','Invalid dice type',[{text:'Close'}])
-          return 0
-        }
-        if(this.state.numberOfDice == '' || this.state.numberOfDice < 1){
-          Alert.alert('Error','Invalid number of dice',[{text:'Close'}])
-          return 0
-        }
-        if(this.state.numberOfAttacks == ''|| this.state.numberOfAttacks < 1){
-          Alert.alert('Error','Invalid number of attacks',[{text:'Close'}])
-          return 0
-        }
-        */
+      
+        if(this.state.diceType == 0) this.setState({diceType: 6})
+        if(this.state.numberOfDice < 1) return 0
+        
         return 1
       }
     
       rollDice = () => {
-        /*if(!this.validateState()){
-          return
-        }
-        don't need to validate at this step since we validate when adding dice
-        */
        //getting all the dice rolls
-        //possibleColors = ['White','Red']
+        possibleColors = ['White','Red']
         diceHolding = []
         damageHolding =[]
         toHitHolding = []
-        for (i=0;i<diceList.length();++i){
+        for (i=0;i<this.state.diceList.length;++i){
           //allocating the bonus
-          if(diceList[i][4]) toHitHolding.push([diceList[i][3],diceList[i][2]])
-          else damageHolding.push([diceList[i][3],diceList[i][2]])
+          if(this.state.diceList[i][4]) toHitHolding.push([this.state.diceList[i][3],this.state.diceList[i][2]])
+          else damageHolding.push([this.state.diceList[i][3],this.state.diceList[i][2]])
 
-          for(j=0;j<diceList[i][1];++j){
+          for(j=0;j<this.state.diceList[i][1];++j){
             //rolling and allocating dice
-            temp = Math.ceil(Math.random() * diceList[i][0])
-            if(diceList[i][4]) toHitHolding.push([temp,diceList[i][2]])
-            else damageHolding.push([temp,diceList[i][2]])
-            diceHolding.push(temp, diceList[i][0], diceList[i][2]) // roll , type, color
+            temp = Math.ceil(Math.random() * this.state.diceList[i][0])
+            //console.log("Rolled:" + temp)
+            if(this.state.diceList[i][4]) toHitHolding.push([temp,this.state.diceList[i][2]])
+            else damageHolding.push([temp,this.state.diceList[i][2]])
+            diceHolding.push(temp, this.state.diceList[i][0], this.state.diceList[i][2]) // roll , type, color
           }
         }
         colorDamageTotal = [0 , 0]
         colorToHitTotal = [0 , 0]
         //getting all the totals based on color
-        for(i=0;i<possibleColors.length;++i){
-          for(j=0;j<damageHolding;++j){
+        //for(i=0;i<possibleColors.length;++i){
+          for(j=0;j<damageHolding.length;++j){
             colorDamageTotal[damageHolding[j][1]] += damageHolding[j][0]
+            //console.log(damageHolding[j][0])
           }
-          for(j=0;j<toHitHolding;++j){
+          for(j=0;j<toHitHolding.length;++j){
             colorToHitTotal[toHitHolding[j][1]] += toHitHolding[j][0]
           }
-        }
+        //}
 
         this.setState({outPut : [diceHolding,colorDamageTotal,colorToHitTotal]})
+        //console.log("White Damage:" + colorDamageTotal[0] + " To Hit:" + colorToHitTotal[0])
+        //console.log("Red Damage:" + colorDamageTotal[1] + " To Hit:" + colorToHitTotal[1])
+        this.props.callback(this.state.outPut)
       }
 
       addDice = () => {
-        //validate state
-        var newSet = [this.state.diceType,this.state.numberOfDice,this.state.diceColor,this.state.bonus, this.state.hitOrDamage]
+        if(!this.validateState()) return 0
+
+        var newSet = [this.state.diceType,this.state.numberOfDice,this.state.diceColor,parseInt(this.state.bonus), (this.state.hitOrDamage === 'true')]
+        //console.log("Type" +newSet[0] + " #" + newSet[1] + " color"+newSet[2] + " bonus" + newSet[3] + " to hit?" + newSet[4])
         var listCopy = this.state.diceList;
         listCopy.push(newSet);
         listCopy.sort((a,b) => {return b[0]-a[0]});
@@ -119,13 +109,17 @@ class DiceInput extends React.Component {
                 <Picker.Item label = "D6" value = '6'/>
                 <Picker.Item label = "D4" value = '4'/>
               </Picker>
+            </View>
 
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.Text}>Color: </Text>        
               <Picker  style={{width: 170} } selectedValue = {this.state.diceColor} onValueChange = {this.updateDiceColor}>
                 <Picker.Item label = "White" value = '0'/>
                 <Picker.Item label = "Red" value = '1'/>
               </Picker>
-              
+            </View>
+
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>              
               <Text style={styles.Text}>#: </Text>
               <TextInput
                     placeholder="_"
