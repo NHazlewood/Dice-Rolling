@@ -13,7 +13,7 @@ class DiceInput extends React.Component {
         this.state = {diceColor: 0}
         this.state = {diceList: []}
         this.state = {hitOrDamage: true}
-        //this.state = {outPut: []}
+        this.state = {possibleColors: []}
     }
 
     componentWillMount(){
@@ -23,7 +23,7 @@ class DiceInput extends React.Component {
         this.setState({hitOrDamage : false})
         this.setState({diceColor : 0})
         this.setState({diceList: []})
-        //this.setState({outPut: []})
+        this.setState({possibleColors: ['White','Red']})
     }
 
     validateState () {
@@ -36,7 +36,6 @@ class DiceInput extends React.Component {
     
       rollDice = () => {
        //getting all the dice rolls
-        possibleColors = ['White','Red']
         diceHolding = []
         damageHolding =[]
         toHitHolding = []
@@ -48,35 +47,25 @@ class DiceInput extends React.Component {
           for(j=0;j<this.state.diceList[i][1];++j){
             //rolling and allocating dice
             temp = Math.ceil(Math.random() * this.state.diceList[i][0])
-            //console.log("Rolled:" + temp)
             if(this.state.diceList[i][4]) toHitHolding.push([temp,this.state.diceList[i][2]])
             else damageHolding.push([temp,this.state.diceList[i][2]])
-            diceHolding.push(temp, this.state.diceList[i][0], this.state.diceList[i][2]) // roll , type, color
+            diceHolding.push(temp, this.state.diceList[i][0], this.state.possibleColors[this.state.diceList[i][2]]) // roll , type, color
           }
         }
         colorDamageTotal = [0 , 0]
         colorToHitTotal = [0 , 0]
-        //getting all the totals based on color
-        //for(i=0;i<possibleColors.length;++i){
+
           for(j=0;j<damageHolding.length;++j){
             colorDamageTotal[damageHolding[j][1]] += damageHolding[j][0]
-            //console.log(damageHolding[j][0])
           }
           for(j=0;j<toHitHolding.length;++j){
             colorToHitTotal[toHitHolding[j][1]] += toHitHolding[j][0]
           }
-        //}
         temp = []
         temp.push(diceHolding)
         temp.push(colorDamageTotal)
         temp.push(colorToHitTotal)
-        console.log(temp.length)
-
-        //[diceHolding,colorDamageTotal,colorToHitTotal]
-        //this.setState({outPut : temp})
-        //console.log("White Damage:" + colorDamageTotal[0] + " To Hit:" + colorToHitTotal[0])
-        //console.log("Red Damage:" + colorDamageTotal[1] + " To Hit:" + colorToHitTotal[1])
-        //console.log(this.state.outPut.length)
+ 
         this.props.callback(temp)
       }
 
@@ -84,7 +73,6 @@ class DiceInput extends React.Component {
         if(!this.validateState()) return 0
 
         var newSet = [this.state.diceType,this.state.numberOfDice,this.state.diceColor,parseInt(this.state.bonus), (this.state.hitOrDamage === 'true')]
-        //console.log("Type" +newSet[0] + " #" + newSet[1] + " color"+newSet[2] + " bonus" + newSet[3] + " to hit?" + newSet[4])
         var listCopy = this.state.diceList;
         listCopy.push(newSet);
         listCopy.sort((a,b) => {return b[0]-a[0]});
