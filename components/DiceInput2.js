@@ -13,7 +13,7 @@ class DiceInput extends React.Component {
         this.state = {diceColor: 0}
         this.state = {diceList: []}
         this.state = {hitOrDamage: true}
-        this.state = {outPut: []}
+        //this.state = {outPut: []}
     }
 
     componentWillMount(){
@@ -23,7 +23,7 @@ class DiceInput extends React.Component {
         this.setState({hitOrDamage : false})
         this.setState({diceColor : 0})
         this.setState({diceList: []})
-        this.setState({outPut: []})
+        //this.setState({outPut: []})
     }
 
     validateState () {
@@ -66,11 +66,18 @@ class DiceInput extends React.Component {
             colorToHitTotal[toHitHolding[j][1]] += toHitHolding[j][0]
           }
         //}
+        temp = []
+        temp.push(diceHolding)
+        temp.push(colorDamageTotal)
+        temp.push(colorToHitTotal)
+        console.log(temp.length)
 
-        this.setState({outPut : [diceHolding,colorDamageTotal,colorToHitTotal]})
+        //[diceHolding,colorDamageTotal,colorToHitTotal]
+        //this.setState({outPut : temp})
         //console.log("White Damage:" + colorDamageTotal[0] + " To Hit:" + colorToHitTotal[0])
         //console.log("Red Damage:" + colorDamageTotal[1] + " To Hit:" + colorToHitTotal[1])
-        this.props.callback(this.state.outPut)
+        //console.log(this.state.outPut.length)
+        this.props.callback(temp)
       }
 
       addDice = () => {

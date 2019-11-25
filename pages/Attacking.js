@@ -31,8 +31,8 @@ export default class Attacking extends React.Component {
 
   recieveRolls2 = (newRolls) => {
     this.setState({coloredRolls : newRolls})
-    console.log("White Damage:" + this.state.coloredRolls[1][0] + " To Hit:" + this.state.coloredRolls[2][0])
-    console.log("Red Damage:" + this.state.coloredRolls[1][1] + " To Hit:" + this.state.coloredRolls[2][1])
+    //console.log("Recieved" + newRolls.length)
+    //console.log("Recieved" + this.state.coloredRolls.length)
   }
 
 
