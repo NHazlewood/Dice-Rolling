@@ -1,4 +1,5 @@
 In-Proggress
+Delays due to health and house purchasing
 Redo Rolling/attacking
     -> display dice images for rolls
     -> not all roll s associated with an attack
