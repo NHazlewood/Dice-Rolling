@@ -13,12 +13,14 @@ export default class Attacking extends React.Component {
   constructor(props) {
     super(props);
     this.state = {outText : []}
-    this.state = {coloredRolls : []}
+    //this.state = {coloredRolls : []}
+    this.state = {possibleColors: []}
   }
 
   componentWillMount() {
     this.setState({outText : []})
-    this.setState({coloredRolls : []})
+    //this.setState({coloredRolls : []})
+    this.setState({possibleColors: ['Black','Blue','Green','Purple','Red','White','Yellow']})
   }
 
   adjustmentCallBack = (newAdjustment) => {
@@ -30,8 +32,18 @@ export default class Attacking extends React.Component {
   }
 
   recieveRolls2 = (newRolls) => {
-    this.setState({coloredRolls : newRolls})
-    //console.log("Recieved" + newRolls.length)
+    //this.setState({coloredRolls : newRolls})
+    console.log("Recieved " + newRolls.length)
+    temp = []
+    console.log(newRolls[0]+ 'Rolls' + newRolls[1] +"damage | to hit" + newRolls[2])
+    for(i=0;i<7;++i){
+      if(newRolls[1][i] > 0) {
+        if(newRolls[2][i] > 0) temp.push([this.state.possibleColors[i],newRolls[1][i], newRolls[2][i]])
+        else temp.push([this.state.possibleColors[i],newRolls[1][i], newRolls[2][i]])
+      }
+    }
+    this.setState({outText: temp})
+    console.log(temp)
     //console.log("Recieved" + this.state.coloredRolls.length)
   }
 
@@ -43,8 +55,14 @@ export default class Attacking extends React.Component {
         <View style={styles.lower}>
           <View style={styles.table}>
           <ScrollView style={styles.scrollingRolls}>
-              
-          </ScrollView>          
+              {this.state.outText.map((item, key)=>(
+              <Text key={key} >  
+                {"\n"}  Color: {item[0]} 
+                {"\n"}  Damage: {item[1]}
+                {"\n"}  To Hit: {item[2]}
+              </Text>)
+              )}
+          </ScrollView>         
           </View>
         </View>
       </ImageBackground>

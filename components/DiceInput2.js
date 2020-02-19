@@ -14,16 +14,18 @@ class DiceInput extends React.Component {
         this.state = {diceList: []}
         this.state = {hitOrDamage: true}
         this.state = {possibleColors: []}
+        this.state = {possibleDice: []}
     }
 
     componentWillMount(){
         this.setState({bonus : 0})
-        this.setState({diceType : 6})
+        this.setState({diceType : 4})
         this.setState({numberOfDice : 0})
         this.setState({hitOrDamage : false})
         this.setState({diceColor : 0})
         this.setState({diceList: []})
-        this.setState({possibleColors: ['White','Red']})
+        this.setState({possibleColors: ['Black','Blue','Green','Purple','Red','White','Yellow']})
+        this.setState({possibleDice: ['D4','D6','D8','D12','D20','D100']})
     }
 
     validateState () {
@@ -52,8 +54,8 @@ class DiceInput extends React.Component {
             diceHolding.push(temp, this.state.diceList[i][0], this.state.possibleColors[this.state.diceList[i][2]]) // roll , type, color
           }
         }
-        colorDamageTotal = [0 , 0]
-        colorToHitTotal = [0 , 0]
+        colorDamageTotal = [0, 0, 0, 0, 0, 0, 0]
+        colorToHitTotal = [0, 0, 0, 0, 0, 0, 0]
 
           for(j=0;j<damageHolding.length;++j){
             colorDamageTotal[damageHolding[j][1]] += damageHolding[j][0]
@@ -101,16 +103,25 @@ class DiceInput extends React.Component {
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.Text}>Dice Type: </Text>        
               <Picker  style={{width: 170} } selectedValue = {this.state.diceType} onValueChange = {this.updateDiceType}>
-                <Picker.Item label = "D6" value = '6'/>
-                <Picker.Item label = "D4" value = '4'/>
+                <Picker.Item label = {this.state.possibleDice[0]} value = '4'/>
+                <Picker.Item label = {this.state.possibleDice[1]} value = '6'/>
+                <Picker.Item label = {this.state.possibleDice[2]} value = '8'/>
+                <Picker.Item label = {this.state.possibleDice[3]} value = '12'/>
+                <Picker.Item label = {this.state.possibleDice[4]} value = '20'/>
+                <Picker.Item label = {this.state.possibleDice[5]} value = '100'/>
               </Picker>
             </View>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text style={styles.Text}>Color: </Text>        
               <Picker  style={{width: 170} } selectedValue = {this.state.diceColor} onValueChange = {this.updateDiceColor}>
-                <Picker.Item label = "White" value = '0'/>
-                <Picker.Item label = "Red" value = '1'/>
+                <Picker.Item label = {this.state.possibleColors[0]} value = '0'/>
+                <Picker.Item label = {this.state.possibleColors[1]} value = '1'/>
+                <Picker.Item label = {this.state.possibleColors[2]} value = '2'/>
+                <Picker.Item label = {this.state.possibleColors[3]} value = '3'/>
+                <Picker.Item label = {this.state.possibleColors[4]} value = '4'/>
+                <Picker.Item label = {this.state.possibleColors[5]} value = '5'/>
+                <Picker.Item label = {this.state.possibleColors[6]} value = '6'/>
               </Picker>
             </View>
 
