@@ -15,12 +15,16 @@ export default class Attacking extends React.Component {
     this.state = {outText : []}
     //this.state = {coloredRolls : []}
     this.state = {possibleColors: []}
+    this.state = {outTextTotals : []}
+    this.state = {outTextInput : []}
   }
 
   componentWillMount() {
     this.setState({outText : []})
+    this.setState({outTextInput : []})
     //this.setState({coloredRolls : []})
-    this.setState({possibleColors: ['Black','Blue','Green','Purple','Red','White','Yellow']})
+    this.setState({possibleColors: ['Black','Blue','Green','Purple','Red','Yellow']})
+    this.setState({outTextTotals : []})
   }
 
   adjustmentCallBack = (newAdjustment) => {
@@ -31,20 +35,29 @@ export default class Attacking extends React.Component {
     this.setState({outText : newRolls})
   }
 
-  recieveRolls2 = (newRolls) => {
+  recieveRolls2 = (callReturn) => {
     //this.setState({coloredRolls : newRolls})
-    console.log("Recieved " + newRolls.length)
-    temp = []
-    console.log(newRolls[0]+ 'Rolls' + newRolls[1] +"damage | to hit" + newRolls[2])
-    for(i=0;i<7;++i){
-      if(newRolls[1][i] > 0) {
-        if(newRolls[2][i] > 0) temp.push([this.state.possibleColors[i],newRolls[1][i], newRolls[2][i]])
-        else temp.push([this.state.possibleColors[i],newRolls[1][i], newRolls[2][i]])
-      }
+    console.log("Recieved " + callReturn[0])
+    if(callReturn[0] == "Dice"){
+      //callReturn.pop()
+      this.setState({outTextInput : callReturn})
+      console.log(callReturn)
     }
-    this.setState({outText: temp})
-    console.log(temp)
-    //console.log("Recieved" + this.state.coloredRolls.length)
+    else{
+      temp = []
+      //console.log(callReturn[0]+ 'Rolls' + callReturn[1] +"damage | to hit" + callReturn[2])
+      for(i=0;i<6;++i){
+        if(callReturn[2][i] > 0) {
+          if(callReturn[3][i] > 0) temp.push([this.state.possibleColors[i],callReturn[1][i], callReturn[2][i]])
+          else temp.push([this.state.possibleColors[i],callReturn[1][i], callReturn[2][i]])
+        }
+      }
+      this.setState({outTexTotals: temp})
+      //console.log(temp)
+      //console.log("Recieved" + this.state.coloredRolls.length)
+
+    }
+    
   }
 
 
@@ -53,17 +66,41 @@ export default class Attacking extends React.Component {
       <ImageBackground source={require('../assets/backgroundRolling.png')} style={styles.container}>
         <DiceInput2 callback={this.recieveRolls2}/> 
         <View style={styles.lower}>
-          <View style={styles.table}>
-          <ScrollView style={styles.scrollingRolls}>
-              {this.state.outText.map((item, key)=>(
-              <Text key={key} >  
-                {"\n"}  Color: {item[0]} 
-                {"\n"}  Damage: {item[1]}
-                {"\n"}  To Hit: {item[2]}
-              </Text>)
-              )}
-          </ScrollView>         
-          </View>
+          
+            <ScrollView style={styles.topScroll}>
+            {this.state.outTextTotals.map((item, key)=>(
+                <Text key={key} style={
+                  [(item[0]) == "Black" ? styles.black :
+                  [(item[0]) == "Blue" ? styles.blue :
+                  [(item[0]) == "Green" ? styles.green :
+                  [(item[0]) == "Purple" ? styles.purple :
+                  [(item[0]) == "Red" ? styles.red : styles.yellow]]]]]}>  
+                  {"\n"} Damage:
+                  {"\n"} To Hit: 
+                </Text>)
+                )}
+
+            </ScrollView>
+
+            <ScrollView style={styles.middleScroll}>
+                {this.state.outTextTotals.map((item, key)=>(
+                <Text key={key} style={
+                  [(item[0]) == "Black" ? styles.black :
+                  [(item[0]) == "Blue" ? styles.blue :
+                  [(item[0]) == "Green" ? styles.green :
+                  [(item[0]) == "Purple" ? styles.purple :
+                  [(item[0]) == "Red" ? styles.red : styles.yellow]]]]]}>  
+                  {"\n"}  Damage: {item[1]}
+                  {"\n"} {[(item[2] > 0) ? "To Hit: "+ item[2] : ""]} 
+                </Text>)
+                )}
+            </ScrollView>
+
+            <ScrollView style={styles.bottomScroll}>
+                  <Text style={{alignSelf:'center'}}>ROLLS!</Text>
+            </ScrollView>       
+
+          
         </View>
       </ImageBackground>
     );
@@ -92,6 +129,51 @@ const styles = StyleSheet.create({
     width : '100%',
     height: '100%',
   },
+  topScroll : {
+    height: '40%',
+    //borderColor: 'black',
+    //borderWidth: 2,
+  },
+  middleScroll : {
+    height: '30%',
+    //borderColor: 'red',
+    //borderWidth: 2,
+  },
+  bottomScroll : {
+    height: '30%',
+    //borderColor: 'yellow',
+    //borderWidth: 2,
+  },
+  black: {
+    //padding: 5,
+    fontSize: 16,
+    color: 'black',
+  },
+  blue: {
+    //padding: 5,
+    fontSize: 16,
+    color: 'blue',
+  },
+  green: {
+    //padding: 5,
+    fontSize: 16,
+    color: 'green',
+  },
+  purple: {
+    //padding: 5,
+    fontSize: 16,
+    color: 'purple',
+  },
+  red: {
+    //padding: 5,
+    fontSize: 16,
+    color: 'red',
+  },
+  yellow: {
+    //padding: 5,
+    fontSize: 16,
+    color: 'yellow',
+  },
   crit: {
     borderColor: '#06e83b', //green
     borderWidth: 2,
@@ -105,17 +187,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   lower :{
-    flexDirection : 'column-reverse',
+    flexDirection : 'column',
     justifyContent: 'center',
+    //backgroundColor: 'pink',
+    width : '90%',
+    height : '71.1%',
   },
   normal : {
     borderColor: '#575a5e',
     borderWidth: 2,
     padding: 5,
     fontSize: 16,
-  },
-  scrollingRolls : {
-    
   },
   text: {
     fontSize: 16,
@@ -126,9 +208,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 2,
     flexDirection : 'column',
+    //backgroundColor: 'blue',
   },
-  table: {
-    width : '90%',
-    height : '65%',
-  }
+  //table: {
+   // width : '90%',
+  //  height : '70%',
+  //  backgroundColor: 'green',
+  //}
 });

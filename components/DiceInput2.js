@@ -24,7 +24,7 @@ class DiceInput extends React.Component {
         this.setState({hitOrDamage : false})
         this.setState({diceColor : 0})
         this.setState({diceList: []})
-        this.setState({possibleColors: ['Black','Blue','Green','Purple','Red','White','Yellow']})
+        this.setState({possibleColors: ['Black','Blue','Green','Purple','Red','Yellow']})
         this.setState({possibleDice: ['D4','D6','D8','D12','D20','D100']})
     }
 
@@ -54,8 +54,8 @@ class DiceInput extends React.Component {
             diceHolding.push(temp, this.state.diceList[i][0], this.state.possibleColors[this.state.diceList[i][2]]) // roll , type, color
           }
         }
-        colorDamageTotal = [0, 0, 0, 0, 0, 0, 0]
-        colorToHitTotal = [0, 0, 0, 0, 0, 0, 0]
+        colorDamageTotal = [0, 0, 0, 0, 0, 0]
+        colorToHitTotal = [0, 0, 0, 0, 0, 0]
 
           for(j=0;j<damageHolding.length;++j){
             colorDamageTotal[damageHolding[j][1]] += damageHolding[j][0]
@@ -64,6 +64,7 @@ class DiceInput extends React.Component {
             colorToHitTotal[toHitHolding[j][1]] += toHitHolding[j][0]
           }
         temp = []
+        temp.push("Roll")
         temp.push(diceHolding)
         temp.push(colorDamageTotal)
         temp.push(colorToHitTotal)
@@ -78,6 +79,9 @@ class DiceInput extends React.Component {
         var listCopy = this.state.diceList;
         listCopy.push(newSet);
         listCopy.sort((a,b) => {return b[0]-a[0]});
+        temp = []
+        temp.push("Dice")
+        this.props.callback(temp)
         this.setState({diceList: listCopy});
       }
     
@@ -121,7 +125,6 @@ class DiceInput extends React.Component {
                 <Picker.Item label = {this.state.possibleColors[3]} value = '3'/>
                 <Picker.Item label = {this.state.possibleColors[4]} value = '4'/>
                 <Picker.Item label = {this.state.possibleColors[5]} value = '5'/>
-                <Picker.Item label = {this.state.possibleColors[6]} value = '6'/>
               </Picker>
             </View>
 
@@ -170,6 +173,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       flex: 2,
       flexDirection : 'column',
+      //backgroundColor : 'blue',
     },
   });
 
