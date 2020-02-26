@@ -1,8 +1,9 @@
 import React from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image, ImageBackground , Dimensions} from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image, ImageBackground , Dimensions, TouchableHighlightBase} from 'react-native';
 
 import DiceInput from '../components/DiceInput.js';
 import DiceInput2 from '../components/DiceInput2.js';
+import DiceInput3 from '../components/DiceInput3.js';
 
 export default class Attacking extends React.Component {
 
@@ -17,6 +18,8 @@ export default class Attacking extends React.Component {
     this.state = {possibleColors: []}
     this.state = {outTextTotals : []}
     this.state = {outTextInput : []}
+    this.state = {possibleDice: []}
+    this.state = {diceLog: []}
   }
 
   componentWillMount() {
@@ -24,7 +27,9 @@ export default class Attacking extends React.Component {
     this.setState({outTextInput : []})
     //this.setState({coloredRolls : []})
     this.setState({possibleColors: ['Black','Blue','Green','Purple','Red','Yellow']})
+    this.setState({possibleDice: ['D4','D6','D8','D12','D20','D100']})
     this.setState({outTextTotals : []})
+    this.setState({diceLog : []})
   }
 
   adjustmentCallBack = (newAdjustment) => {
@@ -37,6 +42,7 @@ export default class Attacking extends React.Component {
 
   recieveRolls2 = (callReturn) => {
     //this.setState({coloredRolls : newRolls})
+    /*
     console.log("Recieved " + callReturn[0])
     if(callReturn[0] == "Dice"){
       //callReturn.pop()
@@ -55,16 +61,50 @@ export default class Attacking extends React.Component {
       this.setState({outTexTotals: temp})
       //console.log(temp)
       //console.log("Recieved" + this.state.coloredRolls.length)
+      */
 
-    }
+    //}
     
   }
 
+  recieveRolls3 = (callReturn) => {
+    tempA = ['','','','','','']
+    tempB = ['','','','','','']
+    //tempC = [['',''],['',''],['',''],['',''],['','']]
+    for(i=0;i<this.state.possibleColors.length;++i){
+      temp0 = ''
+      temp1 = ''
+      for(j=0;j<this.state.possibleDice.length;++j){
+        if(callReturn[0][i][j][0] > 0 ) {
+          if(temp0 != '') temp0 += ' + '
+          temp0 += callReturn[0][i][j][0] + "D" + this.state.possibleDice[j]
+        }
+        if(callReturn[0][i][j][1] > 0 ) {
+          if(temp1 != '') temp1 += ' + '
+          temp1 += callReturn[0][i][j][1] + "D"  + this.state.possibleDice[j]
+        }
+      }
+      if(temp0 != ''){
+        if(callReturn[1][i][0] != 0) temp0 += " + " + callReturn[1][i][0]
+        tempA[i] = "Damage: " + temp0
+      }
+      if(temp1 != ''){
+        if(callReturn[1][i][0] != 0) temp1 += " + " + callReturn[1][i][1]
+        tempB[i] = "To hit: " + temp1
+      } 
+    }
 
-  render() {
+
+    this.setState({outTextInput : [tempA,tempB]})
+
+    console.log("return: \n" + callReturn + '\n' + "formated:\n" + tempA + '\n' + tempB)    
+  }
+
+
+  render(){
     return (
       <ImageBackground source={require('../assets/backgroundRolling.png')} style={styles.container}>
-        <DiceInput2 callback={this.recieveRolls2}/> 
+        <DiceInput3 callback={this.recieveRolls2} possibleColors={this.state.possibleColors} possibleDice={this.state.possibleDice} callback2={this.recieveRolls3}/> 
         <View style={styles.lower}>
           
             <ScrollView style={styles.topScroll}>
@@ -97,7 +137,7 @@ export default class Attacking extends React.Component {
             </ScrollView>
 
             <ScrollView style={styles.bottomScroll}>
-                  <Text style={{alignSelf:'center'}}>ROLLS!</Text>
+                  <Text style={{alignSelf:'center'}}>-- No Rolls --</Text>
             </ScrollView>       
 
           
