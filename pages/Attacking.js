@@ -4,6 +4,7 @@ import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, Touchable
 import DiceInput from '../components/DiceInput.js';
 import DiceInput2 from '../components/DiceInput2.js';
 import DiceInput3 from '../components/DiceInput3.js';
+import AttackInput from '../components/AttackInput.js'
 
 export default class Attacking extends React.Component {
 
@@ -104,7 +105,7 @@ export default class Attacking extends React.Component {
   render(){
     return (
       <ImageBackground source={require('../assets/backgroundRolling.png')} style={styles.container}>
-        <DiceInput3 callback={this.recieveRolls2} possibleColors={this.state.possibleColors} possibleDice={this.state.possibleDice} callback2={this.recieveRolls3}/> 
+        <AttackInput/> 
         <View style={styles.lower}>
           
             <ScrollView style={styles.topScroll}>
