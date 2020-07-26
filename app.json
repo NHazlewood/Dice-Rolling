@@ -3,7 +3,6 @@
     "name": "D&D Companion",
     "slug": "dandd-companion",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android"
