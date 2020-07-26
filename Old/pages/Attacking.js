@@ -1,10 +1,10 @@
 import React from 'react';
 import { Alert, StyleSheet, Text, View, TextInput, ScrollView, Button, TouchableHighlight, Image, ImageBackground , Dimensions, TouchableHighlightBase} from 'react-native';
 
-import DiceInput from '../components/DiceInput.js';
-import DiceInput2 from '../components/DiceInput2.js';
-import DiceInput3 from '../components/DiceInput3.js';
-import AttackInput from '../components/AttackInput.js'
+import DiceInput from '../../components/DiceInput.js';
+import DiceInput2 from '../../components/DiceInput2.js';
+import DiceInput3 from '../../components/DiceInput3.js';
+import AttackInput from './components/AttackInput.js'
 
 export default class Attacking extends React.Component {
 

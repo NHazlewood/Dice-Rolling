@@ -2,12 +2,12 @@
 import { createAppContainer} from 'react-navigation';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 
-import Attacking from "./pages/Attacking";
+//import Attacking from "./pages/Attacking";
 import Initiative from "./pages/Initiative";
 import Monsters from "./pages/Monsters";
 
 const TabNavigator = createMaterialTopTabNavigator({
-  Attacking: {screen: Attacking},
+  //Attacking: {screen: Attacking},
   Initiative: {screen: Initiative},
   Monsters: {screen: Monsters},
 },
