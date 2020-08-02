@@ -1,10 +1,10 @@
 {
   "webpackServerPort": null,
-  "expoServerNgrokUrl": "https://v4-zch.anonymous.dice-rolling.exp.direct",
-  "packagerNgrokUrl": "https://packager.v4-zch.anonymous.dice-rolling.exp.direct",
-  "ngrokPid": 7192,
+  "expoServerNgrokUrl": "https://7q-8uc.anonymous.dice-rolling.exp.direct",
+  "packagerNgrokUrl": "https://packager.7q-8uc.anonymous.dice-rolling.exp.direct",
+  "ngrokPid": 1948,
   "packagerPort": 19001,
-  "packagerPid": 2452,
+  "packagerPid": 13280,
   "devToolsPort": 19002,
   "expoServerPort": 19000
 }
